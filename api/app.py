@@ -19,6 +19,7 @@ from core.models import (
     DecisionStatus,
     TaskStep,
     ReportItem,
+    ChatMessage,
 )
 from memory.state_store import state_store
 from core.orchestrator import AgentOrchestrator
@@ -130,6 +131,74 @@ def get_agent_steps(agent_id: str, limit: int = 50):
 @app.get("/api/agents/{agent_id}/reports", response_model=List[ReportItem])
 def get_agent_reports(agent_id: str, limit: int = 20):
     return state_store.get_agent_reports(agent_id, limit=limit)
+
+
+# ------------------ CONVERSATION & CATCH-UP BRIEFING ------------------
+
+from core.conversation import AgentConversationEngine
+from sandbox.executor import SandboxEnvironment
+
+
+class UserChatRequest(BaseModel):
+    message: str
+
+
+class ExecuteCodeRequest(BaseModel):
+    code: str
+    language: str = "python"  # python or bash
+
+
+@app.get("/api/agents/{agent_id}/briefing")
+def get_agent_briefing(agent_id: str):
+    agent = state_store.get_agent(agent_id)
+    if not agent:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    engine = AgentConversationEngine(agent_id)
+    return engine.get_catchup_briefing()
+
+
+@app.get("/api/agents/{agent_id}/chat", response_model=List[ChatMessage])
+def get_chat_history(agent_id: str, limit: int = 50):
+    return state_store.get_chat_history(agent_id, limit=limit)
+
+
+@app.post("/api/agents/{agent_id}/chat", response_model=ChatMessage)
+async def send_chat_message(agent_id: str, req: UserChatRequest):
+    agent = state_store.get_agent(agent_id)
+    if not agent:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    engine = AgentConversationEngine(agent_id)
+    response_msg = await engine.chat(req.message)
+    return response_msg
+
+
+# ------------------ CLOUD COMPUTER FILES & SANDBOX ------------------
+
+@app.get("/api/agents/{agent_id}/files")
+def list_agent_sandbox_files(agent_id: str):
+    sandbox = SandboxEnvironment(agent_id)
+    files = sandbox.list_files()
+    return {"files": files}
+
+
+@app.get("/api/agents/{agent_id}/files/content")
+def get_agent_sandbox_file_content(agent_id: str, path: str):
+    sandbox = SandboxEnvironment(agent_id)
+    try:
+        content = sandbox.read_file(path)
+        return {"path": path, "content": content}
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@app.post("/api/agents/{agent_id}/execute")
+def execute_in_agent_sandbox(agent_id: str, req: ExecuteCodeRequest):
+    sandbox = SandboxEnvironment(agent_id)
+    if req.language == "bash":
+        result = sandbox.run_command(req.code)
+    else:
+        result = sandbox.run_python(req.code)
+    return result
 
 
 # ------------------ HUMAN ESCALATIONS ------------------

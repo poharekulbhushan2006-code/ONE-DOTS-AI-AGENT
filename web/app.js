@@ -1,6 +1,6 @@
 /**
  * ONE: Always-On Autonomous AI Agent System
- * Frontend Application & Real-time Telemetry Dashboard
+ * Frontend Application & OpenAI Dot-style Conversational Workstation
  */
 
 let selectedAgentId = null;
@@ -10,16 +10,16 @@ let pendingDecisions = [];
 document.addEventListener('DOMContentLoaded', () => {
     initUI();
     fetchFleetData();
-    setInterval(fetchFleetData, 3000); // 3-second real-time heartbeat polling
+    setInterval(fetchFleetData, 3000); // 3-second continuous real-time refresh
 });
 
 function initUI() {
-    // Tabs Navigation
-    const tabButtons = document.querySelectorAll('.tab-btn');
+    // Inspector Tabs Navigation
+    const tabButtons = document.querySelectorAll('.inspector-tabs .tab-btn');
     tabButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             tabButtons.forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.inspector-content').forEach(c => c.classList.remove('active'));
 
             btn.classList.add('active');
             const target = btn.getAttribute('data-tab');
@@ -38,6 +38,11 @@ function initUI() {
     });
     document.getElementById('btn-cancel-modal').addEventListener('click', () => {
         modal.classList.remove('open');
+    });
+
+    // Dismiss Catch-up Briefing
+    document.getElementById('btn-dismiss-briefing').addEventListener('click', () => {
+        document.getElementById('catchup-briefing').style.display = 'none';
     });
 
     // Create Agent Form Submit
@@ -71,24 +76,26 @@ function initUI() {
         }
     });
 
-    // Force Tick Button
+    // Force Autonomous Tick (Step Progress)
     document.getElementById('btn-force-tick').addEventListener('click', async () => {
         if (!selectedAgentId) return;
         const btn = document.getElementById('btn-force-tick');
         btn.disabled = true;
-        btn.innerText = '⚡ Running Tick...';
+        btn.innerText = '⚡ Ticking...';
         try {
             await fetch(`/api/agents/${selectedAgentId}/tick`, { method: 'POST' });
             await fetchFleetData();
+            loadCatchupBriefing(selectedAgentId);
+            fetchAgentChat(selectedAgentId);
         } catch (err) {
             console.error('Error triggering tick:', err);
         } finally {
             btn.disabled = false;
-            btn.innerText = '⚡ Force Tick';
+            btn.innerText = '⚡ Step Progress';
         }
     });
 
-    // Toggle Pause/Resume Button
+    // Toggle Pause/Resume
     document.getElementById('btn-toggle-pause').addEventListener('click', async () => {
         if (!selectedAgentId) return;
         const agent = cachedAgents.find(a => a.id === selectedAgentId);
@@ -98,6 +105,71 @@ function initUI() {
         await fetch(`/api/agents/${selectedAgentId}/${action}`, { method: 'POST' });
         await fetchFleetData();
     });
+
+    // Chat Message Form Submit
+    document.getElementById('chat-input-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (!text || !selectedAgentId) return;
+
+        input.value = '';
+        appendChatMessage('user', text);
+
+        try {
+            const res = await fetch(`/api/agents/${selectedAgentId}/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                appendChatMessage('agent', data.content);
+                // Also refresh files and memory
+                fetchSandboxFiles(selectedAgentId);
+            }
+        } catch (err) {
+            console.error('Error sending chat:', err);
+        }
+    });
+
+    // Refresh Files Button
+    document.getElementById('btn-refresh-files').addEventListener('click', () => {
+        if (selectedAgentId) fetchSandboxFiles(selectedAgentId);
+    });
+
+    // Run Code in Sandbox Button
+    document.getElementById('btn-run-sandbox').addEventListener('click', async () => {
+        if (!selectedAgentId) return;
+        const code = document.getElementById('sandbox-code-input').value.trim();
+        const lang = document.getElementById('sandbox-lang-select').value;
+        const outputEl = document.getElementById('sandbox-run-output');
+
+        if (!code) return;
+        outputEl.style.display = 'block';
+        outputEl.innerText = 'Executing in sandbox cloud computer...';
+
+        try {
+            const res = await fetch(`/api/agents/${selectedAgentId}/execute`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, language: lang })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                outputEl.innerText = `Exit Code: ${data.exit_code}\n${data.stdout || ''}${data.stderr ? '\nStderr: ' + data.stderr : ''}`;
+                fetchSandboxFiles(selectedAgentId);
+            }
+        } catch (err) {
+            outputEl.innerText = `Execution error: ${err}`;
+        }
+    });
+}
+
+function sendQuickPrompt(promptText) {
+    const input = document.getElementById('chat-input');
+    input.value = promptText;
+    document.getElementById('chat-input-form').dispatchEvent(new Event('submit'));
 }
 
 async function fetchFleetData() {
@@ -115,18 +187,13 @@ async function fetchFleetData() {
 
         if (decisionsRes.ok) {
             pendingDecisions = await decisionsRes.json();
-            renderDecisions(pendingDecisions);
             updateTopMetrics(cachedAgents, pendingDecisions);
         }
 
-        // If an agent is selected, refresh its details
         if (selectedAgentId) {
             const current = cachedAgents.find(a => a.id === selectedAgentId);
             if (current) {
-                renderAgentDetailHeader(current);
-                renderLifecycleStage(current.current_stage);
-                fetchAgentSteps(selectedAgentId);
-                fetchAgentReports(selectedAgentId);
+                renderDotHeader(current);
             }
         } else if (cachedAgents.length > 0) {
             selectAgent(cachedAgents[0].id);
@@ -139,17 +206,10 @@ async function fetchFleetData() {
 function updateTopMetrics(agents, decisions) {
     document.getElementById('metric-active-agents').innerText = agents.length;
     const totalTicks = agents.reduce((acc, a) => acc + (a.total_ticks || 0), 0);
-    document.getElementById('metric-total-ticks').innerText = totalTicks;
+    document.getElementById('metric-total-ticks').innerText = `${totalTicks} ticks`;
 
     const pendingCount = decisions.length;
     document.getElementById('metric-pending-decisions').innerText = pendingCount;
-    const tabBadge = document.getElementById('tab-badge-decisions');
-    if (pendingCount > 0) {
-        tabBadge.innerText = pendingCount;
-        tabBadge.style.display = 'inline-block';
-    } else {
-        tabBadge.style.display = 'none';
-    }
 }
 
 function renderFleetSidebar(agents) {
@@ -157,8 +217,8 @@ function renderFleetSidebar(agents) {
     if (!agents || agents.length === 0) {
         listEl.innerHTML = `
             <div class="empty-state">
-                <p>No autonomous units deployed yet.</p>
-                <p style="margin-top: 8px;">Click <b>+ Assign New Responsibility</b> above to give an AI its first mission.</p>
+                <p>No active Dots.</p>
+                <p style="margin-top: 6px;">Click <b>+ Assign New Responsibility</b> above to give an AI its first mission.</p>
             </div>
         `;
         return;
@@ -171,9 +231,9 @@ function renderFleetSidebar(agents) {
                 <span class="status-badge ${agent.status}">${agent.status}</span>
             </div>
             <p class="agent-card-mission">${escapeHtml(agent.responsibility)}</p>
-            <div class="agent-card-footer">
+            <div style="font-size: 10px; color: var(--text-dim); display: flex; justify-content: space-between;">
                 <span>Ticks: ${agent.total_ticks}</span>
-                <span>Stage: ${agent.current_stage}</span>
+                <span>${agent.schedule_interval_seconds}s cadence</span>
             </div>
         </div>
     `).join('');
@@ -185,19 +245,25 @@ function selectAgent(agentId) {
     if (!agent) return;
 
     renderFleetSidebar(cachedAgents);
-    renderAgentDetailHeader(agent);
-    renderLifecycleStage(agent.current_stage);
+    renderDotHeader(agent);
+
+    document.getElementById('chat-input-form').style.display = 'flex';
+    document.getElementById('prompt-pills').style.display = 'flex';
+    document.getElementById('agent-controls').style.display = 'flex';
+
+    loadCatchupBriefing(agentId);
+    fetchAgentChat(agentId);
+    fetchSandboxFiles(agentId);
     fetchAgentSteps(agentId);
     fetchAgentReports(agentId);
 }
 
-function renderAgentDetailHeader(agent) {
-    document.getElementById('agent-controls').style.display = 'flex';
+function renderDotHeader(agent) {
     document.getElementById('active-agent-name').innerText = agent.name;
     const statusEl = document.getElementById('active-agent-status');
     statusEl.innerText = agent.status;
     statusEl.className = `status-badge ${agent.status}`;
-    document.getElementById('active-agent-responsibility').innerText = agent.responsibility;
+    document.getElementById('active-agent-responsibility').innerText = `"${agent.responsibility}"`;
 
     const pauseBtn = document.getElementById('btn-toggle-pause');
     if (agent.status === 'paused') {
@@ -207,18 +273,101 @@ function renderAgentDetailHeader(agent) {
     }
 }
 
-function renderLifecycleStage(stageName) {
-    const stages = ['research', 'analyze', 'build', 'monitor', 'report', 'adapt'];
-    const stageElements = document.querySelectorAll('.stage-step');
+async function loadCatchupBriefing(agentId) {
+    try {
+        const res = await fetch(`/api/agents/${agentId}/briefing`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const briefingCard = document.getElementById('catchup-briefing');
+        const textEl = document.getElementById('briefing-text');
+        textEl.innerText = data.briefing;
+        briefingCard.style.display = 'flex';
+    } catch (err) {
+        console.error('Error loading briefing:', err);
+    }
+}
 
-    stageElements.forEach(el => {
-        const s = el.getAttribute('data-stage');
-        if (s === stageName) {
-            el.classList.add('active');
-        } else {
-            el.classList.remove('active');
+async function fetchAgentChat(agentId) {
+    try {
+        const res = await fetch(`/api/agents/${agentId}/chat`);
+        if (!res.ok) return;
+        const messages = await res.json();
+        renderChatMessages(messages);
+    } catch (err) {
+        console.error('Error fetching chat history:', err);
+    }
+}
+
+function renderChatMessages(messages) {
+    const container = document.getElementById('chat-messages-container');
+    if (!messages || messages.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <p>No chat history yet with this Dot.</p>
+                <p style="margin-top: 6px;">Say hello or click a prompt pill below to collaborate!</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = messages.map(m => `
+        <div class="chat-bubble ${m.sender}">
+            <span class="bubble-sender">${m.sender === 'user' ? 'You' : 'Dot'}</span>
+            <div class="bubble-content">${escapeHtml(m.content)}</div>
+        </div>
+    `).join('');
+    container.scrollTop = container.scrollHeight;
+}
+
+function appendChatMessage(sender, text) {
+    const container = document.getElementById('chat-messages-container');
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${sender}`;
+    bubble.innerHTML = `
+        <span class="bubble-sender">${sender === 'user' ? 'You' : 'Dot'}</span>
+        <div class="bubble-content">${escapeHtml(text)}</div>
+    `;
+    container.appendChild(bubble);
+    container.scrollTop = container.scrollHeight;
+}
+
+async function fetchSandboxFiles(agentId) {
+    try {
+        const res = await fetch(`/api/agents/${agentId}/files`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const tree = document.getElementById('file-tree');
+        const files = data.files || [];
+
+        if (files.length === 0) {
+            tree.innerHTML = `<div class="empty-state">Cloud computer workspace is empty.</div>`;
+            return;
         }
-    });
+
+        tree.innerHTML = files.map(f => `
+            <div class="file-item" onclick="viewFileContent('${escapeHtml(f.path)}')">
+                <span>📄 ${escapeHtml(f.path)}</span>
+                <span style="color: var(--text-dim); font-size: 10px;">${f.size_bytes} B</span>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error('Error fetching sandbox files:', err);
+    }
+}
+
+async function viewFileContent(filePath) {
+    if (!selectedAgentId) return;
+    try {
+        const res = await fetch(`/api/agents/${selectedAgentId}/files/content?path=${encodeURIComponent(filePath)}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const viewerSection = document.getElementById('file-viewer-section');
+        document.getElementById('file-viewer-filename').innerText = `📄 ${data.path}`;
+        document.getElementById('file-viewer-content').innerText = data.content;
+        viewerSection.style.display = 'flex';
+    } catch (err) {
+        console.error('Error reading file:', err);
+    }
 }
 
 async function fetchAgentSteps(agentId) {
@@ -228,6 +377,7 @@ async function fetchAgentSteps(agentId) {
         const steps = await res.json();
         renderSteps(steps);
         renderScreenshotsFromSteps(steps);
+        renderMemoriesFromSteps(steps);
     } catch (err) {
         console.error('Error fetching steps:', err);
     }
@@ -236,18 +386,18 @@ async function fetchAgentSteps(agentId) {
 function renderSteps(steps) {
     const container = document.getElementById('steps-container');
     if (!steps || steps.length === 0) {
-        container.innerHTML = `<div class="empty-state">No execution steps yet. Trigger a tick to start.</div>`;
+        container.innerHTML = `<div class="empty-state">No execution steps yet.</div>`;
         return;
     }
 
     container.innerHTML = steps.map(step => `
-        <div class="step-card">
-            <div class="step-card-header">
-                <span class="step-stage-tag">${step.stage}</span>
-                <span class="step-time">${new Date(step.timestamp).toLocaleTimeString()}</span>
+        <div class="step-card" style="padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 6px; margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--accent-cyan);">
+                <b>${step.stage.toUpperCase()}</b>
+                <span style="color: var(--text-dim);">${new Date(step.timestamp).toLocaleTimeString()}</span>
             </div>
-            <div class="step-action">${escapeHtml(step.action)}</div>
-            ${step.output ? `<div class="step-io">${escapeHtml(JSON.stringify(step.output, null, 2))}</div>` : ''}
+            <div style="font-size: 11px; margin-top: 4px;">${escapeHtml(step.action)}</div>
+            ${step.output ? `<pre style="font-size: 10px; background: rgba(0,0,0,0.4); padding: 6px; margin-top: 4px; border-radius: 4px; max-height: 80px; overflow-y: auto;">${escapeHtml(JSON.stringify(step.output, null, 2))}</pre>` : ''}
         </div>
     `).join('');
 }
@@ -263,7 +413,7 @@ function renderScreenshotsFromSteps(steps) {
     });
 
     if (screenshots.length === 0) {
-        container.innerHTML = `<div class="empty-state">No browser screenshots captured yet. When the agent researches the web, browser snapshots will appear here.</div>`;
+        container.innerHTML = `<div class="empty-state">No browser screenshots captured yet.</div>`;
         return;
     }
 
@@ -274,48 +424,31 @@ function renderScreenshotsFromSteps(steps) {
                     <a href="/screenshots/${filename}" target="_blank">
                         <img src="/screenshots/${filename}" alt="Browser Snapshot" loading="lazy">
                     </a>
-                    <div class="screenshot-meta">${filename}</div>
+                    <div style="padding: 4px 6px; font-size: 9px; color: var(--text-dim);">${filename}</div>
                 </div>
             `).join('')}
         </div>
     `;
 }
 
-function renderDecisions(decisions) {
-    const container = document.getElementById('decisions-container');
-    if (!decisions || decisions.length === 0) {
-        container.innerHTML = `<div class="empty-state">No pending decisions. The agent is operating safely within its bounds.</div>`;
+function renderMemoriesFromSteps(steps) {
+    const container = document.getElementById('memory-list');
+    const memorySteps = steps.filter(s => s.action.includes('Researched') || s.action.includes('Analyzed'));
+
+    if (memorySteps.length === 0) {
+        container.innerHTML = `<div class="empty-state">No observations recorded in memory bank yet.</div>`;
         return;
     }
 
-    container.innerHTML = decisions.map(d => `
-        <div class="decision-card">
-            <div class="decision-header">
-                <span class="decision-title">⚠️ Decision Checkpoint: ${escapeHtml(d.action_type)}</span>
-                <span class="status-badge waiting_approval">${d.risk_level.toUpperCase()} RISK</span>
+    container.innerHTML = memorySteps.map(s => `
+        <div class="memory-card">
+            <div class="memory-meta">
+                <span>Stage: ${s.stage}</span>
+                <span>${new Date(s.timestamp).toLocaleTimeString()}</span>
             </div>
-            <p>${escapeHtml(d.description)}</p>
-            <div class="step-io">${escapeHtml(JSON.stringify(d.proposed_payload, null, 2))}</div>
-            <div class="decision-actions">
-                <button class="btn btn-success" onclick="resolveDecision('${d.id}', true)">✓ Approve & Proceed</button>
-                <button class="btn btn-danger" onclick="resolveDecision('${d.id}', false)">✕ Reject & Adapt</button>
-            </div>
+            <div>${escapeHtml(s.action)}</div>
         </div>
     `).join('');
-}
-
-async function resolveDecision(decisionId, isApproved) {
-    const action = isApproved ? 'approve' : 'reject';
-    try {
-        await fetch(`/api/decisions/${decisionId}/${action}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ notes: isApproved ? 'Approved by operator via dashboard' : 'Rejected by operator' }),
-        });
-        await fetchFleetData();
-    } catch (err) {
-        console.error('Failed to resolve decision:', err);
-    }
 }
 
 async function fetchAgentReports(agentId) {
@@ -332,15 +465,15 @@ async function fetchAgentReports(agentId) {
 function renderReports(reports) {
     const container = document.getElementById('reports-container');
     if (!reports || reports.length === 0) {
-        container.innerHTML = `<div class="empty-state">No reports generated yet. Reports are delivered upon cycle completion.</div>`;
+        container.innerHTML = `<div class="empty-state">No reports generated yet.</div>`;
         return;
     }
 
     container.innerHTML = reports.map(r => `
-        <div class="report-card">
-            <div class="report-title">${escapeHtml(r.title)}</div>
-            <div style="font-size: 11px; color: var(--text-dim);">${new Date(r.created_at).toLocaleString()}</div>
-            <div class="report-body">${escapeHtml(r.content)}</div>
+        <div style="padding: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: 6px; margin-bottom: 10px;">
+            <div style="font-size: 13px; font-weight: 700;">${escapeHtml(r.title)}</div>
+            <div style="font-size: 10px; color: var(--text-dim); margin-top: 2px;">${new Date(r.created_at).toLocaleString()}</div>
+            <pre style="font-size: 11px; color: #cbd5e1; margin-top: 8px; white-space: pre-wrap; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px;">${escapeHtml(r.content)}</pre>
         </div>
     `).join('');
 }

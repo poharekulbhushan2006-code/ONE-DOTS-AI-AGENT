@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONE — Always-On Autonomous AI Agent System</title>
+    <title>ONE — Always-On Persistent AI Agents (Dots Engine)</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,21 +26,21 @@
             </div>
             <div class="badge-always-on">
                 <span class="pulse-dot"></span>
-                <span>ALWAYS-ON ENGINE</span>
+                <span>ALWAYS-ON PERSISTENT AGENTS</span>
             </div>
         </div>
 
         <div class="nav-metrics">
             <div class="metric-chip">
-                <span class="chip-label">ACTIVE UNITS</span>
+                <span class="chip-label">DEPLOYED DOTS</span>
                 <span class="chip-val" id="metric-active-agents">0</span>
             </div>
             <div class="metric-chip">
-                <span class="chip-label">AUTONOMOUS TICKS</span>
-                <span class="chip-val" id="metric-total-ticks">0</span>
+                <span class="chip-label">BACKGROUND PROGRESS</span>
+                <span class="chip-val" id="metric-total-ticks">0 ticks</span>
             </div>
             <div class="metric-chip highlight" id="chip-pending-approvals">
-                <span class="chip-label">PENDING APPROVALS</span>
+                <span class="chip-label">HUMAN JUDGMENT NEEDED</span>
                 <span class="chip-val" id="metric-pending-decisions">0</span>
             </div>
         </div>
@@ -52,149 +52,186 @@
         </div>
     </header>
 
-    <!-- Main Workspace -->
-    <main class="main-layout">
-        <!-- Sidebar / Agent Fleet -->
-        <aside class="sidebar-panel glass-card">
+    <!-- Main 3-Column Layout: Fleet | Conversational Workspace | Cloud Computer & Browser -->
+    <main class="dot-layout">
+        
+        <!-- Column 1: Fleet Sidebar -->
+        <aside class="sidebar-fleet glass-card">
             <div class="panel-header">
-                <h2>Autonomous Fleet</h2>
-                <span class="subtext">Persistent units running on cloud computers</span>
+                <h2>Your Persistent Dots</h2>
+                <span class="subtext">Owns a responsibility, not a one-off prompt</span>
             </div>
-
             <div class="agent-list" id="agent-list">
-                <!-- Dynamically populated -->
                 <div class="empty-state">Loading agents...</div>
             </div>
         </aside>
 
-        <!-- Center Workspace Panel -->
-        <section class="content-panel glass-card">
-            <!-- Active Agent Header -->
-            <div class="agent-detail-header" id="agent-detail-header">
-                <div class="header-info">
-                    <div class="title-row">
-                        <h1 id="active-agent-name">Select an Agent</h1>
-                        <span class="status-badge" id="active-agent-status">IDLE</span>
+        <!-- Column 2: Conversational Dot Workspace -->
+        <section class="chat-workspace glass-card">
+            <!-- Dot Profile Header -->
+            <div class="dot-header" id="dot-header">
+                <div class="dot-info">
+                    <div class="dot-title-row">
+                        <div class="dot-avatar">◈</div>
+                        <div>
+                            <h1 id="active-agent-name">Select a Dot</h1>
+                            <span class="status-badge" id="active-agent-status">IDLE</span>
+                        </div>
                     </div>
-                    <p class="mission-text" id="active-agent-responsibility">Select an agent from the fleet to inspect its cloud computer, browser state, and execution history.</p>
+                    <p class="dot-responsibility-quote" id="active-agent-responsibility">Select an agent to start collaborating or inspect its autonomous progress.</p>
                 </div>
-                <div class="agent-controls" id="agent-controls" style="display: none;">
-                    <button class="btn btn-secondary" id="btn-force-tick" title="Trigger autonomous tick right now">
-                        ⚡ Force Tick
+                <div class="dot-header-actions" id="agent-controls" style="display: none;">
+                    <button class="btn btn-secondary btn-sm" id="btn-force-tick" title="Trigger background autonomous tick immediately">
+                        ⚡ Step Progress
                     </button>
-                    <button class="btn btn-outline" id="btn-toggle-pause">
+                    <button class="btn btn-outline btn-sm" id="btn-toggle-pause">
                         ⏸ Pause
                     </button>
                 </div>
             </div>
 
-            <!-- Agent Lifecycle Indicator -->
-            <div class="lifecycle-bar" id="lifecycle-bar">
-                <div class="stage-step" data-stage="research">
-                    <div class="step-num">01</div>
-                    <div class="step-title">Research</div>
-                    <div class="step-desc">Web & Browse</div>
+            <!-- "While you were away" Catch-up Briefing Banner -->
+            <div class="catchup-briefing" id="catchup-briefing" style="display: none;">
+                <div class="briefing-header">
+                    <span class="briefing-tag">✨ WHILE YOU WERE AWAY</span>
+                    <button class="briefing-dismiss" id="btn-dismiss-briefing">&times;</button>
                 </div>
-                <div class="stage-connector"></div>
-                <div class="stage-step" data-stage="analyze">
-                    <div class="step-num">02</div>
-                    <div class="step-title">Analyze</div>
-                    <div class="step-desc">Memory Synthesis</div>
+                <div class="briefing-body" id="briefing-text">Loading catch-up digest...</div>
+            </div>
+
+            <!-- Chat Stream -->
+            <div class="chat-messages-container" id="chat-messages-container">
+                <div class="empty-state">No conversation history. Send a message to talk to this Dot.</div>
+            </div>
+
+            <!-- Quick Action Suggestion Pills -->
+            <div class="prompt-pills" id="prompt-pills" style="display: none;">
+                <button class="pill-btn" onclick="sendQuickPrompt('What did you find while I was away?')">🔍 What did you find?</button>
+                <button class="pill-btn" onclick="sendQuickPrompt('Show me the files in your cloud computer')">💻 Show cloud files</button>
+                <button class="pill-btn" onclick="sendQuickPrompt('Run a diagnostic health check on your sandbox')">⚙️ Run sandbox check</button>
+                <button class="pill-btn" onclick="sendQuickPrompt('Give me an executive summary of your responsibility')">📑 Executive summary</button>
+            </div>
+
+            <!-- Chat Input Bar -->
+            <form class="chat-input-bar" id="chat-input-form" style="display: none;">
+                <input type="text" id="chat-input" placeholder="Talk with your Dot, guide its focus, or ask for results..." autocomplete="off" required>
+                <button type="submit" class="btn btn-primary" id="btn-send-chat">Send</button>
+            </form>
+        </section>
+
+        <!-- Column 3: Cloud Computer & Browser Inspector -->
+        <aside class="inspector-panel glass-card">
+            <div class="inspector-tabs">
+                <button class="tab-btn active" data-tab="tab-computer">💻 Cloud Computer</button>
+                <button class="tab-btn" data-tab="tab-browser">🌐 Browser</button>
+                <button class="tab-btn" data-tab="tab-memory">🧠 Memory</button>
+                <button class="tab-btn" data-tab="tab-reports">📑 Reports</button>
+                <button class="tab-btn" data-tab="tab-telemetry">📡 Telemetry</button>
+            </div>
+
+            <!-- Tab: Cloud Computer (Filesystem & Terminal) -->
+            <div class="inspector-content active" id="tab-computer">
+                <div class="computer-header">
+                    <h3>Cloud Workspace</h3>
+                    <button class="btn btn-secondary btn-sm" id="btn-refresh-files">↻ Refresh</button>
                 </div>
-                <div class="stage-connector"></div>
-                <div class="stage-step" data-stage="build">
-                    <div class="step-num">03</div>
-                    <div class="step-title">Build</div>
-                    <div class="step-desc">Sandbox Compute</div>
+                <div class="file-tree" id="file-tree">
+                    <div class="empty-state">No files in sandbox.</div>
                 </div>
-                <div class="stage-connector"></div>
-                <div class="stage-step" data-stage="monitor">
-                    <div class="step-num">04</div>
-                    <div class="step-title">Monitor</div>
-                    <div class="step-desc">Integrity Check</div>
+
+                <div class="file-viewer-section" id="file-viewer-section" style="display: none;">
+                    <div class="file-viewer-title" id="file-viewer-filename">filename</div>
+                    <pre class="file-viewer-content" id="file-viewer-content"></pre>
                 </div>
-                <div class="stage-connector"></div>
-                <div class="stage-step" data-stage="report">
-                    <div class="step-num">05</div>
-                    <div class="step-title">Report</div>
-                    <div class="step-desc">Deliverables</div>
-                </div>
-                <div class="stage-connector"></div>
-                <div class="stage-step" data-stage="adapt">
-                    <div class="step-num">06</div>
-                    <div class="step-title">Adapt</div>
-                    <div class="step-desc">Self-Tune</div>
+
+                <div class="sandbox-runner-box">
+                    <h4>Run Code in Sandbox Computer</h4>
+                    <textarea id="sandbox-code-input" rows="3" placeholder="print('Hello from cloud computer!')"></textarea>
+                    <div class="sandbox-runner-actions">
+                        <select id="sandbox-lang-select">
+                            <option value="python">Python</option>
+                            <option value="bash">Shell (Bash)</option>
+                        </select>
+                        <button class="btn btn-primary btn-sm" id="btn-run-sandbox">Execute</button>
+                    </div>
+                    <div id="sandbox-run-output" class="sandbox-output" style="display: none;"></div>
                 </div>
             </div>
 
-            <!-- Tabs Section -->
-            <div class="tabs-nav">
-                <button class="tab-btn active" data-tab="tab-telemetry">📡 Live Telemetry & Steps</button>
-                <button class="tab-btn" data-tab="tab-decisions">
-                    ⚖️ Escalations & Approvals <span class="tab-badge" id="tab-badge-decisions" style="display:none;">0</span>
-                </button>
-                <button class="tab-btn" data-tab="tab-reports">📑 Published Reports</button>
-                <button class="tab-btn" data-tab="tab-browser">📸 Browser Vision</button>
-            </div>
-
-            <!-- Tab 1: Telemetry & Steps -->
-            <div class="tab-content active" id="tab-telemetry">
-                <div class="steps-container" id="steps-container">
-                    <div class="empty-state">No execution steps yet. Trigger a tick to start.</div>
+            <!-- Tab: Browser Vision -->
+            <div class="inspector-content" id="tab-browser">
+                <div class="computer-header">
+                    <h3>Headless Browser Gallery</h3>
+                    <span class="subtext">Playwright Chromium captures</span>
                 </div>
-            </div>
-
-            <!-- Tab 2: Escalations & Human Approvals -->
-            <div class="tab-content" id="tab-decisions">
-                <div class="decisions-container" id="decisions-container">
-                    <div class="empty-state">No pending decisions. The agent is operating safely within its bounds.</div>
-                </div>
-            </div>
-
-            <!-- Tab 3: Reports -->
-            <div class="tab-content" id="tab-reports">
-                <div class="reports-container" id="reports-container">
-                    <div class="empty-state">No reports generated yet. Reports are delivered upon cycle completion.</div>
-                </div>
-            </div>
-
-            <!-- Tab 4: Browser Vision -->
-            <div class="tab-content" id="tab-browser">
                 <div class="browser-vision-container" id="browser-vision-container">
                     <div class="empty-state">No browser screenshots captured yet.</div>
                 </div>
             </div>
-        </section>
+
+            <!-- Tab: Memory Bank -->
+            <div class="inspector-content" id="tab-memory">
+                <div class="computer-header">
+                    <h3>Episodic Memory Bank</h3>
+                    <span class="subtext">Retained observations & facts</span>
+                </div>
+                <div class="memory-list" id="memory-list">
+                    <div class="empty-state">No memories stored yet.</div>
+                </div>
+            </div>
+
+            <!-- Tab: Reports -->
+            <div class="inspector-content" id="tab-reports">
+                <div class="computer-header">
+                    <h3>Published Deliverables</h3>
+                    <span class="subtext">Periodic intelligence digests</span>
+                </div>
+                <div class="reports-container" id="reports-container">
+                    <div class="empty-state">No reports generated yet.</div>
+                </div>
+            </div>
+
+            <!-- Tab: Telemetry Steps -->
+            <div class="inspector-content" id="tab-telemetry">
+                <div class="computer-header">
+                    <h3>Autonomous Telemetry</h3>
+                    <span class="subtext">6-stage lifecycle execution</span>
+                </div>
+                <div class="steps-container" id="steps-container">
+                    <div class="empty-state">No telemetry steps logged.</div>
+                </div>
+            </div>
+        </aside>
     </main>
 
-    <!-- Create Agent Modal -->
+    <!-- Create Dot Modal -->
     <div class="modal-overlay" id="create-modal">
         <div class="modal-card glass-card">
             <div class="modal-header">
-                <h3>Assign Responsibility to a New ONE Unit</h3>
+                <h3>Assign Responsibility to a New Dot</h3>
                 <button class="close-btn" id="btn-close-modal">&times;</button>
             </div>
             <form id="create-agent-form">
                 <div class="form-group">
-                    <label>Agent Unit Name</label>
-                    <input type="text" id="agent-name-input" placeholder="e.g. MarketRadar, CompetitorIntel, DevOpsSentry" required>
+                    <label>Dot Name</label>
+                    <input type="text" id="agent-name-input" placeholder="e.g. MarketRadar, DevOpsSentry, ResearchAstra" required>
                 </div>
                 <div class="form-group">
-                    <label>Enduring Responsibility (Mission)</label>
-                    <textarea id="agent-mission-input" rows="3" placeholder="e.g. Continuously monitor OpenAI and Anthropic product announcements, analyze shifts, run benchmark scripts in sandbox, and publish daily digests." required></textarea>
+                    <label>Enduring Responsibility (Not just a one-off prompt)</label>
+                    <textarea id="agent-mission-input" rows="3" placeholder="e.g. Continuously monitor OpenAI & competitor releases, verify pricing in sandbox, alert on changes." required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Autonomous Cadence (Tick Interval)</label>
+                    <label>Autonomous Background Cadence</label>
                     <select id="agent-schedule-input">
-                        <option value="60">Fast Polling (Every 1 minute)</option>
-                        <option value="180" selected>Standard (Every 3 minutes)</option>
+                        <option value="60">Fast Progress (Every 1 minute)</option>
+                        <option value="180" selected>Standard Cadence (Every 3 minutes)</option>
                         <option value="600">Deep Inspection (Every 10 minutes)</option>
                         <option value="3600">Hourly Digest (Every 1 hour)</option>
                     </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Deploy Always-On Unit</button>
+                    <button type="submit" class="btn btn-primary">Deploy Always-On Dot</button>
                 </div>
             </form>
         </div>

@@ -4,7 +4,7 @@ Heartbeat & Continuous Background Scheduler
 """
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from config.settings import settings
 from memory.state_store import state_store
@@ -52,7 +52,7 @@ class HeartbeatScheduler:
 
     async def _evaluate_agents(self):
         agents = state_store.list_agents()
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         for agent in agents:
             # Skip agents that are paused or waiting for human approval

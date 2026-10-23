@@ -20,6 +20,7 @@ from core.models import (
     RiskLevel,
     TaskStep,
     ReportItem,
+    ChatMessage,
 )
 
 
@@ -118,6 +119,19 @@ class StateStore:
                 agent_id TEXT NOT NULL,
                 stage TEXT NOT NULL,
                 snapshot_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (agent_id) REFERENCES agents (id) ON DELETE CASCADE
+            )
+            """)
+
+            # Chat Messages
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS messages (
+                id TEXT PRIMARY KEY,
+                agent_id TEXT NOT NULL,
+                sender TEXT NOT NULL,
+                content TEXT NOT NULL,
+                metadata_json TEXT,
                 created_at TEXT NOT NULL,
                 FOREIGN KEY (agent_id) REFERENCES agents (id) ON DELETE CASCADE
             )
@@ -357,7 +371,44 @@ class StateStore:
                 for r in rows
             ]
 
-    # ------------------ Reports ------------------
+    # ------------------ Chat & Conversation ------------------
+
+    def save_chat_message(self, msg: ChatMessage) -> ChatMessage:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            INSERT INTO messages (id, agent_id, sender, content, metadata_json, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                msg.id,
+                msg.agent_id,
+                msg.sender,
+                msg.content,
+                json.dumps(msg.metadata) if msg.metadata else None,
+                msg.created_at.isoformat(),
+            ))
+            conn.commit()
+        return msg
+
+    def get_chat_history(self, agent_id: str, limit: int = 50) -> List[ChatMessage]:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            SELECT * FROM messages WHERE agent_id = ? ORDER BY created_at ASC LIMIT ?
+            """, (agent_id, limit))
+            rows = cursor.fetchall()
+            return [
+                ChatMessage(
+                    id=r["id"],
+                    agent_id=r["agent_id"],
+                    sender=r["sender"],
+                    content=r["content"],
+                    metadata=json.loads(r["metadata_json"]) if r["metadata_json"] else None,
+                    created_at=datetime.fromisoformat(r["created_at"]),
+                )
+                for r in rows
+            ]
+
 
     def save_report(self, report: ReportItem) -> ReportItem:
         with self._get_conn() as conn:
@@ -394,6 +445,5 @@ class StateStore:
                 )
                 for r in rows
             ]
-
 
 state_store = StateStore()

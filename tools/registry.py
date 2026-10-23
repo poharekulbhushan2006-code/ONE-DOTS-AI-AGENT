@@ -5,7 +5,10 @@ Tool Registry & Execution Subsystem
 
 import json
 from typing import Any, Callable, Dict, List, Optional
-from duckduckgo_search import DDGS
+try:
+    from ddgs import DDGS
+except ImportError:
+    from duckduckgo_search import DDGS
 
 from config.settings import settings
 from sandbox.executor import SandboxEnvironment
