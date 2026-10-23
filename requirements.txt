@@ -1,0 +1,12 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.8.0
+pydantic-settings>=2.4.0
+httpx>=0.27.0
+python-dotenv>=1.0.1
+jinja2>=3.1.4
+playwright>=1.47.0
+duckduckgo-search>=6.2.0
+rich>=13.8.0
+apscheduler>=3.10.4
+sqlite-vec; platform_system != "Windows"  # Optional native vec

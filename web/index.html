@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE — Always-On Autonomous AI Agent System</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-background">
+        <div class="gradient-sphere sphere-1"></div>
+        <div class="gradient-sphere sphere-2"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="navbar">
+        <div class="brand">
+            <div class="logo-box">
+                <span class="logo-symbol">◈</span>
+                <span class="logo-text">ONE</span>
+            </div>
+            <div class="badge-always-on">
+                <span class="pulse-dot"></span>
+                <span>ALWAYS-ON ENGINE</span>
+            </div>
+        </div>
+
+        <div class="nav-metrics">
+            <div class="metric-chip">
+                <span class="chip-label">ACTIVE UNITS</span>
+                <span class="chip-val" id="metric-active-agents">0</span>
+            </div>
+            <div class="metric-chip">
+                <span class="chip-label">AUTONOMOUS TICKS</span>
+                <span class="chip-val" id="metric-total-ticks">0</span>
+            </div>
+            <div class="metric-chip highlight" id="chip-pending-approvals">
+                <span class="chip-label">PENDING APPROVALS</span>
+                <span class="chip-val" id="metric-pending-decisions">0</span>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <button class="btn btn-primary" id="btn-open-create-modal">
+                <span class="icon">+</span> Assign New Responsibility
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-layout">
+        <!-- Sidebar / Agent Fleet -->
+        <aside class="sidebar-panel glass-card">
+            <div class="panel-header">
+                <h2>Autonomous Fleet</h2>
+                <span class="subtext">Persistent units running on cloud computers</span>
+            </div>
+
+            <div class="agent-list" id="agent-list">
+                <!-- Dynamically populated -->
+                <div class="empty-state">Loading agents...</div>
+            </div>
+        </aside>
+
+        <!-- Center Workspace Panel -->
+        <section class="content-panel glass-card">
+            <!-- Active Agent Header -->
+            <div class="agent-detail-header" id="agent-detail-header">
+                <div class="header-info">
+                    <div class="title-row">
+                        <h1 id="active-agent-name">Select an Agent</h1>
+                        <span class="status-badge" id="active-agent-status">IDLE</span>
+                    </div>
+                    <p class="mission-text" id="active-agent-responsibility">Select an agent from the fleet to inspect its cloud computer, browser state, and execution history.</p>
+                </div>
+                <div class="agent-controls" id="agent-controls" style="display: none;">
+                    <button class="btn btn-secondary" id="btn-force-tick" title="Trigger autonomous tick right now">
+                        ⚡ Force Tick
+                    </button>
+                    <button class="btn btn-outline" id="btn-toggle-pause">
+                        ⏸ Pause
+                    </button>
+                </div>
+            </div>
+
+            <!-- Agent Lifecycle Indicator -->
+            <div class="lifecycle-bar" id="lifecycle-bar">
+                <div class="stage-step" data-stage="research">
+                    <div class="step-num">01</div>
+                    <div class="step-title">Research</div>
+                    <div class="step-desc">Web & Browse</div>
+                </div>
+                <div class="stage-connector"></div>
+                <div class="stage-step" data-stage="analyze">
+                    <div class="step-num">02</div>
+                    <div class="step-title">Analyze</div>
+                    <div class="step-desc">Memory Synthesis</div>
+                </div>
+                <div class="stage-connector"></div>
+                <div class="stage-step" data-stage="build">
+                    <div class="step-num">03</div>
+                    <div class="step-title">Build</div>
+                    <div class="step-desc">Sandbox Compute</div>
+                </div>
+                <div class="stage-connector"></div>
+                <div class="stage-step" data-stage="monitor">
+                    <div class="step-num">04</div>
+                    <div class="step-title">Monitor</div>
+                    <div class="step-desc">Integrity Check</div>
+                </div>
+                <div class="stage-connector"></div>
+                <div class="stage-step" data-stage="report">
+                    <div class="step-num">05</div>
+                    <div class="step-title">Report</div>
+                    <div class="step-desc">Deliverables</div>
+                </div>
+                <div class="stage-connector"></div>
+                <div class="stage-step" data-stage="adapt">
+                    <div class="step-num">06</div>
+                    <div class="step-title">Adapt</div>
+                    <div class="step-desc">Self-Tune</div>
+                </div>
+            </div>
+
+            <!-- Tabs Section -->
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="tab-telemetry">📡 Live Telemetry & Steps</button>
+                <button class="tab-btn" data-tab="tab-decisions">
+                    ⚖️ Escalations & Approvals <span class="tab-badge" id="tab-badge-decisions" style="display:none;">0</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-reports">📑 Published Reports</button>
+                <button class="tab-btn" data-tab="tab-browser">📸 Browser Vision</button>
+            </div>
+
+            <!-- Tab 1: Telemetry & Steps -->
+            <div class="tab-content active" id="tab-telemetry">
+                <div class="steps-container" id="steps-container">
+                    <div class="empty-state">No execution steps yet. Trigger a tick to start.</div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Escalations & Human Approvals -->
+            <div class="tab-content" id="tab-decisions">
+                <div class="decisions-container" id="decisions-container">
+                    <div class="empty-state">No pending decisions. The agent is operating safely within its bounds.</div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Reports -->
+            <div class="tab-content" id="tab-reports">
+                <div class="reports-container" id="reports-container">
+                    <div class="empty-state">No reports generated yet. Reports are delivered upon cycle completion.</div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Browser Vision -->
+            <div class="tab-content" id="tab-browser">
+                <div class="browser-vision-container" id="browser-vision-container">
+                    <div class="empty-state">No browser screenshots captured yet.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Create Agent Modal -->
+    <div class="modal-overlay" id="create-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3>Assign Responsibility to a New ONE Unit</h3>
+                <button class="close-btn" id="btn-close-modal">&times;</button>
+            </div>
+            <form id="create-agent-form">
+                <div class="form-group">
+                    <label>Agent Unit Name</label>
+                    <input type="text" id="agent-name-input" placeholder="e.g. MarketRadar, CompetitorIntel, DevOpsSentry" required>
+                </div>
+                <div class="form-group">
+                    <label>Enduring Responsibility (Mission)</label>
+                    <textarea id="agent-mission-input" rows="3" placeholder="e.g. Continuously monitor OpenAI and Anthropic product announcements, analyze shifts, run benchmark scripts in sandbox, and publish daily digests." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Autonomous Cadence (Tick Interval)</label>
+                    <select id="agent-schedule-input">
+                        <option value="60">Fast Polling (Every 1 minute)</option>
+                        <option value="180" selected>Standard (Every 3 minutes)</option>
+                        <option value="600">Deep Inspection (Every 10 minutes)</option>
+                        <option value="3600">Hourly Digest (Every 1 hour)</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Deploy Always-On Unit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
