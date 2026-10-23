@@ -65,17 +65,65 @@ def cmd_list():
     console.print(table)
 
 
-def cmd_deploy(name: str, mission: str, interval: int):
+ARCHETYPES = {
+    "felipe": {
+        "name": "Blue Dot (Felipe)",
+        "mission": "Product Launch Lead: learn audience and positioning, revise launch story as scope changes, and prepare email and social drafts.",
+        "interval": 180,
+        "color": "blue",
+    },
+    "todd": {
+        "name": "Green Dot (Todd)",
+        "mission": "Research Scientist: learn research goals, evaluate incoming evidence, rerun data analyses, and flag unexpected results.",
+        "interval": 180,
+        "color": "green",
+    },
+    "alfred": {
+        "name": "Yellow Dot (Alfred)",
+        "mission": "Enterprise Sales Lead: review customer requirements against docs, test integrations, generate sandbox proof-of-concepts, and update proposals.",
+        "interval": 300,
+        "color": "yellow",
+    },
+    "jojo": {
+        "name": "Purple Dot (Jojo)",
+        "mission": "Content Creator & Media Lead: learn creator voice, extract clip moments from interview transcripts, generate show notes, and draft social posts.",
+        "interval": 180,
+        "color": "purple",
+    },
+    "dev": {
+        "name": "Dev Dot (Sentry)",
+        "mission": "Software Developer: monitor customer feedback for bug reports, scope fixes, execute test suites in sandbox cloud computer, and prepare verified PRs.",
+        "interval": 120,
+        "color": "cyan",
+    },
+}
+
+
+def cmd_deploy(name: str = None, mission: str = None, interval: int = 180, template: str = None):
+    context = {}
+    if template and template.lower() in ARCHETYPES:
+        arch = ARCHETYPES[template.lower()]
+        name = name or arch["name"]
+        mission = mission or arch["mission"]
+        interval = interval if interval != 180 else arch["interval"]
+        context = {"color": arch["color"], "archetype": template.lower()}
+    
+    if not name or not mission:
+        console.print("[bold red]Error: Name and mission are required (or specify --template).[/bold red]")
+        sys.exit(1)
+
     agent = OneAgent(
         name=name,
         responsibility=mission,
         schedule_interval_seconds=interval,
+        context=context,
         status=AgentStatus.IDLE,
     )
     saved = state_store.save_agent(agent)
-    console.print(f"[bold green][OK] Successfully deployed ONE unit:[/bold green] [bold cyan]{saved.name}[/bold cyan] (`{saved.id}`)")
+    color_style = context.get("color", "cyan")
+    console.print(f"[bold green][OK] Successfully deployed Dot unit:[/bold green] [bold {color_style}]{saved.name}[/bold {color_style}] (`{saved.id}`)")
     console.print(f"[dim]Responsibility: {saved.responsibility}[/dim]")
-    console.print(f"[dim]Cadence: Every {saved.schedule_interval_seconds}s[/dim]")
+    console.print(f"[dim]Cadence: Every {saved.schedule_interval_seconds}s | Model: Google Gemini 3.5[/dim]")
 
 
 def cmd_tick(agent_id: str):
@@ -98,11 +146,22 @@ def cmd_tick(agent_id: str):
     ))
 
 
+def cmd_delete(agent_id: str):
+    agent = state_store.get_agent(agent_id)
+    if not agent:
+        console.print(f"[red]Agent '{agent_id}' does not exist.[/red]")
+        return
+    state_store.delete_agent(agent_id)
+    from memory.semantic_memory import semantic_memory
+    semantic_memory.clear_agent(agent_id)
+    console.print(f"[bold green]Agent '{agent.name}' ({agent.id}) successfully retired and deleted.[/bold green]")
+
+
 def cmd_server(host: str, port: int):
     import uvicorn
     console.print(f"[bold green]Starting ONE Agent Control Plane & Web Dashboard...[/bold green]")
     console.print(f"Web Dashboard: [bold cyan]http://{host}:{port}[/bold cyan]")
-    uvicorn.run("api.app:app", host=host, port=port, reload=False)
+    uvicorn.run("api.app:app", host=host, port=port, reload=True)
 
 
 def cmd_test():
@@ -155,14 +214,19 @@ def main():
     subparsers.add_parser("list", help="List all deployed ONE agents")
 
     # deploy
-    deploy_p = subparsers.add_parser("deploy", help="Deploy a new ONE agent with a mission")
-    deploy_p.add_argument("--name", required=True, help="Agent name")
-    deploy_p.add_argument("--mission", required=True, help="Enduring responsibility / mission")
+    deploy_p = subparsers.add_parser("deploy", help="Deploy an always-on Dot with a mission or archetype")
+    deploy_p.add_argument("--template", choices=["felipe", "todd", "alfred", "jojo", "dev"], help="Specialist Dot template: felipe (launch), todd (science), alfred (sales), jojo (creator), dev (developer)")
+    deploy_p.add_argument("--name", help="Custom Dot name")
+    deploy_p.add_argument("--mission", help="Custom enduring responsibility / mission")
     deploy_p.add_argument("--interval", type=int, default=180, help="Cadence interval in seconds")
 
     # tick
     tick_p = subparsers.add_parser("tick", help="Trigger an autonomous tick on an agent")
     tick_p.add_argument("--id", required=True, help="Agent ID")
+
+    # delete
+    delete_p = subparsers.add_parser("delete", help="Retire and delete an agent")
+    delete_p.add_argument("--id", required=True, help="Agent ID")
 
     # server
     server_p = subparsers.add_parser("server", help="Launch the API server and Web Dashboard")
@@ -177,9 +241,11 @@ def main():
     if args.command == "list":
         cmd_list()
     elif args.command == "deploy":
-        cmd_deploy(args.name, args.mission, args.interval)
+        cmd_deploy(name=args.name, mission=args.mission, interval=args.interval, template=args.template)
     elif args.command == "tick":
         cmd_tick(args.id)
+    elif args.command == "delete":
+        cmd_delete(args.id)
     elif args.command == "server":
         cmd_server(args.host, args.port)
     elif args.command == "test":

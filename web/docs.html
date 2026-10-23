@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE DOTS — Always-On Frontier Intelligence | Documentation Hub</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+    <!-- Top Primary Header -->
+    <header class="docs-header">
+        <a href="/" class="docs-brand">
+            <span class="brand-icon">◈</span>
+            <span class="brand-title">ONE DOTS</span>
+            <span class="brand-learn-tag">Docs &amp; Learn</span>
+        </a>
+
+        <!-- Top Navigation -->
+        <nav class="docs-top-nav">
+            <a href="#overview" class="top-nav-link active">Overview</a>
+            <a href="#archetypes" class="top-nav-link">Archetypes</a>
+            <a href="#cloud-computer" class="top-nav-link">Cloud Computer</a>
+            <a href="#safeguards" class="top-nav-link">Safeguards</a>
+            <a href="#integrations" class="top-nav-link">Integrations</a>
+            <a href="#commercial-hub" class="top-nav-link">Commercial Tiers</a>
+        </nav>
+
+        <!-- Right Header Actions -->
+        <div class="header-actions">
+            <button class="search-trigger-btn" onclick="openSearchModal()">
+                <span>🔍 Start searching</span>
+                <span class="search-kbd">Ctrl+K</span>
+            </button>
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Light / Dark Mode">
+                <span id="theme-icon">☀️</span>
+            </button>
+            <a href="/" class="cta-workstation-btn">
+                <span>Open Workstation</span>
+                <span>◈</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Context Subnav Bar (learn.chatgpt.com style) -->
+    <div class="docs-context-subnav">
+        <div class="subnav-inner">
+            <a href="#overview" class="subnav-item active">Overview</a>
+            <a href="#features" class="subnav-item">Features</a>
+            <a href="#cloud-computer" class="subnav-item">Cloud Computer</a>
+            <a href="#safeguards" class="subnav-item">Security &amp; Rules</a>
+            <a href="#archetypes" class="subnav-item">Specialist Archetypes</a>
+            <a href="#integrations" class="subnav-item">Ecosystem (4,000+ Apps)</a>
+            <a href="#commercial-hub" class="subnav-item">Commercial SaaS Tiers</a>
+            <a href="#api-reference" class="subnav-item">API Reference</a>
+        </div>
+    </div>
+
+    <!-- Main Documentation 3-Column Layout -->
+    <div class="docs-layout">
+
+        <!-- Column 1: Left Navigation Rail -->
+        <aside class="docs-left-nav">
+            <div class="nav-group">
+                <div class="nav-group-title">Get Started</div>
+                <ul class="nav-links-list">
+                    <li><a href="#overview" class="nav-link active">Overview</a></li>
+                    <li><a href="#meet-dots" class="nav-link">Meet dots <span class="nav-badge-pill">New</span></a></li>
+                    <li><a href="#archetypes" class="nav-link">Specialist Archetypes</a></li>
+                    <li><a href="#voice-calls" class="nav-link">Real-time Voice Calling</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Cloud Computer</div>
+                <ul class="nav-links-list">
+                    <li><a href="#cloud-computer" class="nav-link">Isolated Sandbox</a></li>
+                    <li><a href="#code-execution" class="nav-link">REPL &amp; Live Execution</a></li>
+                    <li><a href="#stdin-handling" class="nav-link">Standard Input (STDIN)</a></li>
+                    <li><a href="#file-storage" class="nav-link">Virtual Disk &amp; Files</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Frontier Intelligence</div>
+                <ul class="nav-links-list">
+                    <li><a href="#always-on" class="nav-link">24/7 Autonomous Cadence</a></li>
+                    <li><a href="#proactive-research" class="nav-link">Proactive Research Vision</a></li>
+                    <li><a href="#memory-bank" class="nav-link">Episodic Memory Bank</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Safeguards &amp; Privacy</div>
+                <ul class="nav-links-list">
+                    <li><a href="#safeguards" class="nav-link">Action Auto-Review</a></li>
+                    <li><a href="#approval-gates" class="nav-link">Human Approval Gates</a></li>
+                    <li><a href="#security-perimeter" class="nav-link">Read-Only Boundaries</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Ecosystem</div>
+                <ul class="nav-links-list">
+                    <li><a href="#integrations" class="nav-link">4,000+ App Connectors</a></li>
+                    <li><a href="#slack-teams" class="nav-link">Slack &amp; Teams (Agent 365)</a></li>
+                    <li><a href="#github-webhooks" class="nav-link">GitHub &amp; Webhooks</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Commercial Hub</div>
+                <ul class="nav-links-list">
+                    <li><a href="#commercial-hub" class="nav-link">Monetization Tiers</a></li>
+                    <li><a href="#quotas-allowance" class="nav-link">Deep Work Quotas</a></li>
+                    <li><a href="#api-reference" class="nav-link">FastAPI Endpoints</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Column 2: Center Main Content -->
+        <main class="docs-main-content">
+            
+            <!-- Breadcrumbs -->
+            <div class="content-breadcrumb">
+                <span>Docs</span>
+                <span class="sep">/</span>
+                <span>Get started</span>
+                <span class="sep">/</span>
+                <span style="color: var(--text-primary);">Meet dots</span>
+            </div>
+
+            <!-- Page Title Row -->
+            <div class="doc-header-row">
+                <h1 class="doc-title" id="overview">Meet dots — Always-on frontier intelligence</h1>
+                <button class="page-copy-btn" onclick="copyCurrentUrl()">
+                    <span id="copy-btn-icon">📋</span>
+                    <span id="copy-btn-text">Copy link</span>
+                </button>
+            </div>
+
+            <p class="doc-lead">
+                Dots are remarkably capable, always-on autonomous agents built to handle everything. They’re a whole new way to work with AI—one that gets to know what matters to you, is always working on your behalf, and takes important work off your plate so you get more of your time and attention back.
+            </p>
+
+            <!-- Hero Feature Card -->
+            <div class="docs-hero-card" id="meet-dots">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="font-size: 14px; font-weight: 700; color: #fff;">◈ Autonomous Enterprise Agent Workstation</div>
+                    <span style="font-size: 11px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                        ● PRODUCTION READY
+                    </span>
+                </div>
+                <p style="font-size: 13px; color: #cbd5e1; margin-top: 8px;">
+                    Powered by Google Gemini 3.5, each Dot possesses its own isolated cloud computer, learns from feedback over time, and can work towards your mission 24/7.
+                </p>
+                <div class="hero-tags-row">
+                    <span class="hero-tag">✨ Google Gemini 3.5</span>
+                    <span class="hero-tag">💻 Dedicated Cloud Computer</span>
+                    <span class="hero-tag">🔍 Proactive Research 24/7</span>
+                    <span class="hero-tag">🛡️ Action Auto-Review</span>
+                    <span class="hero-tag">📞 Interactive Voice Calling</span>
+                    <span class="hero-tag">⚡ 4,000+ App Connectors</span>
+                </div>
+            </div>
+
+            <!-- Section 1: Specialist Archetypes -->
+            <section class="doc-section" id="archetypes">
+                <h2>Specialist Dots for Your Organization</h2>
+                <p>
+                    Your primary Dot works as your companion; specialist Dots take on dedicated departmental responsibilities across engineering, research, sales, product launches, and media production.
+                </p>
+
+                <div class="docs-cards-grid">
+                    <div class="docs-card">
+                        <div class="card-header-row">
+                            <span class="archetype-dot-pill" style="background: #3b82f6; box-shadow: 0 0 8px #3b82f6;"></span>
+                            <div class="card-title">Blue Dot (Felipe)</div>
+                        </div>
+                        <div class="card-subtext">
+                            <b>Product Launch Lead:</b> Learns positioning and creative standards. When product scope changes, it updates the launch narrative, revises materials, and drafts customer outreach.
+                        </div>
+                    </div>
+
+                    <div class="docs-card">
+                        <div class="card-header-row">
+                            <span class="archetype-dot-pill" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                            <div class="card-title">Green Dot (Todd)</div>
+                        </div>
+                        <div class="card-subtext">
+                            <b>Research Scientist:</b> Learns research hypotheses and evidence benchmarks. As new data arrives, it executes sandbox statistical runs, investigates anomalies, and updates figures.
+                        </div>
+                    </div>
+
+                    <div class="docs-card">
+                        <div class="card-header-row">
+                            <span class="archetype-dot-pill" style="background: #f59e0b; box-shadow: 0 0 8px #f59e0b;"></span>
+                            <div class="card-title">Yellow Dot (Alfred)</div>
+                        </div>
+                        <div class="card-subtext">
+                            <b>Enterprise Sales &amp; POCs:</b> Checks customer RFPs against documentation, builds proof-of-concept scripts in the cloud computer, and flags technical constraints.
+                        </div>
+                    </div>
+
+                    <div class="docs-card">
+                        <div class="card-header-row">
+                            <span class="archetype-dot-pill" style="background: #a855f7; box-shadow: 0 0 8px #a855f7;"></span>
+                            <div class="card-title">Purple Dot (Jojo)</div>
+                        </div>
+                        <div class="card-subtext">
+                            <b>Content Creator &amp; Media:</b> Ingests transcripts, identifies viral clip moments, generates show notes, and drafts formatted social threads for human sign-off.
+                        </div>
+                    </div>
+
+                    <div class="docs-card" style="grid-column: 1 / -1;">
+                        <div class="card-header-row">
+                            <span class="archetype-dot-pill" style="background: #06b6d4; box-shadow: 0 0 8px #06b6d4;"></span>
+                            <div class="card-title">Dev Dot (Sentry) — Autonomous Engineering</div>
+                        </div>
+                        <div class="card-subtext">
+                            <b>Software Developer:</b> Watches customer feedback and issue trackers for bug reports, scopes fixes, runs regression test suites in the cloud computer, and drafts verified PRs with recorded diff summaries.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout callout-tip">
+                    <div class="callout-icon">💡</div>
+                    <div>
+                        <b>Team Collaboration:</b> Multiple Dots can collaborate on shared deliverables. For example, Dev Dot verifies code improvements while Blue Dot automatically revises the corresponding product documentation.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Cloud Computer -->
+            <section class="doc-section" id="cloud-computer">
+                <h2>Dedicated Cloud Computer &amp; Execution</h2>
+                <p>
+                    Every Dot operates inside its own isolated cloud computer. The Dot can inspect code, manipulate files, run automated scripts, and test hypotheses in a quarantined sandbox environment.
+                </p>
+
+                <h3 id="code-execution">Live Code REPL Terminal</h3>
+                <p>
+                    The Cloud Computer Execution Terminal allows operators and agents to execute Python 3.13 and shell scripts with live telemetry, hardware resource meters, and instant stdout/stderr feedback.
+                </p>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <span class="code-lang-tag">python</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre class="code-block"><code># 1. Inspect sandbox metrics
+import json, math
+
+data = [12.4, 15.8, 14.2, 19.5, 23.1, 28.0]
+mean_val = sum(data) / len(data)
+print(f"Sample mean: {round(mean_val, 2)}")
+
+# 2. Interactive user input (Non-interactive safe shim)
+name = input("Enter operator handle: ")
+print(f"Verified session for: {name}")</code></pre>
+                </div>
+
+                <h3 id="stdin-handling">Safe Standard Input (STDIN) Architecture</h3>
+                <p>
+                    Unlike traditional batch runners that freeze on interactive <code>input()</code> calls, the DOTS Cloud Computer includes a non-interactive safe input shim alongside dedicated <b>STDIN</b> input fields in the workstation UI:
+                </p>
+                <ul>
+                    <li><b>With Stdin:</b> Characters provided in the STDIN field are passed directly into the process.</li>
+                    <li><b>Without Stdin:</b> The input shim catches <code>EOFError</code> and gracefully defaults to <code>"User"</code> in milliseconds, completely preventing 30-second execution timeouts.</li>
+                </ul>
+
+                <h3 id="file-storage">Virtual Disk &amp; Workspace Storage</h3>
+                <p>
+                    Dots retain workspace files across executions. The Workstation File Studio allows operators to create, edit, save, download, and delete files with live storage HUD meters.
+                </p>
+            </section>
+
+            <!-- Section 3: Voice Calling -->
+            <section class="doc-section" id="voice-calls">
+                <h2>Real-Time Interactive Voice Calling</h2>
+                <p>
+                    When you need to talk something out, you can hop on a real-time voice call directly with your Dot. The voice interface uses the Google Gemini 3.5 Audio Engine combined with dynamic browser speech recognition and synthesis.
+                </p>
+                <div class="callout callout-note">
+                    <div class="callout-icon">📞</div>
+                    <div>
+                        <b>Adaptive Speech:</b> The voice engine renders concentric visualizer rings and real-time frequency bars. The more you talk, the more the Dot adapts to your tone, communication style, and standards.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Safeguards & Action Auto-Review -->
+            <section class="doc-section" id="safeguards">
+                <h2>Action Auto-Review &amp; Human In-The-Loop Safeguards</h2>
+                <p>
+                    Dots operate under built-in safety boundaries. The <b>Auto-Review</b> engine inspects proposed actions against security rules to categorize operations into autonomous execution or required human sign-off.
+                </p>
+
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Action Risk Level</th>
+                            <th>Operation Type</th>
+                            <th>System Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span style="color:#10b981; font-weight:700;">LOW RISK</span></td>
+                            <td>Sandbox code execution, web research, file read/write</td>
+                            <td>Executes autonomously in background</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color:#f59e0b; font-weight:700;">MEDIUM RISK</span></td>
+                            <td>Drafting customer communications, preparing PRs</td>
+                            <td>Prepared as drafts awaiting review</td>
+                        </tr>
+                        <tr>
+                            <td><span style="color:#ef4444; font-weight:700;">HIGH RISK</span></td>
+                            <td>External credential access, database drop, production deploy</td>
+                            <td>Halts &amp; triggers <b>Approval Alert Banner</b></td>
+                        </tr>
+                        <tr>
+                            <td><span style="color:#a855f7; font-weight:700;">BLOCKED</span></td>
+                            <td>Credential extraction, password alterations</td>
+                            <td>Permanently prohibited by policy</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="approval-gates">One-Click Human Approval Gates</h3>
+                <p>
+                    When a protected operation is requested, the Workstation displays an animated top alert banner allowing the operator to <b>Approve &amp; Run</b> or <b>Reject &amp; Adapt</b>.
+                </p>
+            </section>
+
+            <!-- Section 5: Ecosystem & Integrations -->
+            <section class="doc-section" id="integrations">
+                <h2>Connect 4,000+ Apps &amp; Enterprise Systems</h2>
+                <p>
+                    Dots connect directly to your daily tools through our ecosystem of plugins, giving them access wherever you need them.
+                </p>
+
+                <div class="docs-cards-grid">
+                    <div class="docs-card" id="slack-teams">
+                        <div class="card-title">💬 Slack &amp; Microsoft Teams</div>
+                        <div class="card-subtext" style="margin-top:6px;">
+                            Start a project in the workstation, share context with your team in Slack, and let your Dot follow through across channels.
+                        </div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">💼 Microsoft Agent 365</div>
+                        <div class="card-subtext" style="margin-top:6px;">
+                            Deep integration with enterprise governance, IT identity provisioning, and Active Directory compliance.
+                        </div>
+                    </div>
+                    <div class="docs-card" id="github-webhooks">
+                        <div class="card-title">🐙 GitHub &amp; CI/CD</div>
+                        <div class="card-subtext" style="margin-top:6px;">
+                            Autonomous branch creation, regression test runners, and draft PR generation with full video summaries.
+                        </div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">🔗 Custom Enterprise Webhooks</div>
+                        <div class="card-subtext" style="margin-top:6px;">
+                            Zero-exposure credential ingress and egress webhooks for proprietary company databases and systems of record.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Commercial SaaS Hub -->
+            <section class="doc-section" id="commercial-hub">
+                <h2>Commercial SaaS Tiers &amp; Economics</h2>
+                <p>
+                    The platform is built as a complete commercial product ready for monetization and sales:
+                </p>
+
+                <table class="docs-table" id="quotas-allowance">
+                    <thead>
+                        <tr>
+                            <th>Plan Tier</th>
+                            <th>Price</th>
+                            <th>Included Dots</th>
+                            <th>Monthly Cycle Allowance</th>
+                            <th>Dedicated Hardware</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Starter</b></td>
+                            <td>Free</td>
+                            <td>1 Primary Dot</td>
+                            <td>100 cycles / mo</td>
+                            <td>Shared Sandbox</td>
+                        </tr>
+                        <tr>
+                            <td><b>Pro</b></td>
+                            <td>$20 / mo</td>
+                            <td>5 Specialist Dots</td>
+                            <td>5,000 cycles / mo</td>
+                            <td>Voice Engine Enabled</td>
+                        </tr>
+                        <tr>
+                            <td><b style="color: #38bdf8;">Business Premium</b></td>
+                            <td>$50 / mo</td>
+                            <td>Unlimited Dots</td>
+                            <td>25,000 cycles / mo</td>
+                            <td>Dedicated Cloud REPL &amp; Agent 365</td>
+                        </tr>
+                        <tr>
+                            <td><b>Enterprise</b></td>
+                            <td>Custom</td>
+                            <td>Unlimited Dedicated</td>
+                            <td>Custom SLA</td>
+                            <td>Isolated VPC &amp; IT Provisioning</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 7: API Reference -->
+            <section class="doc-section" id="api-reference">
+                <h2>FastAPI Standalone Management Endpoints</h2>
+                <p>
+                    Developers can automate Dot provisioning and telemetry via standard REST endpoints:
+                </p>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <span class="code-lang-tag">bash</span>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre class="code-block"><code># List active Dots fleet
+curl http://127.0.0.1:8000/api/agents
+
+# Trigger immediate autonomous step
+curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/tick
+
+# Execute Python in dedicated cloud computer with stdin
+curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
+     -H "Content-Type: application/json" \
+     -d '{"code": "print(input())", "language": "python", "stdin": "Frontier"}'
+
+# Review pending human approval decisions
+curl http://127.0.0.1:8000/api/decisions/pending</code></pre>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Column 3: Right Table of Contents (On this page) -->
+        <aside class="docs-toc-rail">
+            <div class="toc-title">On this page</div>
+            <ul class="toc-list">
+                <li><a href="#overview" class="toc-link active">Overview</a></li>
+                <li><a href="#meet-dots" class="toc-link">Meet dots</a></li>
+                <li><a href="#archetypes" class="toc-link">Specialist Archetypes</a></li>
+                <li><a href="#cloud-computer" class="toc-link">Cloud Computer</a></li>
+                <li><a href="#code-execution" class="toc-link">Code Execution</a></li>
+                <li><a href="#stdin-handling" class="toc-link">Safe STDIN Handling</a></li>
+                <li><a href="#voice-calls" class="toc-link">Voice Calling</a></li>
+                <li><a href="#safeguards" class="toc-link">Action Auto-Review</a></li>
+                <li><a href="#integrations" class="toc-link">4,000+ Apps Ecosystem</a></li>
+                <li><a href="#commercial-hub" class="toc-link">Commercial SaaS Tiers</a></li>
+                <li><a href="#api-reference" class="toc-link">API Reference</a></li>
+            </ul>
+        </aside>
+
+    </div>
+
+    <!-- Floating "Ask AI" Docs Agent Button (Exact learn.chatgpt.com) -->
+    <button class="docs-agent-launcher-btn" id="btn-open-docs-agent" onclick="toggleDocsAgent()">
+        <span>✨ Ask AI Docs Agent</span>
+    </button>
+
+    <!-- Sliding Docs Agent Drawer (440px side-drawer) -->
+    <div class="docs-agent-drawer" id="docs-agent-drawer">
+        <div class="drawer-header">
+            <div class="drawer-title">
+                <span>◈</span>
+                <span>Docs Agent (Google Gemini 3.5)</span>
+            </div>
+            <div class="drawer-actions">
+                <button class="drawer-icon-btn" onclick="clearDocsChat()" title="Start New Chat">↺</button>
+                <button class="drawer-icon-btn" onclick="toggleDocsAgent()" title="Close Drawer">&times;</button>
+            </div>
+        </div>
+
+        <div class="drawer-content">
+            <div class="drawer-messages-stream" id="docs-chat-stream">
+                <div class="drawer-msg agent">
+                    Hello! I am your AI Docs Assistant. Ask me anything about Dots, Cloud Computer execution, STDIN handling, or the 5 specialist archetypes.
+                </div>
+            </div>
+
+            <div class="agent-starter-prompts" id="docs-starter-prompts">
+                <button class="starter-prompt-pill" onclick="sendStarterPrompt(this)">
+                    How does the Cloud Computer handle input() and stdin?
+                </button>
+                <button class="starter-prompt-pill" onclick="sendStarterPrompt(this)">
+                    Explain the 5 specialist Dot archetypes and their roles
+                </button>
+                <button class="starter-prompt-pill" onclick="sendStarterPrompt(this)">
+                    How does the Action Auto-Review approval gate work?
+                </button>
+            </div>
+        </div>
+
+        <form class="drawer-input-row" id="docs-agent-form" onsubmit="handleDocsAgentSubmit(event)">
+            <input type="text" id="docs-agent-input" class="drawer-input" placeholder="Ask a question about the docs..." autocomplete="off">
+            <button type="submit" class="cta-workstation-btn" style="padding: 6px 14px; font-size: 12px;">Ask</button>
+        </form>
+    </div>
+
+    <!-- Global Search Modal (Ctrl+K) -->
+    <div class="search-modal-overlay" id="search-modal-overlay" onclick="handleSearchOverlayClick(event)">
+        <div class="search-modal-card">
+            <div class="search-input-header">
+                <span style="font-size: 16px; color: var(--text-tertiary);">🔍</span>
+                <input type="text" class="search-input-box" id="global-search-input" placeholder="Search documentation, guides, and API endpoints..." oninput="filterDocsSearch(this.value)">
+                <span class="search-kbd">ESC</span>
+            </div>
+            <div class="search-results-list" id="search-results-list">
+                <a href="#overview" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Meet dots — Overview</span>
+                    <span class="result-item-sub">Always-on frontier intelligence platform powered by Gemini 3.5</span>
+                </a>
+                <a href="#archetypes" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Specialist Archetypes</span>
+                    <span class="result-item-sub">Blue Dot (Felipe), Green Dot (Todd), Alfred, Jojo, Dev Dot</span>
+                </a>
+                <a href="#cloud-computer" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Cloud Computer &amp; Safe STDIN</span>
+                    <span class="result-item-sub">Isolated sandboxes, live code execution, interactive input handling</span>
+                </a>
+                <a href="#voice-calls" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Real-Time Voice Calls</span>
+                    <span class="result-item-sub">Audio visualizer rings and Gemini 3.5 audio speech engine</span>
+                </a>
+                <a href="#safeguards" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Action Auto-Review &amp; Approvals</span>
+                    <span class="result-item-sub">Human-in-the-loop approval gate and security perimeters</span>
+                </a>
+                <a href="#integrations" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Connect 4,000+ Apps</span>
+                    <span class="result-item-sub">Slack, Microsoft Teams, Agent 365, GitHub, Webhooks</span>
+                </a>
+                <a href="#commercial-hub" class="search-result-item" onclick="closeSearchModal()">
+                    <span class="result-item-title">Commercial SaaS Tiers</span>
+                    <span class="result-item-sub">Business Premium $50/mo, deep work cycle quotas</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="docs.js"></script>
+</body>
+</html>

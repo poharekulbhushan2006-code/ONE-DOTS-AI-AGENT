@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "web/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/index.py"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "web/assets/$1"
+    },
+    {
+      "src": "/style.css",
+      "dest": "web/style.css"
+    },
+    {
+      "src": "/app.js",
+      "dest": "web/app.js"
+    },
+    {
+      "src": "/docs.css",
+      "dest": "web/docs.css"
+    },
+    {
+      "src": "/docs.js",
+      "dest": "web/docs.js"
+    },
+    {
+      "src": "/docs.html",
+      "dest": "web/docs.html"
+    },
+    {
+      "src": "/docs-portal",
+      "dest": "web/docs.html"
+    },
+    {
+      "src": "/learn",
+      "dest": "web/docs.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "web/$1"
+    }
+  ]
+}

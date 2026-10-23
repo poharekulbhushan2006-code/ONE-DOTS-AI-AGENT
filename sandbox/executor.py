@@ -29,7 +29,7 @@ class SandboxEnvironment:
             raise PermissionError(f"Access denied: path '{relative_path}' traverses outside sandbox.")
         return resolved
 
-    def run_command(self, command: str, timeout_seconds: int = 30) -> Dict[str, Any]:
+    def run_command(self, command: str, timeout_seconds: int = 30, stdin: Optional[str] = None) -> Dict[str, Any]:
         """
         Executes a shell command inside the agent's sandbox directory.
         """
@@ -38,6 +38,7 @@ class SandboxEnvironment:
                 command,
                 cwd=str(self.workspace_dir),
                 shell=True,
+                input=stdin if stdin is not None else "",
                 capture_output=True,
                 text=True,
                 timeout=timeout_seconds,
@@ -63,20 +64,40 @@ class SandboxEnvironment:
                 "success": False,
             }
 
-    def run_python(self, code: str, timeout_seconds: int = 30) -> Dict[str, Any]:
+    def run_python(self, code: str, timeout_seconds: int = 30, stdin: Optional[str] = None) -> Dict[str, Any]:
         """
-        Runs Python code within the agent sandbox context.
+        Runs Python code within the agent sandbox context with non-interactive safe input handling.
         """
         script_file = self.workspace_dir / "_run_tmp.py"
         try:
-            script_file.write_text(code, encoding="utf-8")
+            # Inject safe input handler to prevent input() from hanging on standard input
+            shim = (
+                "# --- DOTS Cloud Computer Safe Input Shim ---\n"
+                "import builtins\n"
+                "_orig_input = builtins.input\n"
+                "def _dots_safe_input(prompt=''):\n"
+                "    try:\n"
+                "        return _orig_input(prompt)\n"
+                "    except (EOFError, OSError):\n"
+                "        return 'User'\n"
+                "builtins.input = _dots_safe_input\n"
+                "# --- End Shim ---\n\n"
+            )
+            script_file.write_text(shim + code, encoding="utf-8")
             python_executable = sys.executable
+
+            env = os.environ.copy()
+            env["PYTHONUNBUFFERED"] = "1"
+            env["PYTHONIOENCODING"] = "utf-8"
+
             process = subprocess.run(
                 [python_executable, str(script_file)],
                 cwd=str(self.workspace_dir),
+                input=stdin if stdin is not None else "",
                 capture_output=True,
                 text=True,
                 timeout=timeout_seconds,
+                env=env,
             )
             return {
                 "exit_code": process.returncode,
@@ -116,6 +137,13 @@ class SandboxEnvironment:
         if not safe_path.exists():
             raise FileNotFoundError(f"File '{filename}' does not exist.")
         return safe_path.read_text(encoding="utf-8")
+
+    def delete_file(self, filename: str) -> bool:
+        safe_path = self._resolve_safe_path(filename)
+        if safe_path.exists() and safe_path.is_file():
+            safe_path.unlink()
+            return True
+        return False
 
     def list_files(self) -> List[Dict[str, Any]]:
         results = []

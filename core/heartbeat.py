@@ -16,12 +16,14 @@ class HeartbeatScheduler:
     """
     Continuous background loop that monitors all registered ONE agents,
     evaluates scheduled cadences, and triggers autonomous execution ticks.
+    Enforces in-flight concurrency locks to prevent overlapping runs on the same agent.
     """
 
     def __init__(self, check_interval_seconds: int = 5):
         self.check_interval_seconds = check_interval_seconds
         self.is_running = False
         self._task: Optional[asyncio.Task] = None
+        self._active_agents: set = set()
 
     async def start(self):
         """Starts the continuous heartbeat worker."""
@@ -40,6 +42,7 @@ class HeartbeatScheduler:
                 await self._task
             except asyncio.CancelledError:
                 pass
+        self._active_agents.clear()
         print("[Heartbeat] ONE Scheduler stopped")
 
     async def _loop(self):
@@ -55,20 +58,24 @@ class HeartbeatScheduler:
         now = datetime.now(timezone.utc)
 
         for agent in agents:
-            # Skip agents that are paused or waiting for human approval
+            # 1. Skip if already actively running in this process
+            if agent.id in self._active_agents:
+                continue
+
+            # 2. Skip agents that are paused, waiting for human approval, or marked running
             if agent.status in [AgentStatus.PAUSED, AgentStatus.WAITING_APPROVAL, AgentStatus.RUNNING]:
                 continue
 
+            # 3. Check if agent is due for a tick
             should_tick = False
-
-            # Check if agent is due for a tick
             if agent.next_tick_at is None:
                 should_tick = True
             elif agent.next_tick_at <= now:
                 should_tick = True
 
             if should_tick:
-                # Trigger tick asynchronously
+                # Mark as active immediately to prevent double scheduling in next 5s poll
+                self._active_agents.add(agent.id)
                 asyncio.create_task(self._run_agent_tick(agent.id))
 
     async def _run_agent_tick(self, agent_id: str):
@@ -77,6 +84,8 @@ class HeartbeatScheduler:
             await orchestrator.execute_tick()
         except Exception as e:
             print(f"[Heartbeat] Failed execution tick for agent {agent_id}: {e}")
+        finally:
+            self._active_agents.discard(agent_id)
 
 
 heartbeat = HeartbeatScheduler()

@@ -1,239 +1,1462 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONE — Always-On Persistent AI Agents (Dots Engine)</title>
-    <!-- Fonts -->
+    <title>ONE DOTS — Always-On Frontier Intelligence Platform</title>
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="docs.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="splash-active">
+    <!-- =========================================================================
+         PREMIUM HIGH-QUALITY ENTRY ANIMATION: "ONE DOTS" SINGULARITY SPLASH
+         ========================================================================= -->
+    <div class="one-dots-entry-splash" id="entry-splash">
+        <!-- Deep Space Cybernetic Backdrop with Dynamic Canvas Particles -->
+        <canvas class="splash-canvas" id="splash-canvas"></canvas>
+        <div class="splash-glow-sphere"></div>
+        <div class="splash-shockwave" id="splash-shockwave"></div>
+
+        <!-- Central Quantum Convergence Stage -->
+        <div class="splash-stage" id="splash-stage">
+            <!-- 3D Gyroscopic Orbital Rings -->
+            <div class="gyro-ring gyro-ring-1"></div>
+            <div class="gyro-ring gyro-ring-2"></div>
+            <div class="gyro-ring gyro-ring-3"></div>
+
+            <!-- The 5 Luminous Specialist Dots Spiraling into Singularity -->
+            <div class="quantum-dots-orbit" id="quantum-dots-orbit">
+                <div class="orbit-dot dot-1-blue" title="Felipe (Product Launch)">
+                    <span class="dot-core"></span>
+                    <span class="dot-tail"></span>
+                </div>
+                <div class="orbit-dot dot-2-green" title="Todd (Research Scientist)">
+                    <span class="dot-core"></span>
+                    <span class="dot-tail"></span>
+                </div>
+                <div class="orbit-dot dot-3-yellow" title="Alfred (Enterprise Sales)">
+                    <span class="dot-core"></span>
+                    <span class="dot-tail"></span>
+                </div>
+                <div class="orbit-dot dot-4-purple" title="Jojo (Content & Media)">
+                    <span class="dot-core"></span>
+                    <span class="dot-tail"></span>
+                </div>
+                <div class="orbit-dot dot-5-orange" title="Sentry (Autonomous Dev)">
+                    <span class="dot-core"></span>
+                    <span class="dot-tail"></span>
+                </div>
+            </div>
+
+            <!-- Central Crystalline Monogram & Shockwave Core -->
+            <div class="singularity-symbol-wrap" id="singularity-symbol">
+                <div class="symbol-ambient-flare"></div>
+                <div class="symbol-glyph">◈</div>
+                <div class="symbol-rays"></div>
+            </div>
+
+            <!-- Kinetic Typography: O N E   D O T S -->
+            <div class="splash-branding-wrap" id="splash-branding">
+                <div class="splash-logo-title" id="splash-logo-text">
+                    <span class="letter" style="--l-idx: 0;">O</span>
+                    <span class="letter" style="--l-idx: 1;">N</span>
+                    <span class="letter" style="--l-idx: 2;">E</span>
+                    <span class="letter-space"></span>
+                    <span class="letter dot-accent" style="--l-idx: 3;">D</span>
+                    <span class="letter dot-accent" style="--l-idx: 4;">O</span>
+                    <span class="letter dot-accent" style="--l-idx: 5;">T</span>
+                    <span class="letter dot-accent" style="--l-idx: 6;">S</span>
+                </div>
+                <div class="splash-shimmer-sweep"></div>
+                <div class="splash-subtitle" id="splash-subtitle">
+                    <span class="sub-line">ALWAYS-ON FRONTIER INTELLIGENCE</span>
+                    <span class="sub-sep">•</span>
+                    <span class="sub-tag">FIVE SPECIALISTS AS ONE</span>
+                </div>
+                <!-- 5 Agent Mini Pulse Status Pips -->
+                <div class="splash-cores-status">
+                    <span class="core-pip pip-blue active" title="Felipe Active"></span>
+                    <span class="core-pip pip-green active" title="Todd Active"></span>
+                    <span class="core-pip pip-yellow active" title="Alfred Active"></span>
+                    <span class="core-pip pip-purple active" title="Jojo Active"></span>
+                    <span class="core-pip pip-orange active" title="Sentry Active"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top-Right Skip / Dismiss Trigger -->
+        <button class="splash-skip-btn" id="btn-skip-splash" onclick="dismissEntrySplash(true)" title="Skip Intro (Esc)">
+            <span>Skip</span>
+            <kbd>Esc</kbd>
+        </button>
+    </div>
+
+    <!-- Ambient Cybernetic Glow Background -->
     <div class="app-background">
         <div class="gradient-sphere sphere-1"></div>
         <div class="gradient-sphere sphere-2"></div>
+        <div class="gradient-sphere sphere-3"></div>
         <div class="grid-overlay"></div>
     </div>
 
-    <!-- Main Navigation Bar -->
+    <!-- Sleek OpenAI-Style Global Navigation Bar -->
     <header class="navbar">
-        <div class="brand">
-            <div class="logo-box">
-                <span class="logo-symbol">◈</span>
-                <span class="logo-text">ONE</span>
+        <div class="nav-container">
+            <div class="navbar-left">
+                <div class="logo-box" onclick="replayEntryAnimation()" style="cursor: pointer;" title="ONE DOTS Platform — Click to replay entry animation">
+                    <div class="navbar-logo-symbol-wrap">
+                        <span class="logo-symbol-halo"></span>
+                        <span class="logo-symbol">◈</span>
+                    </div>
+                    <div class="navbar-logo-text-wrap">
+                        <span class="logo-text">ONE DOTS</span>
+                        <div class="logo-five-dots-pips">
+                            <span class="pip blue" title="Felipe"></span>
+                            <span class="pip green" title="Todd"></span>
+                            <span class="pip yellow" title="Alfred"></span>
+                            <span class="pip purple" title="Jojo"></span>
+                            <span class="pip orange" title="Sentry"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="nav-links">
+                    <button class="nav-link-btn active" id="btn-view-showcase" onclick="switchMainView('view-showcase')">Overview</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-film')">Launch Film</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-archetypes')">Specialists</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-capabilities')">The Magic of Dot</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-safety')">Safety &amp; Privacy</button>
+                    <button class="nav-link-btn" id="btn-view-docs" onclick="switchMainView('view-docs')">Docs &amp; Learn</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-pricing')">Pricing</button>
+                </nav>
             </div>
-            <div class="badge-always-on">
-                <span class="pulse-dot"></span>
-                <span>ALWAYS-ON PERSISTENT AGENTS</span>
-            </div>
-        </div>
 
-        <div class="nav-metrics">
-            <div class="metric-chip">
-                <span class="chip-label">DEPLOYED DOTS</span>
-                <span class="chip-val" id="metric-active-agents">0</span>
+            <div class="navbar-right">
+                <button class="search-trigger-btn" onclick="openSearchModal()" title="Search documentation and actions (Ctrl+K)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <span>Search</span>
+                    <kbd>Ctrl K</kbd>
+                </button>
+                <button class="btn-openai-launch" id="btn-view-workstation" onclick="switchMainView('view-workstation')">
+                    Launch Agent ↗
+                </button>
             </div>
-            <div class="metric-chip">
-                <span class="chip-label">BACKGROUND PROGRESS</span>
-                <span class="chip-val" id="metric-total-ticks">0 ticks</span>
-            </div>
-            <div class="metric-chip highlight" id="chip-pending-approvals">
-                <span class="chip-label">HUMAN JUDGMENT NEEDED</span>
-                <span class="chip-val" id="metric-pending-decisions">0</span>
-            </div>
-        </div>
-
-        <div class="nav-actions">
-            <button class="btn btn-primary" id="btn-open-create-modal">
-                <span class="icon">+</span> Assign New Responsibility
-            </button>
         </div>
     </header>
 
-    <!-- Main 3-Column Layout: Fleet | Conversational Workspace | Cloud Computer & Browser -->
-    <main class="dot-layout">
-        
-        <!-- Column 1: Fleet Sidebar -->
-        <aside class="sidebar-fleet glass-card">
-            <div class="panel-header">
-                <h2>Your Persistent Dots</h2>
-                <span class="subtext">Owns a responsibility, not a one-off prompt</span>
+    <!-- =========================================================================
+         VIEW 1: FLAGSHIP OFFICIAL PRODUCT SHOWCASE & INFORMATION WEBSITE
+         ========================================================================= -->
+    <section class="app-view active" id="view-showcase">
+        <div class="showcase-container">
+            
+            <!-- Editorial Article Header (OpenAI Introducing Dots) -->
+            <div class="article-editorial-header">
+                <div class="article-meta-row">
+                    <span class="meta-badge-cat">PRODUCT ANNOUNCEMENT</span>
+                    <span class="meta-sep">/</span>
+                    <span class="meta-date">FRONTIER INTELLIGENCE SYSTEM</span>
+                    <span class="meta-sep">/</span>
+                    <span class="meta-read">POWERED BY GEMINI 3.5</span>
+                </div>
+                <h1 class="article-title">Introducing ONE DOTS</h1>
+                <p class="article-deck">
+                    Dots are remarkably capable, always-on agents built to handle everything. They’re a whole new way to work with AI—one that gets to know what matters to you, is always working on your behalf, and takes important work off your plate so you get more of your time and attention back.
+                </p>
+                <div class="article-byline-bar">
+                    <div class="byline-team-group">
+                        <div class="mini-dot-cluster">
+                            <span class="mini-dot dot-blue" title="Felipe (Product Launch)"></span>
+                            <span class="mini-dot dot-green" title="Todd (Research Scientist)"></span>
+                            <span class="mini-dot dot-yellow" title="Alfred (Enterprise Sales)"></span>
+                            <span class="mini-dot dot-purple" title="Jojo (Content & Media)"></span>
+                            <span class="mini-dot dot-orange" title="Sentry (Autonomous Dev)"></span>
+                        </div>
+                        <span class="byline-label">By ONE DOTS Frontier Intelligence &amp; Agent Architecture Team</span>
+                    </div>
+                    <div class="byline-actions">
+                        <button class="btn btn-primary btn-sm" onclick="switchMainView('view-workstation')">
+                            Launch Workstation ◈
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="switchMainView('view-docs')">
+                            Docs &amp; Learn
+                        </button>
+                        <button class="btn btn-call btn-sm" onclick="startVoiceCall()">
+                            📞 Live Voice Call
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="agent-list" id="agent-list">
-                <div class="empty-state">Loading agents...</div>
-            </div>
-        </aside>
 
-        <!-- Column 2: Conversational Dot Workspace -->
-        <section class="chat-workspace glass-card">
-            <!-- Dot Profile Header -->
-            <div class="dot-header" id="dot-header">
-                <div class="dot-info">
-                    <div class="dot-title-row">
-                        <div class="dot-avatar">◈</div>
-                        <div>
-                            <h1 id="active-agent-name">Select a Dot</h1>
-                            <span class="status-badge" id="active-agent-status">IDLE</span>
+            <!-- Cinematic Playable Launch Film Section (OpenAI Dots Live from the Lab) -->
+            <div class="showcase-film-card" id="showcase-film">
+                <div class="film-header-bar">
+                    <div class="film-title-left">
+                        <span class="film-live-pill"><span class="pulse-red"></span> LIVE FROM THE LAB</span>
+                        <span class="film-headline">Live from the Lab launch film introducing dots (5 Specialists • 30s Each)</span>
+                    </div>
+                    <div class="film-chapter-pills" id="film-chapter-pills">
+                        <button class="chapter-pill active" onclick="jumpToFilmChapter(0, event)">1. Felipe (0:00)</button>
+                        <button class="chapter-pill" onclick="jumpToFilmChapter(1, event)">2. Todd (0:30)</button>
+                        <button class="chapter-pill" onclick="jumpToFilmChapter(2, event)">3. Alfred (1:00)</button>
+                        <button class="chapter-pill" onclick="jumpToFilmChapter(3, event)">4. Jojo (1:30)</button>
+                        <button class="chapter-pill" onclick="jumpToFilmChapter(4, event)">5. Sentry (2:00)</button>
+                    </div>
+                    <div class="film-badges-right">
+                        <button class="film-voice-toggle-btn" id="film-voice-toggle" onclick="toggleFilmAudio(event)" title="Toggle Voiceover Narration">
+                            <span id="film-voice-icon">🔇</span> Narration
+                        </button>
+                        <span class="film-tech-badge">4K Ultra HD</span>
+                    </div>
+                </div>
+
+                <div class="film-screen" id="film-screen" onclick="toggleFilmPlayback()">
+                    <!-- Interactive Multi-Scene Video Screen Stage -->
+                    <div class="film-stage-container" id="film-stage-container">
+                        
+                        <!-- Scene Content Overlay (Dynamically Updated) -->
+                        <div class="film-scene-box" id="film-scene-box">
+                            <div class="scene-chapter-badge" id="scene-chapter-badge">SPECIALIST 1 • BLUE DOT (FELIPE) • 00:00 - 00:30</div>
+                            <h2 class="scene-title" id="scene-title">Felipe: Autonomous Product Launch Lead</h2>
+                            <p class="scene-description" id="scene-description">
+                                Learns positioning and audience standards. When product scope shifts, Felipe automatically revises launch narratives, updates Linear roadmaps, and syncs 4,000+ app connectors.
+                            </p>
+
+                            <!-- Dynamic Scene Visual Demonstrator -->
+                            <div class="scene-visual-display" id="scene-visual-display">
+                                <!-- Populated dynamically by FILM_CHAPTERS -->
+                            </div>
+
+                            <div class="scene-action-row" id="scene-action-row">
+                                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); launchArchetypeFromShowcase('felipe')">
+                                    Collaborate with Felipe ➔
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); startVoiceCall('felipe')">
+                                    📞 Start Voice Call with Felipe
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Big Center Play / Pause Indicator (fades during active playback) -->
+                        <div class="film-center-play-overlay" id="film-center-play-overlay">
+                            <button class="film-play-btn" id="film-play-btn" title="Play / Pause Launch Film">
+                                <span id="film-play-icon">▶</span>
+                            </button>
+                            <div class="film-preview-caption" id="film-status-text">
+                                Click to watch the 5 Dots in Action — 30s Dedicated Demo for Each Dot (02:30)
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom Video Controls Bar -->
+                    <div class="film-controls-bar" onclick="event.stopPropagation()">
+                        <button class="film-ctrl-icon" onclick="toggleFilmPlayback()" id="film-ctrl-play-btn" title="Play/Pause">▶</button>
+                        <span class="film-timecode" id="film-timecode">00:00 / 02:30</span>
+                        <div class="film-scrubber" onclick="scrubFilm(event)" id="film-scrubber-track">
+                            <div class="film-scrubber-fill" id="film-scrubber-fill" style="width: 0%;"></div>
+                        </div>
+                        <button class="film-ctrl-icon" onclick="toggleFilmAudio(event)" id="film-audio-ctrl" title="Toggle Narration Voice">🔇</button>
+                        <button class="film-ctrl-icon" onclick="startVoiceCall()" title="Hop on Voice Call">📞</button>
+                        <button class="film-ctrl-icon" onclick="switchMainView('view-workstation')" title="Launch Agent Workstation">◈</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Editorial Narrative Block (OpenAI Exact Article Text) -->
+            <div class="editorial-narrative-section">
+                <div class="narrative-content-wrap">
+                    <div class="narrative-section-kicker">PERSISTENT FRONTIER INTELLIGENCE</div>
+                    <h2 class="narrative-headline">Frontier intelligence that has your back</h2>
+                    <p class="narrative-lead">
+                        Dots are frontier intelligence that have your back. Powered by GPT‑6 Astra &amp; Google Gemini 3.5, they have their own cloud computer, learn from feedback over time, and can work towards your goals 24/7. Through our ecosystem of plugins, they can readily connect to over 4,000 apps, giving them the tools to help wherever you need them.
+                    </p>
+
+                    <div class="editorial-pullquote-box">
+                        <div class="pullquote-decor">“</div>
+                        <blockquote class="pullquote-text">
+                            Your dot is always within reach, whether it is through ChatGPT, Slack, or Teams. You can ask questions, explore ideas, and give feedback along the way; or you can simply hop on a voice call when you need to talk something out. The more you work together, the more your dot learns your preferences, how you think, and what good looks like to you.
+                        </blockquote>
+                        <div class="pullquote-attribution">— The Magic of Dot: Collaborative Continuous Learning</div>
+                    </div>
+
+                    <p class="narrative-paragraph">
+                        Traditional AI interfaces require manual prompting for every step. When you close the tab, execution halts. Dots introduce a fundamentally different paradigm: persistent autonomous progress. Each Dot operates inside an isolated cloud sandbox equipped with an autonomous Python REPL, dedicated browser engine, and secure API bridges. When you're asleep, in meetings, or offline, your Dot continues analyzing telemetry, building proof-of-concepts, reviewing PRs, and preparing executive briefings.
+                    </p>
+                </div>
+            </div>
+
+            <!-- OpenAI-Style Interactive Floating Dots Cluster (Meet the 5 Specialists) -->
+            <div class="hero-dots-orbit-stage" id="hero-dots-orbit-stage">
+                <div class="hero-cluster-glow"></div>
+                <div class="hero-dots-orbit-header">
+                    <span class="orbit-badge"><span class="orbit-pulse"></span> FIVE SPECIALIST DOTS • ALWAYS-ON CLUSTER</span>
+                    <span class="orbit-hint">Touch any Dot to interact, hear voice &amp; feel cartoon physics</span>
+                </div>
+                <div class="hero-dots-cluster">
+                    <!-- Felipe (Blue) -->
+                    <div class="hero-dot-item dot-felipe" onclick="touchDotCartoon('felipe', this, event)" title="Touch Felipe (Product Launch Lead)">
+                        <div class="hero-dot-halo halo-blue"></div>
+                        <div class="cartoon-dot-wrapper">
+                            <img src="assets/dots/felipe.png" alt="Felipe" class="cartoon-dot-img cartoon-float float-del-0" />
+                            <div class="cartoon-speech-bubble" id="speech-felipe-hero">Let's ship this! 🚀</div>
+                        </div>
+                        <div class="hero-dot-meta">
+                            <span class="hero-dot-name">Felipe</span>
+                            <span class="hero-dot-role">Product Launch</span>
                         </div>
                     </div>
-                    <p class="dot-responsibility-quote" id="active-agent-responsibility">Select an agent to start collaborating or inspect its autonomous progress.</p>
-                </div>
-                <div class="dot-header-actions" id="agent-controls" style="display: none;">
-                    <button class="btn btn-secondary btn-sm" id="btn-force-tick" title="Trigger background autonomous tick immediately">
-                        ⚡ Step Progress
-                    </button>
-                    <button class="btn btn-outline btn-sm" id="btn-toggle-pause">
-                        ⏸ Pause
-                    </button>
-                </div>
-            </div>
 
-            <!-- "While you were away" Catch-up Briefing Banner -->
-            <div class="catchup-briefing" id="catchup-briefing" style="display: none;">
-                <div class="briefing-header">
-                    <span class="briefing-tag">✨ WHILE YOU WERE AWAY</span>
-                    <button class="briefing-dismiss" id="btn-dismiss-briefing">&times;</button>
-                </div>
-                <div class="briefing-body" id="briefing-text">Loading catch-up digest...</div>
-            </div>
-
-            <!-- Chat Stream -->
-            <div class="chat-messages-container" id="chat-messages-container">
-                <div class="empty-state">No conversation history. Send a message to talk to this Dot.</div>
-            </div>
-
-            <!-- Quick Action Suggestion Pills -->
-            <div class="prompt-pills" id="prompt-pills" style="display: none;">
-                <button class="pill-btn" onclick="sendQuickPrompt('What did you find while I was away?')">🔍 What did you find?</button>
-                <button class="pill-btn" onclick="sendQuickPrompt('Show me the files in your cloud computer')">💻 Show cloud files</button>
-                <button class="pill-btn" onclick="sendQuickPrompt('Run a diagnostic health check on your sandbox')">⚙️ Run sandbox check</button>
-                <button class="pill-btn" onclick="sendQuickPrompt('Give me an executive summary of your responsibility')">📑 Executive summary</button>
-            </div>
-
-            <!-- Chat Input Bar -->
-            <form class="chat-input-bar" id="chat-input-form" style="display: none;">
-                <input type="text" id="chat-input" placeholder="Talk with your Dot, guide its focus, or ask for results..." autocomplete="off" required>
-                <button type="submit" class="btn btn-primary" id="btn-send-chat">Send</button>
-            </form>
-        </section>
-
-        <!-- Column 3: Cloud Computer & Browser Inspector -->
-        <aside class="inspector-panel glass-card">
-            <div class="inspector-tabs">
-                <button class="tab-btn active" data-tab="tab-computer">💻 Cloud Computer</button>
-                <button class="tab-btn" data-tab="tab-browser">🌐 Browser</button>
-                <button class="tab-btn" data-tab="tab-memory">🧠 Memory</button>
-                <button class="tab-btn" data-tab="tab-reports">📑 Reports</button>
-                <button class="tab-btn" data-tab="tab-telemetry">📡 Telemetry</button>
-            </div>
-
-            <!-- Tab: Cloud Computer (Filesystem & Terminal) -->
-            <div class="inspector-content active" id="tab-computer">
-                <div class="computer-header">
-                    <h3>Cloud Workspace</h3>
-                    <button class="btn btn-secondary btn-sm" id="btn-refresh-files">↻ Refresh</button>
-                </div>
-                <div class="file-tree" id="file-tree">
-                    <div class="empty-state">No files in sandbox.</div>
-                </div>
-
-                <div class="file-viewer-section" id="file-viewer-section" style="display: none;">
-                    <div class="file-viewer-title" id="file-viewer-filename">filename</div>
-                    <pre class="file-viewer-content" id="file-viewer-content"></pre>
-                </div>
-
-                <div class="sandbox-runner-box">
-                    <h4>Run Code in Sandbox Computer</h4>
-                    <textarea id="sandbox-code-input" rows="3" placeholder="print('Hello from cloud computer!')"></textarea>
-                    <div class="sandbox-runner-actions">
-                        <select id="sandbox-lang-select">
-                            <option value="python">Python</option>
-                            <option value="bash">Shell (Bash)</option>
-                        </select>
-                        <button class="btn btn-primary btn-sm" id="btn-run-sandbox">Execute</button>
+                    <!-- Todd (Green) -->
+                    <div class="hero-dot-item dot-todd" onclick="touchDotCartoon('todd', this, event)" title="Touch Todd (Research Scientist)">
+                        <div class="hero-dot-halo halo-green"></div>
+                        <div class="cartoon-dot-wrapper">
+                            <img src="assets/dots/todd.png" alt="Todd" class="cartoon-dot-img cartoon-float float-del-1" />
+                            <div class="cartoon-speech-bubble" id="speech-todd-hero">Hypothesis verified! 🔬</div>
+                        </div>
+                        <div class="hero-dot-meta">
+                            <span class="hero-dot-name">Todd</span>
+                            <span class="hero-dot-role">Research Scientist</span>
+                        </div>
                     </div>
-                    <div id="sandbox-run-output" class="sandbox-output" style="display: none;"></div>
+
+                    <!-- Alfred (Yellow) -->
+                    <div class="hero-dot-item dot-alfred" onclick="touchDotCartoon('alfred', this, event)" title="Touch Alfred (Enterprise Sales Lead)">
+                        <div class="hero-dot-halo halo-yellow"></div>
+                        <div class="cartoon-dot-wrapper">
+                            <img src="assets/dots/alfred.png" alt="Alfred" class="cartoon-dot-img cartoon-float float-del-2" />
+                            <div class="cartoon-speech-bubble" id="speech-alfred-hero">Deal closed! 🤝</div>
+                        </div>
+                        <div class="hero-dot-meta">
+                            <span class="hero-dot-name">Alfred</span>
+                            <span class="hero-dot-role">Enterprise Deals</span>
+                        </div>
+                    </div>
+
+                    <!-- Jojo (Purple) -->
+                    <div class="hero-dot-item dot-jojo" onclick="touchDotCartoon('jojo', this, event)" title="Touch Jojo (Content Creator & Media)">
+                        <div class="hero-dot-halo halo-purple"></div>
+                        <div class="cartoon-dot-wrapper">
+                            <img src="assets/dots/jojo.png" alt="Jojo" class="cartoon-dot-img cartoon-float float-del-3" />
+                            <div class="cartoon-speech-bubble" id="speech-jojo-hero">Viral content ready! 🎬</div>
+                        </div>
+                        <div class="hero-dot-meta">
+                            <span class="hero-dot-name">Jojo</span>
+                            <span class="hero-dot-role">Content &amp; Media</span>
+                        </div>
+                    </div>
+
+                    <!-- Sentry (Dev / Orange) -->
+                    <div class="hero-dot-item dot-sentry" onclick="touchDotCartoon('dev', this, event)" title="Touch Sentry (Autonomous Software Dev)">
+                        <div class="hero-dot-halo halo-orange"></div>
+                        <div class="cartoon-dot-wrapper">
+                            <img src="assets/dots/sentry.png" alt="Sentry" class="cartoon-dot-img cartoon-float float-del-4" />
+                            <div class="cartoon-speech-bubble" id="speech-dev-hero">PR merged cleanly! ⚡</div>
+                        </div>
+                        <div class="hero-dot-meta">
+                            <span class="hero-dot-name">Sentry</span>
+                            <span class="hero-dot-role">Autonomous Dev</span>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Specialist Archetypes Section -->
+            <div class="section-heading-box" id="showcase-archetypes">
+                <div class="section-kicker">Department Specialists</div>
+                <h2 class="section-main-title">Specialist Dots for Your Entire Organization</h2>
+                <p class="section-desc">
+                    Your primary Dot works as your strategic partner; specialist Dots take on dedicated departmental responsibilities across engineering, research, sales, product launches, and media production.
+                </p>
+            </div>
+            <div class="showcase-archetypes-grid">
+                <!-- Blue Dot: Felipe -->
+                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
+                    <div>
+                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('felipe', this, event)" title="Touch Felipe to interact!">
+                            <img src="assets/dots/felipe.png" alt="Felipe - Product Launch Lead" class="cartoon-dot-img cartoon-float" />
+                            <div class="cartoon-speech-bubble" id="speech-felipe">Let's ship this! 🚀</div>
+                        </div>
+                        <div class="archetype-card-name">Blue Dot (Felipe)</div>
+                        <div class="archetype-card-role">Product Launch Lead</div>
+                        <p class="archetype-card-body">
+                            Learns positioning and audience standards. When product scope shifts, it automatically revises launch narratives, updates roadmaps, and prepares customer drafts.
+                        </p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('felipe')">Collaborate with Felipe ➔</button>
+                </div>
+
+                <!-- Green Dot: Todd -->
+                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
+                    <div>
+                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('todd', this, event)" title="Touch Todd to interact!">
+                            <img src="assets/dots/todd.png" alt="Todd - Research Scientist" class="cartoon-dot-img cartoon-float" />
+                            <div class="cartoon-speech-bubble" id="speech-todd">Hypothesis verified! 🔬</div>
+                        </div>
+                        <div class="archetype-card-name">Green Dot (Todd)</div>
+                        <div class="archetype-card-role">Research Scientist</div>
+                        <p class="archetype-card-body">
+                            Learns hypotheses and evaluation metrics. As new evidence arrives, it reruns statistical analyses in its cloud computer, flags anomalies, and updates figures.
+                        </p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('todd')">Collaborate with Todd ➔</button>
+                </div>
+
+                <!-- Yellow Dot: Alfred -->
+                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
+                    <div>
+                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('alfred', this, event)" title="Touch Alfred to interact!">
+                            <img src="assets/dots/alfred.png" alt="Alfred - Enterprise Sales Lead" class="cartoon-dot-img cartoon-float" />
+                            <div class="cartoon-speech-bubble" id="speech-alfred">Deal closed! 🤝</div>
+                        </div>
+                        <div class="archetype-card-name">Yellow Dot (Alfred)</div>
+                        <div class="archetype-card-role">Enterprise Sales Lead</div>
+                        <p class="archetype-card-body">
+                            Checks customer RFPs against documentation, builds proof-of-concept scripts in its cloud computer sandbox, and identifies solutions engineers for technical reviews.
+                        </p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('alfred')">Collaborate with Alfred ➔</button>
+                </div>
+
+                <!-- Purple Dot: Jojo -->
+                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
+                    <div>
+                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('jojo', this, event)" title="Touch Jojo to interact!">
+                            <img src="assets/dots/jojo.png" alt="Jojo - Content Creator & Media" class="cartoon-dot-img cartoon-float" />
+                            <div class="cartoon-speech-bubble" id="speech-jojo">Viral content ready! 🎬</div>
+                        </div>
+                        <div class="archetype-card-name">Purple Dot (Jojo)</div>
+                        <div class="archetype-card-role">Content Creator &amp; Media</div>
+                        <p class="archetype-card-body">
+                            Ingests raw transcripts, highlights moments for video clips, formats show notes, and drafts social posts with creator tone consistency.
+                        </p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('jojo')">Collaborate with Jojo ➔</button>
+                </div>
+
+                <!-- Dev Dot: Sentry -->
+                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
+                    <div>
+                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('dev', this, event)" title="Touch Sentry to interact!">
+                            <img src="assets/dots/sentry.png" alt="Dev Dot (Sentry) - Autonomous Software Dev" class="cartoon-dot-img cartoon-float" />
+                            <div class="cartoon-speech-bubble" id="speech-dev">PR merged cleanly! ⚡</div>
+                        </div>
+                        <div class="archetype-card-name">Dev Dot (Sentry)</div>
+                        <div class="archetype-card-role">Autonomous Software Dev</div>
+                        <p class="archetype-card-body">
+                            Monitors feedback for recurring bug requests, scopes smaller fixes, builds and tests them in its cloud computer, and drafts verified PRs with diff summaries.
+                        </p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('dev')">Collaborate with Sentry ➔</button>
                 </div>
             </div>
 
-            <!-- Tab: Browser Vision -->
-            <div class="inspector-content" id="tab-browser">
-                <div class="computer-header">
-                    <h3>Headless Browser Gallery</h3>
-                    <span class="subtext">Playwright Chromium captures</span>
+            <!-- Features Breakdown: The Magic of Dot (Official OpenAI Architecture) -->
+            <div class="section-heading-box" id="showcase-capabilities" style="margin-top: 80px;">
+                <div class="section-kicker">Core Architectural Capabilities</div>
+                <h2 class="section-main-title">The Magic of Dot</h2>
+                <p class="section-desc">
+                    Dots are remarkably capable, always-on agents built to handle everything. Powered by GPT‑6 Astra &amp; Google Gemini 3.5, they have their own cloud computer, learn from feedback over time, and work towards your goals 24/7.
+                </p>
+            </div>
+
+            <div class="showcase-features-grid">
+                <div class="showcase-feature-box">
+                    <div class="feature-box-top">
+                        <div class="feature-box-icon">💻</div>
+                        <span class="pillar-num">01</span>
+                    </div>
+                    <h3 class="feature-box-title">Dots Work on Their Own</h3>
+                    <p class="feature-box-text">
+                        Dots do nearly anything using their own dedicated cloud computer, browser, and connected apps. When you assign a goal—from debugging code to statistical analyses—your Dot executes workflows in its sandbox and reports back.
+                    </p>
                 </div>
-                <div class="browser-vision-container" id="browser-vision-container">
-                    <div class="empty-state">No browser screenshots captured yet.</div>
+
+                <div class="showcase-feature-box">
+                    <div class="feature-box-top">
+                        <div class="feature-box-icon">⚡</div>
+                        <span class="pillar-num">02</span>
+                    </div>
+                    <h3 class="feature-box-title">Dots Connect to the Tools You Use</h3>
+                    <p class="feature-box-text">
+                        From Slack and Microsoft Teams to GitHub, Linear, Google Workspace, and Notion, Dots integrate readily with over 4,000 apps to work wherever you need them.
+                    </p>
+                </div>
+
+                <div class="showcase-feature-box">
+                    <div class="feature-box-top">
+                        <div class="feature-box-icon">🧠</div>
+                        <span class="pillar-num">03</span>
+                    </div>
+                    <h3 class="feature-box-title">Dots Learn How You Like to Work</h3>
+                    <p class="feature-box-text">
+                        As you work together, your Dot learns what matters to you, your goals, preferences, and what good looks like to you. You can give feedback along the way, and your Dot continuously adapts its approach.
+                    </p>
+                </div>
+
+                <div class="showcase-feature-box">
+                    <div class="feature-box-top">
+                        <div class="feature-box-icon">🎭</div>
+                        <span class="pillar-num">04</span>
+                    </div>
+                    <h3 class="feature-box-title">Dots Are Customizable</h3>
+                    <p class="feature-box-text">
+                        Deploy 5 turnkey specialist archetypes—Felipe (Product Launches), Todd (Research), Alfred (Enterprise Sales), Jojo (Media), and Sentry (Autonomous Dev)—or customize appearance, voice, and default tone.
+                    </p>
+                </div>
+
+                <div class="showcase-feature-box" style="grid-column: 1 / -1; max-width: 680px; margin: 0 auto; width: 100%;">
+                    <div class="feature-box-top">
+                        <div class="feature-box-icon">🛡️</div>
+                        <span class="pillar-num">05</span>
+                    </div>
+                    <h3 class="feature-box-title">Dots Have Built-In Safeguards</h3>
+                    <p class="feature-box-text">
+                        Built-in Action Auto-Review halts high-consequence operations for human sign-off. Safe operations execute automatically while high-risk actions request operator approval.
+                    </p>
                 </div>
             </div>
 
-            <!-- Tab: Memory Bank -->
-            <div class="inspector-content" id="tab-memory">
-                <div class="computer-header">
-                    <h3>Episodic Memory Bank</h3>
-                    <span class="subtext">Retained observations & facts</span>
+            <!-- Safety, Security, and Governance Section (OpenAI Dedicated Whitepaper Focus) -->
+            <div class="section-heading-box" id="showcase-safety" style="margin-top: 90px;">
+                <div class="section-kicker">Enterprise Trust &amp; Governance</div>
+                <h2 class="section-main-title">How We Build Safety, Security, and Privacy into Dots</h2>
+                <p class="section-desc">
+                    Always-on agents require frontier safety architecture. Dots operate within strict sandbox perimeters with real-time autonomous risk classification and mandatory human approval gates.
+                </p>
+            </div>
+
+            <div class="safety-pillars-grid">
+                <div class="safety-pillar-card">
+                    <div class="safety-card-icon">🛡️</div>
+                    <h3 class="safety-card-title">Action Auto-Review</h3>
+                    <p class="safety-card-desc">
+                        Every agent action is evaluated by real-time safety classifiers. Low-risk operations (reading files, executing sandbox tests) run autonomously; high-risk actions (external emails, DB mutations, financial ops) require operator sign-off.
+                    </p>
+                    <div class="safety-badge-tag">Zero Unapproved Actions</div>
                 </div>
-                <div class="memory-list" id="memory-list">
-                    <div class="empty-state">No memories stored yet.</div>
+
+                <div class="safety-pillar-card">
+                    <div class="safety-card-icon">🔒</div>
+                    <h3 class="safety-card-title">Ephemeral Cloud Sandboxes</h3>
+                    <p class="safety-card-desc">
+                        Each Dot runs in an isolated, dedicated container sandbox. Script executions, browser scraping, and file manipulations cannot compromise local machines or cross over into unauthorized data silos.
+                    </p>
+                    <div class="safety-badge-tag">VPC Network Isolation</div>
+                </div>
+
+                <div class="safety-pillar-card">
+                    <div class="safety-card-icon">🔐</div>
+                    <h3 class="safety-card-title">Strict Privacy Boundaries</h3>
+                    <p class="safety-card-desc">
+                        Your proprietary code, internal communications, customer records, and private notes are never used to train foundational AI models. Enterprise data boundaries remain airtight.
+                    </p>
+                    <div class="safety-badge-tag">Zero Model Training</div>
+                </div>
+
+                <div class="safety-pillar-card">
+                    <div class="safety-card-icon">📜</div>
+                    <h3 class="safety-card-title">Immutable Audit Trails</h3>
+                    <p class="safety-card-desc">
+                        Every single autonomous tick, decision, web interaction, and terminal execution is permanently logged with cryptographic timestamps, ready for 1-click export to enterprise SIEM and compliance systems.
+                    </p>
+                    <div class="safety-badge-tag">SOC2 &bull; HIPAA &bull; ISO 27001</div>
                 </div>
             </div>
 
-            <!-- Tab: Reports -->
-            <div class="inspector-content" id="tab-reports">
-                <div class="computer-header">
-                    <h3>Published Deliverables</h3>
-                    <span class="subtext">Periodic intelligence digests</span>
+            <!-- Live Telemetry Ticker -->
+            <div class="showcase-ticker-card" style="margin-top: 70px;">
+                <div class="ticker-item">
+                    <div class="ticker-val" id="ticker-active-dots">13</div>
+                    <div class="ticker-label">Active Autonomous Dots</div>
                 </div>
-                <div class="reports-container" id="reports-container">
-                    <div class="empty-state">No reports generated yet.</div>
+                <div class="ticker-item">
+                    <div class="ticker-val" id="ticker-total-cycles">430+</div>
+                    <div class="ticker-label">Background Cycles Executed</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-val" style="color: #38bdf8;">Gemini 3.5</div>
+                    <div class="ticker-label">Active Frontier Model</div>
+                </div>
+                <div class="ticker-item">
+                    <div class="ticker-val" style="color: #10b981;">100%</div>
+                    <div class="ticker-label">Action Auto-Review Safety</div>
                 </div>
             </div>
 
-            <!-- Tab: Telemetry Steps -->
-            <div class="inspector-content" id="tab-telemetry">
-                <div class="computer-header">
-                    <h3>Autonomous Telemetry</h3>
-                    <span class="subtext">6-stage lifecycle execution</span>
+            <!-- Commercial SaaS Pricing Section -->
+            <div class="section-heading-box" id="showcase-pricing" style="margin-top: 80px;">
+                <div class="section-kicker">Commercial SaaS Deployment</div>
+                <h2 class="section-main-title">Flexible Pricing Built for Profit &amp; Scale</h2>
+                <p class="section-desc">
+                    Deploy ONE DOTS across your business or resell with turnkey commercial tiers and monthly deep work cycle allowances.
+                </p>
+            </div>
+
+            <div class="tier-cards-grid" style="margin-top: 20px;">
+                <div class="tier-card">
+                    <div class="tier-title">Starter</div>
+                    <div class="tier-price">Free</div>
+                    <div class="tier-features">1 Primary Dot, Standard Speed, 100 cycles/mo, Shared Sandbox</div>
+                    <button class="btn btn-outline btn-sm btn-full" style="margin-top: 14px;" onclick="switchMainView('view-workstation')">Get Started</button>
                 </div>
-                <div class="steps-container" id="steps-container">
-                    <div class="empty-state">No telemetry steps logged.</div>
+                <div class="tier-card">
+                    <div class="tier-title">Pro</div>
+                    <div class="tier-price">$20<span>/mo</span></div>
+                    <div class="tier-features">5 Specialist Dots, Real-Time Voice Calling, 5,000 cycles/mo, Dedicated Filesystem</div>
+                    <button class="btn btn-outline btn-sm btn-full" style="margin-top: 14px;" onclick="openBillingModal()">Upgrade to Pro</button>
+                </div>
+                <div class="tier-card active">
+                    <div class="tier-badge">POPULAR</div>
+                    <div class="tier-title">Business Premium</div>
+                    <div class="tier-price">$50<span>/mo</span></div>
+                    <div class="tier-features">Unlimited Dots, Dedicated Cloud REPL, 25,000 cycles/mo, Microsoft Agent 365 Governance</div>
+                    <button class="btn btn-primary btn-sm btn-full" style="margin-top: 14px;" onclick="switchMainView('view-workstation')">Active Plan</button>
+                </div>
+                <div class="tier-card">
+                    <div class="tier-title">Enterprise</div>
+                    <div class="tier-price">Custom</div>
+                    <div class="tier-features">Dedicated VPC, Custom SLAs, Active Directory SSO, IT-Provisioned Hardware</div>
+                    <button class="btn btn-outline btn-sm btn-full" style="margin-top: 14px;" onclick="openBillingModal()">Contact Sales</button>
                 </div>
             </div>
-        </aside>
-    </main>
 
-    <!-- Create Dot Modal -->
+            <!-- Showcase Bottom CTA Banner -->
+            <div class="docs-hero-card" style="margin-top: 80px; text-align: center;">
+                <h2 style="font-size: 28px; font-weight: 800; color: #fff;">Start collaborating with ONE DOTS today</h2>
+                <p style="font-size: 14px; color: #cbd5e1; margin: 10px auto 20px auto; max-width: 600px;">
+                    Experience work where frontier intelligence is always working by your side. Deploy your first Dot in seconds.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 12px;">
+                    <button class="btn btn-primary btn-lg" onclick="switchMainView('view-workstation')">Open Agent Workstation ◈</button>
+                    <button class="btn btn-secondary btn-lg" onclick="switchMainView('view-docs')">Read Full Documentation</button>
+                </div>
+            </div>
+
+            <!-- Authentic OpenAI Editorial Footer -->
+            <footer class="editorial-footer">
+                <div class="footer-cols-grid">
+                    <div class="footer-col">
+                        <div class="footer-col-title">Research</div>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Overview</a>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Index &amp; Publications</a>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">GPT-6 Astra Architecture</a>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Frontier Safety Protocol</a>
+                    </div>
+                    <div class="footer-col">
+                        <div class="footer-col-title">Product</div>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-workstation')">ONE DOTS Platform</a>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-film')">Launch Film (02:26)</a>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-archetypes')">Specialist Dots</a>
+                        <a href="javascript:void(0)" onclick="openIntegrationsModal()">4,000+ App Connectors</a>
+                    </div>
+                    <div class="footer-col">
+                        <div class="footer-col-title">Safety &amp; Trust</div>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-safety')">Action Auto-Review</a>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-safety')">Ephemeral Cloud Sandboxes</a>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-safety')">Security Whitepaper</a>
+                        <a href="javascript:void(0)" onclick="exportExecutiveDigest()">Compliance Audit Export</a>
+                    </div>
+                    <div class="footer-col">
+                        <div class="footer-col-title">Company</div>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-showcase')">Live from the Lab</a>
+                        <a href="javascript:void(0)" onclick="openBillingModal()">Commercial Pricing</a>
+                        <a href="javascript:void(0)" onclick="startVoiceCall()">Talk to an Agent</a>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Documentation &amp; API</a>
+                    </div>
+                </div>
+                <div class="footer-bottom-bar">
+                    <div class="footer-copy-text">
+                        <strong>ONE DOTS</strong> &copy; 2026 OpenAI &bull; Always-On Frontier Intelligence Platform. Powered by Google Gemini 3.5 &amp; Astra Engine.
+                    </div>
+                    <div class="footer-legal-links">
+                        <span>Privacy Policy</span>
+                        <span>Terms of Use</span>
+                        <span>Security &amp; Privacy</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 2: AGENT WORKSTATION (FULL INTERACTIVE PLATFORM)
+         ========================================================================= -->
+    <section class="app-view" id="view-workstation">
+        <!-- Workstation Fleet Operational Header -->
+        <div class="workstation-subnav">
+            <div class="ws-telemetry-group">
+                <div class="ws-badge-always-on">
+                    <span class="pulse-dot"></span>
+                    <span>ALWAYS-ON FLEET</span>
+                </div>
+                <div class="ws-telemetry-chip">
+                    <span class="chip-label">ACTIVE DOTS</span>
+                    <span class="chip-val" id="metric-active-agents">0</span>
+                </div>
+                <div class="ws-telemetry-chip">
+                    <span class="chip-label">AUTONOMOUS CYCLES</span>
+                    <span class="chip-val" id="metric-total-ticks">0 ticks</span>
+                </div>
+                <div class="ws-telemetry-chip alert-chip" id="chip-pending-approvals" onclick="jumpToApprovals()">
+                    <span class="chip-label">HUMAN APPROVALS</span>
+                    <span class="chip-val" id="metric-pending-decisions">0</span>
+                </div>
+            </div>
+            <div class="ws-actions-group">
+                <button class="btn btn-secondary btn-sm" id="btn-open-integrations" onclick="openIntegrationsModal()">
+                    <span>⚡</span> Connect Apps <span class="badge-count">4,000+</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" id="btn-open-billing" onclick="openBillingModal()">
+                    <span>📊</span> Enterprise Hub
+                </button>
+                <button class="btn btn-primary btn-sm" id="btn-open-create-modal">
+                    <span class="icon">+</span> Deploy Dot
+                </button>
+            </div>
+        </div>
+
+        <main class="dot-layout">
+            
+            <!-- Column 1: Fleet Sidebar -->
+            <aside class="sidebar-fleet glass-card">
+                <div class="panel-header">
+                    <div>
+                        <h2>Your Dots Fleet</h2>
+                        <span class="subtext">Always working on your behalf 24/7</span>
+                    </div>
+                    <button class="icon-btn-sm" onclick="fetchFleetData()" title="Refresh Fleet State">↻</button>
+                </div>
+                <div class="agent-list" id="agent-list">
+                    <div class="empty-state">Loading autonomous dots...</div>
+                </div>
+                <div class="sidebar-footer">
+                    <button class="btn btn-outline btn-full" onclick="document.getElementById('btn-open-create-modal').click()">
+                        + Deploy New Archetype
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Column 2: Conversational Dot Workspace -->
+            <section class="chat-workspace glass-card">
+                
+                <!-- Pending Human Approval Banner (Animated Alert) -->
+                <div class="approval-alert-banner" id="approval-alert-banner" style="display: none;">
+                    <div class="alert-icon-box">⚠️</div>
+                    <div class="alert-content">
+                        <div class="alert-title">
+                            <span>Action Auto-Review: Human Approval Required</span>
+                            <span class="risk-badge" id="alert-risk-level">HIGH RISK</span>
+                        </div>
+                        <div class="alert-desc" id="alert-description">
+                            Agent is proposing a protected operation that requires human sign-off.
+                        </div>
+                    </div>
+                    <div class="alert-actions">
+                        <button class="btn btn-success btn-sm" id="btn-banner-approve" onclick="approveCurrentDecision()">
+                            ✅ Approve &amp; Run
+                        </button>
+                        <button class="btn btn-danger btn-sm" id="btn-banner-reject" onclick="rejectCurrentDecision()">
+                            ❌ Reject &amp; Adapt
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Dot Profile Header -->
+                <div class="dot-header" id="dot-header">
+                    <div class="dot-info">
+                        <div class="dot-title-row">
+                            <div class="dot-avatar" id="active-dot-avatar">◈</div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h1 id="active-agent-name">Select a Dot</h1>
+                                    <span class="status-badge" id="active-agent-status">IDLE</span>
+                                    <span class="verified-badge" title="IT-Provisioned Dedicated Hardware">🛡️ Verified Identity</span>
+                                </div>
+                                <!-- Dot Capability Tags -->
+                                <div class="dot-feature-tags" id="dot-feature-tags" style="display: none;">
+                                    <span class="feature-chip gemini-chip">✨ Google Gemini 3.5</span>
+                                    <span class="feature-chip">💻 Dedicated Cloud Computer</span>
+                                    <span class="feature-chip">🔍 Proactive Research 24/7</span>
+                                    <span class="feature-chip">🛡️ Auto-Review Safeguards</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="dot-responsibility-quote" id="active-agent-responsibility">Select a Dot to start collaborating, guide its goals, or inspect its cloud computer.</p>
+                    </div>
+                    <div class="dot-header-actions" id="agent-controls" style="display: none;">
+                        <button class="btn btn-call btn-sm" id="btn-voice-call" onclick="startVoiceCall()" title="Hop on a real-time voice call with your Dot">
+                            📞 Voice Call
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="btn-force-tick" title="Trigger background autonomous cycle immediately">
+                            ⚡ Step Progress
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="btn-toggle-inspector" onclick="toggleInspectorPanel()" title="Toggle Cloud Computer & Tools Panel">
+                            <span id="inspector-icon">💻</span> <span id="inspector-btn-text">Inspector</span>
+                        </button>
+                        <button class="btn btn-outline btn-sm" id="btn-toggle-pause">
+                            ⏸ Pause
+                        </button>
+                        <button class="btn btn-outline btn-sm btn-delete-agent" id="btn-delete-agent" title="Retire and delete this agent">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- "While you were away" Catch-up Briefing Banner (Collapsible & Compact) -->
+                <div class="catchup-briefing" id="catchup-briefing" style="display: none;">
+                    <div class="briefing-header" onclick="toggleBriefingBody()" style="cursor: pointer;" title="Click to expand/collapse summary">
+                        <div class="briefing-tag-box">
+                            <span class="briefing-icon">✨</span>
+                            <span class="briefing-tag">WHILE YOU WERE AWAY DIGEST</span>
+                            <span class="briefing-preview-snippet" id="briefing-preview-snippet">Autonomous cycle completed.</span>
+                        </div>
+                        <div class="briefing-controls">
+                            <span class="briefing-toggle-hint" id="briefing-toggle-hint">Click to expand ▾</span>
+                            <button class="briefing-dismiss" id="btn-dismiss-briefing" onclick="event.stopPropagation()">&times;</button>
+                        </div>
+                    </div>
+                    <div class="briefing-body" id="briefing-text" style="display: none;">Loading catch-up briefing from memory...</div>
+                </div>
+
+                <!-- Chat Stream -->
+                <div class="chat-messages-container" id="chat-messages-container">
+                    <div class="empty-state">
+                        <p>No conversation history yet.</p>
+                        <p style="margin-top: 6px;">Select a Dot from the left or deploy a Specialist Archetype to collaborate!</p>
+                    </div>
+                </div>
+
+                <!-- Dynamic Quick Prompt Suggestion Pills -->
+                <div class="prompt-pills" id="prompt-pills" style="display: none;">
+                    <!-- Populated dynamically based on Dot Archetype -->
+                </div>
+
+                <!-- Chat Input Bar -->
+                <form class="chat-input-bar" id="chat-input-form" style="display: none;">
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chat-input" placeholder="Message your Dot, explore ideas, give feedback, or guide its focus..." autocomplete="off" required>
+                        <button type="button" class="btn-input-mic" onclick="startVoiceCall()" title="Switch to Voice Call">
+                            🎤
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-send" id="btn-send-chat">Send</button>
+                </form>
+            </section>
+
+            <!-- Column 3: Cloud Computer & Browser Inspector -->
+            <aside class="inspector-panel glass-card" id="inspector-panel">
+                <div class="inspector-panel-header">
+                    <div class="inspector-tabs">
+                        <button class="tab-btn active" data-tab="tab-computer">💻 REPL</button>
+                        <button class="tab-btn" data-tab="tab-browser">🌐 Vision</button>
+                        <button class="tab-btn" data-tab="tab-memory">🧠 Memory</button>
+                        <button class="tab-btn" data-tab="tab-reports">📑 Reports</button>
+                        <button class="tab-btn" data-tab="tab-telemetry">📡 Trace</button>
+                    </div>
+                    <button class="inspector-close-x" onclick="toggleInspectorPanel()" title="Hide Inspector">&times;</button>
+                </div>
+
+                <!-- Tab 1: Cloud Computer (Filesystem, Code Studio & Terminal) -->
+                <div class="inspector-content active" id="tab-computer">
+                    <!-- Sleek Compact Hardware Resource Meter HUD -->
+                    <div class="resource-hud-compact">
+                        <div class="hud-pill">
+                            <span class="hud-dot green"></span>
+                            <span class="hud-label">DISK:</span>
+                            <span class="hud-val" id="res-val-disk">32.8 KB / 500 MB</span>
+                        </div>
+                        <div class="hud-pill">
+                            <span class="hud-dot cyan"></span>
+                            <span class="hud-label">SANDBOX:</span>
+                            <span class="hud-val" id="res-val-cpu">Isolated Process</span>
+                        </div>
+                        <div style="display:none;"><div id="res-bar-disk"></div><div id="res-bar-cpu"></div></div>
+                    </div>
+
+                    <div class="computer-header">
+                        <h3>Sandbox Workspace</h3>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="btn btn-secondary btn-sm" onclick="openNewFileModal()">+ New File</button>
+                            <button class="btn btn-secondary btn-sm" id="btn-refresh-files">↻ Refresh</button>
+                        </div>
+                    </div>
+                    
+                    <!-- File Tree -->
+                    <div class="file-tree" id="file-tree">
+                        <div class="empty-state">Cloud computer workspace is empty.</div>
+                    </div>
+
+                    <!-- Code Viewer / Editor Studio -->
+                    <div class="file-viewer-section" id="file-viewer-section" style="display: none;">
+                        <div class="file-viewer-header">
+                            <div class="file-viewer-title" id="file-viewer-filename">📄 document.py</div>
+                            <div style="display: flex; gap: 6px;">
+                                <button class="btn btn-secondary btn-xs" onclick="saveActiveFileContent()">💾 Save</button>
+                                <button class="btn btn-secondary btn-xs" onclick="downloadActiveFile()">⬇ Download</button>
+                                <button class="btn btn-outline btn-xs" style="color:#f87171;" onclick="deleteActiveFile()">🗑 Delete</button>
+                                <button class="btn btn-outline btn-xs" onclick="closeFileViewer()">&times;</button>
+                            </div>
+                        </div>
+                        <textarea class="file-editor-content" id="file-editor-content" spellcheck="false"></textarea>
+                    </div>
+
+                    <!-- Live Cloud Computer Code REPL / Runner with Safe STDIN -->
+                    <div class="sandbox-runner-box">
+                        <div class="runner-header">
+                            <h4>Cloud Computer Execution Terminal</h4>
+                            <!-- Script Templates -->
+                            <select id="quick-script-select" onchange="applyScriptTemplate(this.value)" class="template-select">
+                                <option value="">⚡ Script Templates...</option>
+                                <option value="data_analysis">Data Analysis &amp; Trends</option>
+                                <option value="web_scraper">Web Scraper &amp; Digest</option>
+                                <option value="test_suite">Regression Test Runner</option>
+                                <option value="markdown_gen">Generate Markdown Report</option>
+                            </select>
+                        </div>
+                        <textarea id="sandbox-code-input" rows="4" placeholder="# Enter Python code to execute live in this Dot's isolated cloud computer..." spellcheck="false"></textarea>
+                        <div class="sandbox-stdin-row">
+                            <span class="stdin-label">STDIN</span>
+                            <input type="text" id="sandbox-stdin-input" placeholder="Input for input() calls (optional, e.g. Kulbhushan)..." spellcheck="false">
+                        </div>
+                        <div class="sandbox-runner-actions">
+                            <select id="sandbox-lang-select">
+                                <option value="python">Python 3.13</option>
+                                <option value="bash">Shell (Bash)</option>
+                            </select>
+                            <button class="btn btn-primary btn-sm" id="btn-run-sandbox">Execute Live</button>
+                        </div>
+                        <div id="sandbox-run-output" class="sandbox-output" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Browser Vision -->
+                <div class="inspector-content" id="tab-browser">
+                    <div class="computer-header">
+                        <div>
+                            <h3>Proactive Research Gallery</h3>
+                            <span class="subtext">Autonomous Playwright Chromium captures</span>
+                        </div>
+                    </div>
+                    <div class="browser-vision-container" id="browser-vision-container">
+                        <div class="empty-state">No browser research screenshots captured yet.</div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Memory Bank -->
+                <div class="inspector-content" id="tab-memory">
+                    <div class="computer-header">
+                        <div>
+                            <h3>Episodic Memory Bank</h3>
+                            <span class="subtext">Retained facts, preferences &amp; rules</span>
+                        </div>
+                    </div>
+                    <div class="memory-list" id="memory-list">
+                        <div class="empty-state">No observations recorded in memory bank yet.</div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Published Reports -->
+                <div class="inspector-content" id="tab-reports">
+                    <div class="computer-header">
+                        <div>
+                            <h3>Published Deliverables</h3>
+                            <span class="subtext">Executive summaries &amp; work artifacts</span>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="exportExecutiveDigest()">Export All</button>
+                    </div>
+                    <div class="reports-container" id="reports-container">
+                        <div class="empty-state">No reports generated yet.</div>
+                    </div>
+                </div>
+
+                <!-- Tab 5: Telemetry Steps -->
+                <div class="inspector-content" id="tab-telemetry">
+                    <div class="computer-header">
+                        <div>
+                            <h3>Autonomous Telemetry</h3>
+                            <span class="subtext">6-stage lifecycle execution trace</span>
+                        </div>
+                    </div>
+                    <div class="steps-container" id="steps-container">
+                        <div class="empty-state">No execution steps logged yet.</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 3: COMPLETE DOCUMENTATION & LEARN HUB (CHATGPT LEARN STYLE)
+         ========================================================================= -->
+    <section class="app-view" id="view-docs">
+        <div class="docs-layout" style="margin-top: 0;">
+            <!-- Left Rail Nav -->
+            <aside class="docs-left-nav" style="top: 64px;">
+                <div class="nav-group">
+                    <div class="nav-group-title">Get Started</div>
+                    <ul class="nav-links-list">
+                        <li><a href="#doc-overview" class="nav-link active">Overview</a></li>
+                        <li><a href="#doc-meet-dots" class="nav-link">Meet dots</a></li>
+                        <li><a href="#doc-archetypes" class="nav-link">5 Archetypes</a></li>
+                        <li><a href="#doc-voice" class="nav-link">Voice Engine</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Cloud Computer</div>
+                    <ul class="nav-links-list">
+                        <li><a href="#doc-cloud" class="nav-link">Sandbox Architecture</a></li>
+                        <li><a href="#doc-stdin" class="nav-link">Safe STDIN Handling</a></li>
+                        <li><a href="#doc-files" class="nav-link">File Studio</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Governance</div>
+                    <ul class="nav-links-list">
+                        <li><a href="#doc-safeguards" class="nav-link">Auto-Review Matrix</a></li>
+                        <li><a href="#doc-approvals" class="nav-link">Approval Gates</a></li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Ecosystem</div>
+                    <ul class="nav-links-list">
+                        <li><a href="#doc-integrations" class="nav-link">4,000+ App Connectors</a></li>
+                        <li><a href="#doc-api" class="nav-link">REST API Endpoints</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Center Docs Article -->
+            <div class="docs-main-content">
+                <div class="content-breadcrumb">
+                    <span>Docs</span> <span class="sep">/</span> <span>Get started</span> <span class="sep">/</span> <span style="color:#fff;">Overview</span>
+                </div>
+                <div class="doc-header-row">
+                    <h1 class="doc-title" id="doc-overview">ONE DOTS Official Documentation</h1>
+                    <button class="page-copy-btn" onclick="copyCurrentUrl()">📋 Copy link</button>
+                </div>
+                <p class="doc-lead">
+                    Welcome to the official developer and operator documentation for ONE DOTS. Learn how to deploy specialist archetypes, run sandboxed code with interactive STDIN, configure 4,000+ app connectors, and enforce enterprise governance.
+                </p>
+
+                <!-- Section: Meet Dots -->
+                <section class="doc-section" id="doc-meet-dots">
+                    <h2>Meet Dots</h2>
+                    <p>
+                        Dots are frontier intelligence agents designed to work alongside human teams. Powered by Google Gemini 3.5, each Dot operates within a dedicated cloud computer and follows an autonomous 6-stage lifecycle:
+                    </p>
+                    <ol>
+                        <li><b>Observe:</b> Ingests messages, alerts, channel webhooks, and environment telemetry.</li>
+                        <li><b>Think:</b> Reasons with Gemini 3.5, retrieves episodic memory, and plans multi-step actions.</li>
+                        <li><b>Decide:</b> Runs the Action Auto-Review risk engine to determine if human approval is needed.</li>
+                        <li><b>Act:</b> Executes Python code, browses pages with Playwright, or queries external APIs.</li>
+                        <li><b>Learn:</b> Persists outcomes and operator preferences into vector semantic memory.</li>
+                        <li><b>Report:</b> Generates executive briefings and progress artifacts.</li>
+                    </ol>
+                </section>
+
+                <!-- Section: Archetypes -->
+                <section class="doc-section" id="doc-archetypes">
+                    <h2>Specialist Archetypes</h2>
+                    <p>
+                        Organizations deploy pre-configured archetypes to handle dedicated missions:
+                    </p>
+                    <ul>
+                        <li><b>Blue Dot (Felipe):</b> Product Launch Lead — monitors scope changes, updates launch roadmaps.</li>
+                        <li><b>Green Dot (Todd):</b> Research Scientist — executes sandbox statistical runs and updates papers.</li>
+                        <li><b>Yellow Dot (Alfred):</b> Enterprise Deals — technical reviews, proof-of-concept generation.</li>
+                        <li><b>Purple Dot (Jojo):</b> Content &amp; Media — video clip highlights, show notes, social posts.</li>
+                        <li><b>Dev Dot (Sentry):</b> Autonomous Software Dev — automated bug fixes, sandbox test suites, draft PRs.</li>
+                    </ul>
+                </section>
+
+                <!-- Section: Cloud Computer & STDIN -->
+                <section class="doc-section" id="doc-cloud">
+                    <h2>Dedicated Cloud Computer &amp; Safe STDIN</h2>
+                    <p id="doc-stdin">
+                        Each agent executes within a sandboxed directory with isolated process limits. To support interactive scripts like <code>input()</code> without freezing, the engine implements a dual-mode standard input system:
+                    </p>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span class="code-lang-tag">python</span>
+                            <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre class="code-block"><code># Interactive input executed in ONE DOTS Cloud Computer
+name = input("Enter operator name: ")
+print(f"Authenticated session for: {name}")
+
+# Safe handling:
+# 1. If STDIN provided in UI -> Reads value directly
+# 2. If STDIN omitted -> Safe shim catches EOFError and defaults to 'User' in milliseconds</code></pre>
+                    </div>
+                </section>
+
+                <!-- Section: Safeguards -->
+                <section class="doc-section" id="doc-safeguards">
+                    <h2>Action Auto-Review &amp; Approvals</h2>
+                    <p id="doc-approvals">
+                        All operations pass through the Auto-Review gate. High-risk operations (such as deleting databases or deploying external keys) trigger the animated <b>Approval Alert Banner</b> requiring explicit human sign-off.
+                    </p>
+                </section>
+
+                <!-- Section: Integrations & API -->
+                <section class="doc-section" id="doc-integrations">
+                    <h2>4,000+ App Connectors &amp; API Reference</h2>
+                    <p id="doc-api">
+                        Connect with Slack, Teams, GitHub, and custom webhooks. Developers can also interact directly with the FastAPI server:
+                    </p>
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span class="code-lang-tag">bash</span>
+                            <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre class="code-block"><code># List active Dots fleet
+curl http://127.0.0.1:8000/api/agents
+
+# Run code in sandbox with STDIN
+curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
+     -H "Content-Type: application/json" \
+     -d '{"code": "print(input())", "language": "python", "stdin": "Operator"}'</code></pre>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right TOC -->
+            <aside class="docs-toc-rail" style="top: 64px;">
+                <div class="toc-title">On this page</div>
+                <ul class="toc-list">
+                    <li><a href="#doc-overview" class="toc-link active">Overview</a></li>
+                    <li><a href="#doc-meet-dots" class="toc-link">Meet dots</a></li>
+                    <li><a href="#doc-archetypes" class="toc-link">5 Archetypes</a></li>
+                    <li><a href="#doc-cloud" class="toc-link">Cloud Computer</a></li>
+                    <li><a href="#doc-stdin" class="toc-link">Safe STDIN</a></li>
+                    <li><a href="#doc-safeguards" class="toc-link">Auto-Review</a></li>
+                    <li><a href="#doc-integrations" class="toc-link">4,000+ Apps &amp; API</a></li>
+                </ul>
+            </aside>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         FLOATING "ASK AI DOCS AGENT" BUTTON & SLIDING 440px DRAWER
+         ========================================================================= -->
+    <button class="docs-agent-launcher-btn" id="btn-open-docs-agent" onclick="toggleDocsAgent()">
+        <span>✨ Ask AI Docs Agent</span>
+    </button>
+
+    <div class="docs-agent-drawer" id="docs-agent-drawer">
+        <div class="drawer-header">
+            <div class="drawer-title">
+                <span>◈</span>
+                <span>ONE DOTS AI Assistant</span>
+            </div>
+            <div class="drawer-actions">
+                <button class="drawer-icon-btn" onclick="clearDocsChat()" title="Start New Chat">↺</button>
+                <button class="drawer-icon-btn" onclick="toggleDocsAgent()" title="Close Drawer">&times;</button>
+            </div>
+        </div>
+
+        <div class="drawer-content">
+            <div class="drawer-messages-stream" id="docs-chat-stream">
+                <div class="drawer-msg agent">
+                    Hello! I am your ONE DOTS AI Assistant. Ask me anything about our platform, specialist archetypes, cloud computer execution, or enterprise tiers!
+                </div>
+            </div>
+
+            <div class="agent-starter-prompts" id="docs-starter-prompts">
+                <button class="starter-prompt-pill" onclick="sendStarterPrompt(this)">
+                    How does the Cloud Computer handle input() and stdin?
+                </button>
+                <button class="starter-prompt-pill" onclick="sendStarterPrompt(this)">
+                    Explain the 5 specialist Dot archetypes and their roles
+                </button>
+                <button class="starter-prompt-pill" onclick="sendStarterPrompt(this)">
+                    How does the Action Auto-Review approval gate work?
+                </button>
+            </div>
+        </div>
+
+        <form class="drawer-input-row" id="docs-agent-form" onsubmit="handleDocsAgentSubmit(event)">
+            <input type="text" id="docs-agent-input" class="drawer-input" placeholder="Ask a question about the platform..." autocomplete="off">
+            <button type="submit" class="cta-workstation-btn" style="padding: 6px 14px; font-size: 12px;">Ask</button>
+        </form>
+    </div>
+
+    <!-- =========================================================================
+         GLOBAL SEARCH OVERLAY MODAL (Ctrl+K)
+         ========================================================================= -->
+    <div class="search-modal-overlay" id="search-modal-overlay" onclick="handleSearchOverlayClick(event)">
+        <div class="search-modal-card">
+            <div class="search-input-header">
+                <span style="font-size: 16px; color: var(--text-tertiary);">🔍</span>
+                <input type="text" class="search-input-box" id="global-search-input" placeholder="Search ONE DOTS features, docs, archetypes, and API..." oninput="filterDocsSearch(this.value)">
+                <span class="search-kbd">ESC</span>
+            </div>
+            <div class="search-results-list" id="search-results-list">
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); closeSearchModal();">
+                    <span class="result-item-title">Agent Workstation</span>
+                    <span class="result-item-sub">Collaborate live with your active Dots fleet</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-showcase'); closeSearchModal();">
+                    <span class="result-item-title">Platform Showcase</span>
+                    <span class="result-item-sub">Overview of always-on frontier intelligence</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-docs'); closeSearchModal();">
+                    <span class="result-item-title">Documentation &amp; Learn</span>
+                    <span class="result-item-sub">Developer guides, architecture, and API specs</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="startVoiceCall(); closeSearchModal();">
+                    <span class="result-item-title">Real-Time Voice Call</span>
+                    <span class="result-item-sub">Hop on a voice call with your active Dot</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="openIntegrationsModal(); closeSearchModal();">
+                    <span class="result-item-title">Connect Apps (4,000+)</span>
+                    <span class="result-item-sub">Slack, Microsoft Teams, GitHub, Webhooks</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="openBillingModal(); closeSearchModal();">
+                    <span class="result-item-title">Commercial SaaS Tiers &amp; Quotas</span>
+                    <span class="result-item-sub">Business Premium $50/mo, deep work cycle quotas</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODALS (Deploy Dot, Voice Call, Integrations, Enterprise Billing)
+         ========================================================================= -->
+
+    <!-- Modal 1: Deploy Specialist Dot Modal -->
     <div class="modal-overlay" id="create-modal">
-        <div class="modal-card glass-card">
+        <div class="modal-card glass-card" style="max-width: 660px;">
             <div class="modal-header">
-                <h3>Assign Responsibility to a New Dot</h3>
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700;">Deploy an Always-On Specialist Dot</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Powered by Google Gemini 3.5 &amp; dedicated cloud computer</p>
+                </div>
                 <button class="close-btn" id="btn-close-modal">&times;</button>
             </div>
+
+            <!-- 5 Specialist Archetypes Grid -->
+            <div class="presets-container" style="margin-bottom: 16px;">
+                <label class="section-label">Select a Specialist Archetype (or create custom below)</label>
+                <div class="presets-grid">
+                    <div class="preset-btn" onclick="applyPreset('felipe')">
+                        <span class="preset-badge" style="background:#3b82f6;"></span>
+                        <div>
+                            <div class="preset-name">Blue Dot (Felipe)</div>
+                            <div class="preset-desc">Product Launch Lead</div>
+                        </div>
+                    </div>
+                    <div class="preset-btn" onclick="applyPreset('todd')">
+                        <span class="preset-badge" style="background:#10b981;"></span>
+                        <div>
+                            <div class="preset-name">Green Dot (Todd)</div>
+                            <div class="preset-desc">Scientist &amp; Evidence Analysis</div>
+                        </div>
+                    </div>
+                    <div class="preset-btn" onclick="applyPreset('alfred')">
+                        <span class="preset-badge" style="background:#f59e0b;"></span>
+                        <div>
+                            <div class="preset-name">Yellow Dot (Alfred)</div>
+                            <div class="preset-desc">Enterprise Sales &amp; POCs</div>
+                        </div>
+                    </div>
+                    <div class="preset-btn" onclick="applyPreset('jojo')">
+                        <span class="preset-badge" style="background:#a855f7;"></span>
+                        <div>
+                            <div class="preset-name">Purple Dot (Jojo)</div>
+                            <div class="preset-desc">Content Creator &amp; Media</div>
+                        </div>
+                    </div>
+                    <div class="preset-btn" onclick="applyPreset('dev')">
+                        <span class="preset-badge" style="background:#06b6d4;"></span>
+                        <div>
+                            <div class="preset-name">Dev Dot (Sentry)</div>
+                            <div class="preset-desc">Autonomous PRs &amp; Bugfixes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <form id="create-agent-form">
+                <input type="hidden" id="agent-color-input" value="cyan">
+                <input type="hidden" id="agent-archetype-input" value="custom">
+
                 <div class="form-group">
-                    <label>Dot Name</label>
-                    <input type="text" id="agent-name-input" placeholder="e.g. MarketRadar, DevOpsSentry, ResearchAstra" required>
+                    <label>Dot Name &amp; Identity</label>
+                    <input type="text" id="agent-name-input" placeholder="e.g. Blue Dot (Felipe), MarketRadar, DevOpsSentry" required>
                 </div>
                 <div class="form-group">
                     <label>Enduring Responsibility (Not just a one-off prompt)</label>
-                    <textarea id="agent-mission-input" rows="3" placeholder="e.g. Continuously monitor OpenAI & competitor releases, verify pricing in sandbox, alert on changes." required></textarea>
+                    <textarea id="agent-mission-input" rows="3" placeholder="e.g. Lead product launch readiness: monitor feature shifts, revise launch story as scope changes, and prepare email drafts." required></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Autonomous Background Cadence</label>
-                    <select id="agent-schedule-input">
-                        <option value="60">Fast Progress (Every 1 minute)</option>
-                        <option value="180" selected>Standard Cadence (Every 3 minutes)</option>
-                        <option value="600">Deep Inspection (Every 10 minutes)</option>
-                        <option value="3600">Hourly Digest (Every 1 hour)</option>
-                    </select>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Background Cadence</label>
+                        <select id="agent-schedule-input">
+                            <option value="60">Fast Progress (Every 1 min)</option>
+                            <option value="180" selected>Standard (Every 3 mins)</option>
+                            <option value="600">Deep Work (Every 10 mins)</option>
+                            <option value="3600">Hourly Digest (Every 1 hour)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Avatar Accent Color</label>
+                        <select id="agent-color-select" onchange="document.getElementById('agent-color-input').value = this.value">
+                            <option value="blue">Blue (Launch Lead)</option>
+                            <option value="green">Green (Science &amp; Data)</option>
+                            <option value="yellow">Yellow (Enterprise Deals)</option>
+                            <option value="purple">Purple (Content &amp; Creative)</option>
+                            <option value="cyan" selected>Cyan (Engineering Sentry)</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Deploy Always-On Dot</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Live Conversational Voice Call Modal -->
+    <div class="modal-overlay" id="voice-modal">
+        <div class="modal-card glass-card voice-call-card">
+            <!-- Pulsing Concentric Audio Visualizer -->
+            <div class="voice-avatar-ring" id="voice-avatar-ring">
+                <div class="voice-avatar-core" id="voice-avatar-core">◈</div>
+                <div class="voice-pulse-wave wave-1"></div>
+                <div class="voice-pulse-wave wave-2"></div>
+                <div class="voice-pulse-wave wave-3"></div>
+            </div>
+
+            <!-- Dynamic Soundwave Frequency Bars -->
+            <div class="soundwave-container" id="soundwave-container">
+                <span class="wave-bar bar-1"></span>
+                <span class="wave-bar bar-2"></span>
+                <span class="wave-bar bar-3"></span>
+                <span class="wave-bar bar-4"></span>
+                <span class="wave-bar bar-5"></span>
+                <span class="wave-bar bar-6"></span>
+                <span class="wave-bar bar-7"></span>
+            </div>
+
+            <h2 id="voice-dot-name" style="margin-top: 14px; font-size: 20px; font-weight: 700;">Dot Voice Call</h2>
+            <div id="voice-status-pill" class="voice-status-pill">Connected (Google Gemini 3.5 Audio Engine)</div>
+
+            <div class="voice-transcript-box" id="voice-transcript-box">
+                "Hello! I am actively managing your mission. What would you like to discuss?"
+            </div>
+
+            <div class="voice-call-controls">
+                <button class="voice-control-btn" id="btn-toggle-mic" onclick="toggleVoiceMic()" title="Toggle Microphone">
+                    🎤
+                </button>
+                <button class="voice-control-btn" id="btn-replay-speech" onclick="replayVoiceSpeech()" title="Replay Last Speech">
+                    🔊
+                </button>
+                <button class="voice-control-btn end-call-btn" onclick="endVoiceCall()" title="End Voice Call">
+                    ✕
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Connect 4,000+ Apps & Ecosystem Integrations -->
+    <div class="modal-overlay" id="integrations-modal">
+        <div class="modal-card glass-card" style="max-width: 680px;">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700;">Connected Ecosystem &amp; App Integrations</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Dots connect directly to over 4,000 apps to work wherever you work</p>
+                </div>
+                <button class="close-btn" onclick="closeIntegrationsModal()">&times;</button>
+            </div>
+            
+            <div class="integrations-list" id="integrations-list">
+                <!-- Injected dynamically from /api/integrations -->
+            </div>
+
+            <div class="modal-footer" style="justify-content: space-between;">
+                <span style="font-size: 12px; color: var(--text-dim);">All connections protected by zero-exposure credential vaults</span>
+                <button class="btn btn-primary" onclick="closeIntegrationsModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Enterprise Hub & Commercial Billing / Quotas -->
+    <div class="modal-overlay" id="billing-modal">
+        <div class="modal-card glass-card" style="max-width: 700px;">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700;">Enterprise Commercial Hub &amp; Quotas</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Manage organizational tiers, deep work allowance, and IT governance</p>
+                </div>
+                <button class="close-btn" onclick="closeBillingModal()">&times;</button>
+            </div>
+
+            <!-- Current Plan Showcase -->
+            <div class="plan-showcase-box">
+                <div class="plan-showcase-header">
+                    <div>
+                        <span class="plan-badge-pill">ACTIVE SUBSCRIPTION</span>
+                        <h2 style="margin-top: 6px; font-size: 22px; font-weight: 800; color: #fff;">Business Premium</h2>
+                        <p style="font-size: 12px; color: #94a3b8;">Unlimited Dots • 24/7 Proactive Research • Microsoft Agent 365 Governance</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 24px; font-weight: 800; color: #38bdf8;">$50</span>
+                        <span style="font-size: 12px; color: #94a3b8;">/ user / month</span>
+                    </div>
+                </div>
+
+                <!-- Allowance Meter -->
+                <div class="allowance-box" style="margin-top: 16px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                        <span>Monthly Deep Work Allowance</span>
+                        <span id="billing-quota-text"><b>430</b> / 25,000 cycles used</span>
+                    </div>
+                    <div class="res-bar-track" style="height: 8px;">
+                        <div class="res-bar-fill" id="billing-quota-bar" style="width: 2%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Commercial Tiers for Selling -->
+            <div style="margin-top: 20px;">
+                <label class="section-label">Commercial Tiers (SaaS Deployment Ready)</label>
+                <div class="tier-cards-grid">
+                    <div class="tier-card">
+                        <div class="tier-title">Starter</div>
+                        <div class="tier-price">Free</div>
+                        <div class="tier-features">1 Primary Dot, Standard Speed, 100 cycles/mo</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-title">Pro</div>
+                        <div class="tier-price">$20<span>/mo</span></div>
+                        <div class="tier-features">5 Specialist Dots, Voice Calling, 5,000 cycles/mo</div>
+                    </div>
+                    <div class="tier-card active">
+                        <div class="tier-badge">CURRENT</div>
+                        <div class="tier-title">Business Premium</div>
+                        <div class="tier-price">$50<span>/mo</span></div>
+                        <div class="tier-features">Unlimited Dots, Dedicated Cloud REPL, 25,000 cycles/mo</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-title">Enterprise</div>
+                        <div class="tier-price">Custom</div>
+                        <div class="tier-features">Dedicated VPC, Custom SLAs, Microsoft Agent 365</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 24px; justify-content: space-between;">
+                <button class="btn btn-secondary" onclick="exportExecutiveDigest()">Export Audit Report</button>
+                <button class="btn btn-primary" onclick="closeBillingModal()">Save Settings</button>
+            </div>
         </div>
     </div>
 

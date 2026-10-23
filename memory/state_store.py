@@ -32,7 +32,7 @@ class StateStore:
 
     @contextmanager
     def _get_conn(self):
-        conn = sqlite3.connect(str(self.db_path))
+        conn = sqlite3.connect(str(self.db_path), timeout=30.0)
         conn.row_factory = sqlite3.Row
         try:
             yield conn
@@ -42,6 +42,9 @@ class StateStore:
     def _init_db(self):
         with self._get_conn() as conn:
             cursor = conn.cursor()
+            cursor.execute("PRAGMA journal_mode=WAL")
+            cursor.execute("PRAGMA busy_timeout=30000")
+            cursor.execute("PRAGMA synchronous=NORMAL")
             
             # Agents table
             cursor.execute("""
@@ -198,6 +201,20 @@ class StateStore:
             cursor.execute("SELECT * FROM agents ORDER BY created_at DESC")
             rows = cursor.fetchall()
             return [self._row_to_agent(r) for r in rows]
+
+    def delete_agent(self, agent_id: str) -> bool:
+        """Deletes an agent and cascades to its steps, decisions, reports, and messages."""
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM messages WHERE agent_id = ?", (agent_id,))
+            cursor.execute("DELETE FROM task_steps WHERE agent_id = ?", (agent_id,))
+            cursor.execute("DELETE FROM decisions WHERE agent_id = ?", (agent_id,))
+            cursor.execute("DELETE FROM reports WHERE agent_id = ?", (agent_id,))
+            cursor.execute("DELETE FROM checkpoints WHERE agent_id = ?", (agent_id,))
+            cursor.execute("DELETE FROM agents WHERE id = ?", (agent_id,))
+            deleted = cursor.rowcount > 0
+            conn.commit()
+            return deleted
 
     def _row_to_agent(self, row: sqlite3.Row) -> OneAgent:
         return OneAgent(

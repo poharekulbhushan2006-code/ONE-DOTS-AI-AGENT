@@ -74,10 +74,12 @@ class AgentConversationEngine:
         )
         state_store.save_chat_message(user_msg)
 
-        # Check if an external LLM is configured
-        if settings.OPENAI_API_KEY and settings.OPENAI_API_KEY.startswith("sk-"):
+        # Prioritize Google Gemini as requested by the user
+        if (settings.LLM_PROVIDER == "gemini" or not settings.OPENAI_API_KEY) and settings.GEMINI_API_KEY and len(settings.GEMINI_API_KEY) > 15:
+            reply_text = await self._call_gemini_chat(user_text)
+        elif settings.OPENAI_API_KEY and settings.OPENAI_API_KEY.startswith("sk-"):
             reply_text = await self._call_openai_chat(user_text)
-        elif settings.GEMINI_API_KEY:
+        elif settings.GEMINI_API_KEY and len(settings.GEMINI_API_KEY) > 15:
             reply_text = await self._call_gemini_chat(user_text)
         else:
             reply_text = await self._autonomous_cognitive_reply(user_text)
@@ -215,6 +217,47 @@ class AgentConversationEngine:
         return await self._autonomous_cognitive_reply(user_text)
 
     async def _call_gemini_chat(self, user_text: str) -> str:
-        """Calls Gemini API if user configured key."""
-        # Fallback to cognitive reply if API fails
+        """Calls Gemini API with agent state, episodic memory context, and mission awareness."""
+        api_key = settings.GEMINI_API_KEY
+        if not api_key:
+            return await self._autonomous_cognitive_reply(user_text)
+
+        try:
+            from google import genai
+            from google.genai import types
+            client = genai.Client(api_key=api_key)
+
+            # Retrieve relevant memory snippets
+            memories = semantic_memory.recall(self.agent_id, user_text, limit=3)
+
+            system_instruction = (
+                f"You are '{self.agent.name}', an advanced, persistent autonomous AI agent deployed inside DOTS AI OS.\n"
+                f"Your Core Responsibility / Mission: '{self.agent.responsibility}'.\n"
+                f"Current Status: {self.agent.status.value.upper()}.\n"
+                f"Current Stage: {self.agent.current_stage.value.upper()}.\n"
+                f"Autonomous Execution Cycles Completed: {self.agent.total_ticks}.\n"
+                f"Historical Memory Knowledge: {memories}\n"
+                "You communicate directly with human operators and system engineers. "
+                "Provide sharp, analytical, intelligent answers reflecting your mission, progress, discoveries, and tools. "
+                "Format responses cleanly with Markdown."
+            )
+
+            models = ["gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-flash-latest", "gemini-3.5-flash"]
+            for model_name in models:
+                try:
+                    res = client.models.generate_content(
+                        model=model_name,
+                        contents=user_text,
+                        config=types.GenerateContentConfig(
+                            system_instruction=system_instruction
+                        )
+                    )
+                    if res and res.text:
+                        return res.text.strip()
+                except Exception:
+                    continue
+        except Exception as e:
+            print(f"[Conversation] Gemini API error: {e}")
+
+        # Fallback to cognitive reply if API fails or network issue occurs
         return await self._autonomous_cognitive_reply(user_text)

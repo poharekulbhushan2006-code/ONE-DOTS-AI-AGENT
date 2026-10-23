@@ -118,16 +118,22 @@ class AgentOrchestrator:
             return self._finalize_tick(cycle_summary, AgentStatus.SLEEPING)
 
         except Exception as e:
+            err_str = f"{type(e).__name__}: {str(e)}" if str(e) else type(e).__name__
             error_step = TaskStep(
                 stage=self.agent.current_stage,
                 action="Execution error in autonomous loop",
                 success=False,
-                error_message=str(e),
+                error_message=err_str,
             )
             state_store.record_step(self.agent_id, error_step)
             self.agent.status = AgentStatus.ERROR
+            self.agent.next_tick_at = datetime.now(timezone.utc) + timedelta(seconds=max(60, self.agent.schedule_interval_seconds))
             state_store.save_agent(self.agent)
-            return {"status": "error", "error": str(e), "cycle_summary": cycle_summary}
+            return {"status": "error", "error": err_str, "cycle_summary": cycle_summary}
+
+    async def tick(self) -> Dict[str, Any]:
+        """Convenience alias for execute_tick."""
+        return await self.execute_tick()
 
     def _finalize_tick(self, summary: Dict[str, Any], next_status: AgentStatus) -> Dict[str, Any]:
         self.agent.status = next_status
@@ -196,11 +202,36 @@ class AgentOrchestrator:
         content = research_data.get("content", "")
         memories = research_data.get("past_memories", [])
         
-        # Determine synthesis
+        # Base synthesis summary
         analysis_summary = f"Synthesized research data from {len(research_data.get('search_results', []))} search results. "
         if content:
             analysis_summary += f"Extracted {len(content)} characters of live intelligence. "
         analysis_summary += f"Correlated with {len(memories)} existing knowledge points."
+
+        # Real Gemini AI Synthesis if key configured
+        if settings.GEMINI_API_KEY:
+            try:
+                from google import genai
+                from google.genai import types
+                client = genai.Client(api_key=settings.GEMINI_API_KEY)
+                prompt = (
+                    f"Synthesize the following research data for an agent with mission: '{self.agent.responsibility}'.\n"
+                    f"Search hits: {research_data.get('search_results', [])[:2]}\n"
+                    f"Page excerpt: {content[:800]}\n"
+                    f"Past memories: {memories}\n"
+                    "Provide a concise, 2-3 sentence strategic analysis and highlight any critical shifts."
+                )
+                res = client.models.generate_content(
+                    model="gemini-3.5-flash-lite",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction="You are an autonomous intelligence analyst."
+                    )
+                )
+                if res and res.text:
+                    analysis_summary = res.text.strip()
+            except Exception:
+                pass
 
         # Check for potential trigger or anomaly
         has_critical_shift = "price" in self.agent.responsibility.lower() or "alert" in self.agent.responsibility.lower()
@@ -291,6 +322,29 @@ print("Sandbox metrics updated successfully.")
         top_url = research_info.get("target_url") or "Web Search"
         screenshot_file = research_info.get("screenshot")
 
+        recommendations_text = f"The agent will continue continuous monitoring on a {self.agent.schedule_interval_seconds}s cadence."
+        if settings.GEMINI_API_KEY:
+            try:
+                from google import genai
+                from google.genai import types
+                client = genai.Client(api_key=settings.GEMINI_API_KEY)
+                prompt = (
+                    f"For an autonomous agent report titled '{title}', with mission '{self.agent.responsibility}', "
+                    f"and recent findings: '{analysis_data.get('analysis_summary')}', "
+                    "generate 3 sharp, bullet-point tactical recommendations for the next cycle."
+                )
+                res = client.models.generate_content(
+                    model="gemini-3.5-flash-lite",
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction="You are an executive AI mission advisor."
+                    )
+                )
+                if res and res.text:
+                    recommendations_text = res.text.strip()
+            except Exception:
+                pass
+
         report_markdown = f"""## Mission: {self.agent.responsibility}
 **Agent**: {self.agent.name} (`{self.agent.id}`)  
 **Execution Timestamp**: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}  
@@ -308,8 +362,8 @@ print("Sandbox metrics updated successfully.")
 - **Workspace Files Tracked**: {len(monitor_data.get('files', []))} files
 - **Output Status**: {build_data.get('sandbox_result', {}).get('stdout', 'OK').strip()}
 
-### 3. Recommendations & Next Continuous Steps
-The agent will continue continuous monitoring on a {self.agent.schedule_interval_seconds}s cadence.
+### 3. Tactical Recommendations & Autonomous Actions
+{recommendations_text}
 """
         report_res = self.tools.publish_report(title, summary, report_markdown)
 

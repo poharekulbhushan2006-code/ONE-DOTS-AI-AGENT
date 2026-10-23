@@ -26,7 +26,7 @@ class SemanticMemoryStore:
 
     @contextmanager
     def _get_conn(self):
-        conn = sqlite3.connect(str(self.db_path))
+        conn = sqlite3.connect(str(self.db_path), timeout=30.0)
         conn.row_factory = sqlite3.Row
         try:
             yield conn
@@ -36,6 +36,9 @@ class SemanticMemoryStore:
     def _init_db(self):
         with self._get_conn() as conn:
             cursor = conn.cursor()
+            cursor.execute("PRAGMA journal_mode=WAL")
+            cursor.execute("PRAGMA busy_timeout=30000")
+            cursor.execute("PRAGMA synchronous=NORMAL")
             cursor.execute("""
             CREATE TABLE IF NOT EXISTS memories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -155,6 +158,13 @@ class SemanticMemoryStore:
                 }
                 for r in rows
             ]
+
+    def clear_agent(self, agent_id: str):
+        """Clears all episodic memories for a given agent."""
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM memories WHERE agent_id = ?", (agent_id,))
+            conn.commit()
 
 
 semantic_memory = SemanticMemoryStore()
