@@ -627,64 +627,80 @@
 
     <!-- =========================================================================
          VIEW 2: AGENT WORKSTATION (FULL INTERACTIVE PLATFORM)
-         ========================================================================= -->
-    <section class="app-view" id="view-workstation">
-        <!-- Workstation Fleet Operational Header -->
-        <div class="workstation-subnav">
-            <div class="ws-telemetry-group">
-                <div class="ws-badge-always-on">
-                    <span class="pulse-dot"></span>
-                    <span>ALWAYS-ON FLEET</span>
-                </div>
-                <div class="ws-telemetry-chip">
-                    <span class="chip-label">ACTIVE DOTS</span>
-                    <span class="chip-val" id="metric-active-agents">0</span>
-                </div>
-                <div class="ws-telemetry-chip">
-                    <span class="chip-label">AUTONOMOUS CYCLES</span>
-                    <span class="chip-val" id="metric-total-ticks">0 ticks</span>
-                </div>
-                <div class="ws-telemetry-chip alert-chip" id="chip-pending-approvals" onclick="jumpToApprovals()">
-                    <span class="chip-label">HUMAN APPROVALS</span>
-                    <span class="chip-val" id="metric-pending-decisions">0</span>
+         ======================================        <!-- Senior Advanced Full-Stack Workstation Header -->
+        <div class="senior-workstation-header">
+            <div class="sw-header-left">
+                <button class="btn btn-secondary btn-sm sw-back-btn" onclick="switchMainView('view-showcase')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    <span>Overview</span>
+                </button>
+                <span class="sw-divider"></span>
+                <div class="sw-active-dot-pill" id="sw-active-dot-pill">
+                    <span class="sw-status-dot blue" id="sw-active-dot-indicator"></span>
+                    <span class="sw-active-dot-name" id="sw-active-dot-name">NOVA</span>
+                    <span class="sw-active-dot-role" id="sw-active-dot-role">Full-Stack Lead</span>
                 </div>
             </div>
-            <div class="ws-actions-group">
-                <button class="btn btn-secondary btn-sm" id="btn-open-integrations" onclick="openIntegrationsModal()">
-                    <span>⚡</span> Connect Apps <span class="badge-count">4,000+</span>
-                </button>
-                <button class="btn btn-secondary btn-sm" id="btn-open-billing" onclick="openBillingModal()">
-                    <span>📊</span> Enterprise Hub
+
+            <!-- Segmented Workspace Controls -->
+            <div class="sw-header-center">
+                <div class="sw-mode-switcher">
+                    <button class="sw-mode-btn active" id="sw-mode-chat" onclick="setWorkstationMode('chat')">
+                        <span>💬</span> Chat &amp; Goals
+                    </button>
+                    <button class="sw-mode-btn" id="sw-mode-repl" onclick="setWorkstationMode('repl')">
+                        <span>💻</span> Sandbox REPL
+                    </button>
+                    <button class="sw-mode-btn" id="sw-mode-audit" onclick="setWorkstationMode('audit')">
+                        <span>🛡️</span> Security &amp; Audit
+                    </button>
+                </div>
+            </div>
+
+            <div class="sw-header-right">
+                <div class="sw-fleet-status-chip">
+                    <span class="pulse-dot"></span>
+                    <span id="metric-active-agents">5</span> Specialists Online
+                </div>
+                <button class="btn btn-call btn-sm" id="btn-workstation-voice" onclick="startVoiceCall()" title="Live Voice Call with Active Dot">
+                    📞 Voice Call
                 </button>
                 <button class="btn btn-primary btn-sm" id="btn-open-create-modal">
-                    <span class="icon">+</span> Deploy Dot
+                    + Deploy Dot
                 </button>
+                <div style="display: none;">
+                    <span id="metric-total-ticks">0 ticks</span>
+                    <span id="metric-pending-decisions">0</span>
+                    <div id="chip-pending-approvals"></div>
+                    <button id="btn-open-integrations" onclick="openIntegrationsModal()"></button>
+                    <button id="btn-open-billing" onclick="openBillingModal()"></button>
+                </div>
             </div>
         </div>
 
-        <main class="dot-layout">
+        <main class="dot-layout inspector-hidden">
             
             <!-- Column 1: Fleet Sidebar -->
             <aside class="sidebar-fleet glass-card">
                 <div class="panel-header">
                     <div>
-                        <h2>Your Dots Fleet</h2>
-                        <span class="subtext">Always working on your behalf 24/7</span>
+                        <h2>Specialist Fleet</h2>
+                        <span class="subtext">5 autonomous frontier agents</span>
                     </div>
                     <button class="icon-btn-sm" onclick="fetchFleetData()" title="Refresh Fleet State">↻</button>
                 </div>
                 <div class="agent-list" id="agent-list">
-                    <div class="empty-state">Loading autonomous dots...</div>
+                    <!-- Populated automatically with NOVA, SAGE, AXIS, MUSE, HEX -->
                 </div>
                 <div class="sidebar-footer">
                     <button class="btn btn-outline btn-full" onclick="document.getElementById('btn-open-create-modal').click()">
-                        + Deploy New Archetype
+                        + Custom Agent Archetype
                     </button>
                 </div>
             </aside>
 
             <!-- Column 2: Conversational Dot Workspace -->
-            <section class="chat-workspace glass-card">
+            <section class="chat-workspace glass-card" id="chat-workspace-pane">
                 
                 <!-- Pending Human Approval Banner (Animated Alert) -->
                 <div class="approval-alert-banner" id="approval-alert-banner" style="display: none;">
@@ -715,35 +731,38 @@
                             <div class="dot-avatar" id="active-dot-avatar">◈</div>
                             <div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <h1 id="active-agent-name">Select a Dot</h1>
-                                    <span class="status-badge" id="active-agent-status">IDLE</span>
+                                    <h1 id="active-agent-name">Blue Dot (NOVA)</h1>
+                                    <span class="status-badge running" id="active-agent-status">RUNNING</span>
                                     <span class="verified-badge" title="IT-Provisioned Dedicated Hardware">🛡️ Verified Identity</span>
                                 </div>
                                 <!-- Dot Capability Tags -->
-                                <div class="dot-feature-tags" id="dot-feature-tags" style="display: none;">
-                                    <span class="feature-chip gemini-chip">✨ Google Gemini 3.5</span>
-                                    <span class="feature-chip">💻 Dedicated Cloud Computer</span>
-                                    <span class="feature-chip">🔍 Proactive Research 24/7</span>
-                                    <span class="feature-chip">🛡️ Auto-Review Safeguards</span>
+                                <div class="dot-feature-tags" id="dot-feature-tags">
+                                    <span class="feature-chip gemini-chip">✨ Google Gemini 2.5</span>
+                                    <span class="feature-chip">💻 Dedicated Cloud Sandbox</span>
+                                    <span class="feature-chip">⚡ Autonomous Execution</span>
+                                    <span class="feature-chip">🛡️ 19-Layer Hardened</span>
                                 </div>
                             </div>
                         </div>
-                        <p class="dot-responsibility-quote" id="active-agent-responsibility">Select a Dot to start collaborating, guide its goals, or inspect its cloud computer.</p>
+                        <p class="dot-responsibility-quote" id="active-agent-responsibility">Lead product launch readiness: learn audience &amp; positioning, revise launch story as scope changes, and prepare email &amp; social drafts.</p>
                     </div>
-                    <div class="dot-header-actions" id="agent-controls" style="display: none;">
+                    <div class="dot-header-actions" id="agent-controls">
                         <button class="btn btn-call btn-sm" id="btn-voice-call" onclick="startVoiceCall()" title="Hop on a real-time voice call with your Dot">
                             📞 Voice Call
                         </button>
                         <button class="btn btn-secondary btn-sm" id="btn-force-tick" title="Trigger background autonomous cycle immediately">
                             ⚡ Step Progress
                         </button>
-                        <button class="btn btn-secondary btn-sm" id="btn-toggle-inspector" onclick="toggleInspectorPanel()" title="Toggle Cloud Computer & Tools Panel">
+                        <button class="btn btn-secondary btn-sm" id="btn-toggle-inspector" onclick="toggleInspectorPanel()" title="Toggle Cloud Computer &amp; Tools Panel">
                             <span id="inspector-icon">💻</span> <span id="inspector-btn-text">Inspector</span>
                         </button>
-                        <button class="btn btn-outline btn-sm" id="btn-toggle-pause">
+                        <button class="btn btn-outline btn-sm" id="btn-clear-chat" onclick="clearActiveChat()" title="Clear chat messages">
+                            🧹 Clear
+                        </button>
+                        <button class="btn btn-outline btn-sm" id="btn-toggle-pause" style="display: none;">
                             ⏸ Pause
                         </button>
-                        <button class="btn btn-outline btn-sm btn-delete-agent" id="btn-delete-agent" title="Retire and delete this agent">
+                        <button class="btn btn-outline btn-sm btn-delete-agent" id="btn-delete-agent" style="display: none;" title="Retire and delete this agent">
                             🗑️
                         </button>
                     </div>
@@ -767,26 +786,31 @@
 
                 <!-- Chat Stream -->
                 <div class="chat-messages-container" id="chat-messages-container">
-                    <div class="empty-state">
-                        <p>No conversation history yet.</p>
-                        <p style="margin-top: 6px;">Select a Dot from the left or deploy a Specialist Archetype to collaborate!</p>
-                    </div>
+                    <!-- Loaded dynamically with welcome message, starter cards, and conversation history -->
                 </div>
 
                 <!-- Dynamic Quick Prompt Suggestion Pills -->
-                <div class="prompt-pills" id="prompt-pills" style="display: none;">
+                <div class="prompt-pills" id="prompt-pills">
                     <!-- Populated dynamically based on Dot Archetype -->
                 </div>
 
-                <!-- Chat Input Bar -->
-                <form class="chat-input-bar" id="chat-input-form" style="display: none;">
-                    <div class="chat-input-wrapper">
-                        <input type="text" id="chat-input" placeholder="Message your Dot, explore ideas, give feedback, or guide its focus..." autocomplete="off" required>
-                        <button type="button" class="btn-input-mic" onclick="startVoiceCall()" title="Switch to Voice Call">
-                            🎤
+                <!-- Modern Full-Stack Floating Chat Input Bar -->
+                <form class="senior-chat-input-bar" id="chat-input-form">
+                    <div class="input-actions-left">
+                        <button type="button" class="btn-input-tool" onclick="openNewFileModal()" title="Attach file or code">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                         </button>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-send" id="btn-send-chat">Send</button>
+                    <textarea id="chat-input" rows="1" placeholder="Message your Dot, assign a task, or run an action... (Enter to send, Shift+Enter for new line)" autocomplete="off" required></textarea>
+                    <div class="input-actions-right">
+                        <span class="model-badge">✨ Gemini 2.5</span>
+                        <button type="button" class="btn-input-mic" onclick="startVoiceCall()" title="Start Voice Call">
+                            🎙️
+                        </button>
+                        <button type="submit" class="btn-send-senior" id="btn-send-chat" title="Send message (Enter)">
+                            <span>Send</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
                 </form>
             </section>
 
