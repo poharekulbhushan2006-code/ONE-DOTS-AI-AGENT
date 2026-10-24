@@ -7,18 +7,15 @@
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="docs.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 
-    <!-- Ambient Cybernetic Glow Background -->
+    <!-- Restrained Obsidian Background -->
     <div class="app-background">
-        <div class="gradient-sphere sphere-1"></div>
-        <div class="gradient-sphere sphere-2"></div>
-        <div class="gradient-sphere sphere-3"></div>
         <div class="grid-overlay"></div>
     </div>
 
@@ -62,8 +59,8 @@
                     <span>Search</span>
                     <kbd>Ctrl K</kbd>
                 </button>
-                <button class="btn-openai-launch" id="btn-view-workstation" onclick="switchMainView('view-workstation')">
-                    Launch Agent ↗
+                <button class="button-primary btn-openai-launch" id="btn-view-workstation" onclick="switchMainView('view-workstation')">
+                    Explore agents ↗
                 </button>
             </div>
         </div>
@@ -71,64 +68,57 @@
 
     <!-- =========================================================================
          VIEW 1: FLAGSHIP OFFICIAL PRODUCT SHOWCASE & INFORMATION WEBSITE
-         SENIOR ADVANCED FULL-STACK ARCHITECTURE (LINEAR / VERCEL CALIBER)
+         OBSIDIAN + CHAMPAGNE GOLD PROFESSIONAL SPECIFICATION
          ========================================================================= -->
     <section class="app-view active" id="view-showcase">
         <div class="showcase-container">
             
-            <!-- Senior Executive Hero Section -->
+            <!-- Obsidian + Champagne Gold Hero Section -->
             <div class="senior-hero-wrapper">
                 <div class="hero-eyebrow-pill">
-                    <span class="live-pulse-emerald"></span>
-                    <span class="eyebrow-text">ALWAYS-ON FLEET ACTIVE • ENTERPRISE FRONTIER SYSTEM • 19-LAYER HARDENED</span>
-                    <span class="eyebrow-tag">v2.4 PROD</span>
+                    <span class="live-pulse-gold"></span>
+                    <span class="eyebrow-text">ONE DOTS &bull; Intelligent agents. One unified system.</span>
                 </div>
 
                 <h1 class="senior-hero-headline">
-                    Autonomous frontier intelligence <br>
-                    <span class="headline-gradient">that never clocks out.</span>
+                    Work smarter.<br>
+                    <span class="headline-gold">Coordinate intelligence.</span>
                 </h1>
 
                 <p class="senior-hero-subdeck">
-                    Dots are remarkably capable, always-on AI specialists equipped with isolated cloud sandboxes, persistent memory, and 4,000+ app connectors. While you sleep, your fleet analyzes telemetry, executes Python scripts, and prepares executive deliverables.
+                    A unified workspace for AI agents, task execution, and intelligent automation.
                 </p>
 
                 <div class="senior-hero-cta-bar">
-                    <button class="btn btn-primary btn-lg" onclick="switchMainView('view-workstation')">
-                        Launch Agent Workstation ◈
+                    <button class="button-primary btn-lg" onclick="switchMainView('view-workstation')">
+                        Explore agents ↗
                     </button>
-                    <button class="btn btn-secondary btn-lg" onclick="scrollToShowcaseSection('specialists-matrix')">
-                        Explore 5 Specialists ↓
+                    <button class="button-secondary btn-lg" onclick="scrollToShowcaseSection('specialists-matrix')">
+                        View platform
                     </button>
-                    <button class="btn btn-call btn-lg" onclick="startVoiceCall()">
+                    <button class="button-secondary btn-lg" onclick="startVoiceCall()">
                         📞 Live Voice Call
                     </button>
                 </div>
 
-                <!-- Senior Telemetry Badges Strip -->
+                <!-- Three Core Pillars Strip -->
                 <div class="senior-telemetry-strip">
                     <div class="telemetry-stat">
-                        <span class="stat-dot dot-blue"></span>
-                        <span class="stat-num" id="stat-active-specialists">5</span>
-                        <span class="stat-desc">Specialists Online</span>
+                        <span class="stat-dot dot-gold"></span>
+                        <span class="stat-num">AI Agents</span>
+                        <span class="stat-desc">Specialized work</span>
                     </div>
                     <div class="telemetry-sep">/</div>
                     <div class="telemetry-stat">
                         <span class="stat-dot dot-emerald"></span>
-                        <span class="stat-num">100%</span>
-                        <span class="stat-desc">Ephemeral Sandboxes</span>
+                        <span class="stat-num">Workflows</span>
+                        <span class="stat-desc">Connected tasks</span>
                     </div>
                     <div class="telemetry-sep">/</div>
                     <div class="telemetry-stat">
                         <span class="stat-dot dot-cyan"></span>
-                        <span class="stat-num">&lt; 14ms</span>
-                        <span class="stat-desc">Execution Latency</span>
-                    </div>
-                    <div class="telemetry-sep">/</div>
-                    <div class="telemetry-stat">
-                        <span class="stat-dot dot-purple"></span>
-                        <span class="stat-num">0</span>
-                        <span class="stat-desc">Unreviewed Actions</span>
+                        <span class="stat-num">Execution</span>
+                        <span class="stat-desc">Live activity</span>
                     </div>
                 </div>
             </div>
@@ -196,10 +186,10 @@
                  EXECUTIVE SPECIALIST BENTO MATRIX (5 TURNKEY FLEET ARCHETYPES)
                  ========================================================================= -->
             <div class="section-heading-box" id="specialists-matrix" style="margin-top: 100px;">
-                <div class="section-kicker">Department Specialists</div>
-                <h2 class="section-main-title">Specialist Dots for Your Entire Organization</h2>
+                <div class="section-kicker">AI Workforce</div>
+                <h2 class="section-main-title">Your AI workforce</h2>
                 <p class="section-desc">
-                    Deploy 5 turnkey specialist archetypes—engineered with domain-specific toolchains, dedicated cloud REPL sandboxes, and continuous learning feedback loops.
+                    Coordinate agents, execute tasks, and manage workflows from a unified workspace.
                 </p>
             </div>
 
