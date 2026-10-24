@@ -3551,19 +3551,20 @@ body {
 }
 
 .halo-blue {
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0.1) 60%, transparent 80%);
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.6) 0%, rgba(56, 189, 248, 0.15) 60%, transparent 80%);
 }
-.halo-green {
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.55) 0%, rgba(16, 185, 129, 0.1) 60%, transparent 80%);
+.halo-green, .halo-lime {
+    background: radial-gradient(circle, rgba(132, 204, 22, 0.65) 0%, rgba(16, 185, 129, 0.2) 60%, transparent 80%);
 }
-.halo-yellow {
-    background: radial-gradient(circle, rgba(245, 158, 11, 0.55) 0%, rgba(245, 158, 11, 0.1) 60%, transparent 80%);
+.halo-yellow, .halo-gold {
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.65) 0%, rgba(234, 179, 8, 0.2) 60%, transparent 80%);
 }
 .halo-purple {
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.55) 0%, rgba(168, 85, 247, 0.1) 60%, transparent 80%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.6) 0%, rgba(168, 85, 247, 0.15) 60%, transparent 80%);
 }
-.halo-orange {
-    background: radial-gradient(circle, rgba(249, 115, 22, 0.55) 0%, rgba(249, 115, 22, 0.1) 60%, transparent 80%);
+.halo-hex, .halo-cyan, .halo-orange {
+    background: radial-gradient(circle, rgba(0, 245, 255, 0.65) 0%, rgba(6, 182, 212, 0.3) 50%, rgba(10, 17, 40, 0.6) 75%, transparent 88%);
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.4);
 }
 
 @keyframes haloBreathe {

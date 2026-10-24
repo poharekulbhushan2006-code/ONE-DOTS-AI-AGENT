@@ -542,32 +542,63 @@ function updateTopMetrics(agents, decisions) {
 }
 
 const DOT_PRESETS = {
+    nova: {
+        name: "Blue Dot (NOVA)",
+        color: "blue",
+        mission: "Lead product launch readiness: learn audience & positioning, revise launch story as scope changes, and prepare email & social drafts.",
+        interval: 180
+    },
+    sage: {
+        name: "Lime-Green Dot (SAGE)",
+        color: "green",
+        mission: "Research Scientist: learn research goals, evaluate incoming evidence, rerun data analyses in Python sandbox, and flag unexpected anomalies.",
+        interval: 180
+    },
+    axis: {
+        name: "Golden-Yellow Dot (AXIS)",
+        color: "yellow",
+        mission: "Enterprise Sales Lead: review customer requirements against docs, test integrations, generate sandbox proof-of-concepts, and update proposals.",
+        interval: 300
+    },
+    muse: {
+        name: "Purple Dot (MUSE)",
+        color: "purple",
+        mission: "Content Creator & Media Lead: learn creator voice, extract clip moments from interview transcripts, generate show notes, and draft social posts.",
+        interval: 180
+    },
+    hex: {
+        name: "Dark Navy Dot (HEX)",
+        color: "cyan",
+        mission: "Software Developer: monitor customer feedback for bug reports, scope fixes, execute test suites in sandbox cloud computer, and prepare verified PRs.",
+        interval: 120
+    },
+    // Backward-compatibility aliases
     felipe: {
-        name: "Blue Dot (Felipe)",
+        name: "Blue Dot (NOVA)",
         color: "blue",
         mission: "Lead product launch readiness: learn audience & positioning, revise launch story as scope changes, and prepare email & social drafts.",
         interval: 180
     },
     todd: {
-        name: "Green Dot (Todd)",
+        name: "Lime-Green Dot (SAGE)",
         color: "green",
-        mission: "Research Scientist: learn research goals, evaluate incoming evidence, rerun data analyses in sandbox, and flag unexpected results.",
+        mission: "Research Scientist: learn research goals, evaluate incoming evidence, rerun data analyses in Python sandbox, and flag unexpected anomalies.",
         interval: 180
     },
     alfred: {
-        name: "Yellow Dot (Alfred)",
+        name: "Golden-Yellow Dot (AXIS)",
         color: "yellow",
         mission: "Enterprise Sales Lead: review customer requirements against docs, test integrations, generate sandbox proof-of-concepts, and update proposals.",
         interval: 300
     },
     jojo: {
-        name: "Purple Dot (Jojo)",
+        name: "Purple Dot (MUSE)",
         color: "purple",
         mission: "Content Creator & Media Lead: learn creator voice, extract clip moments from interview transcripts, generate show notes, and draft social posts.",
         interval: 180
     },
     dev: {
-        name: "Dev Dot (Sentry)",
+        name: "Dark Navy Dot (HEX)",
         color: "cyan",
         mission: "Software Developer: monitor customer feedback for bug reports, scope fixes, execute test suites in sandbox cloud computer, and prepare verified PRs.",
         interval: 120
@@ -594,40 +625,41 @@ function applyPreset(type) {
 function getDotColor(agent) {
     if (agent.context && agent.context.color) return agent.context.color;
     const lower = (agent.name + " " + agent.responsibility).toLowerCase();
-    if (lower.includes("blue") || lower.includes("felipe") || lower.includes("launch")) return "blue";
-    if (lower.includes("green") || lower.includes("todd") || lower.includes("scientist") || lower.includes("science")) return "green";
-    if (lower.includes("yellow") || lower.includes("alfred") || lower.includes("sales") || lower.includes("enterprise") || lower.includes("deal")) return "yellow";
-    if (lower.includes("purple") || lower.includes("jojo") || lower.includes("content") || lower.includes("creator")) return "purple";
+    if (lower.includes("blue") || lower.includes("nova") || lower.includes("felipe") || lower.includes("launch")) return "blue";
+    if (lower.includes("green") || lower.includes("lime") || lower.includes("sage") || lower.includes("todd") || lower.includes("scientist") || lower.includes("science")) return "green";
+    if (lower.includes("yellow") || lower.includes("gold") || lower.includes("axis") || lower.includes("alfred") || lower.includes("sales") || lower.includes("enterprise") || lower.includes("deal")) return "yellow";
+    if (lower.includes("purple") || lower.includes("muse") || lower.includes("jojo") || lower.includes("content") || lower.includes("creator")) return "purple";
+    if (lower.includes("hex") || lower.includes("cyan") || lower.includes("navy") || lower.includes("sentry") || lower.includes("dev")) return "cyan";
     return "cyan";
 }
 
 function getDotAvatarSrc(agent) {
-    if (!agent) return 'assets/dots/felipe_avatar.png';
+    if (!agent) return 'assets/dots/nova_avatar.png';
     const archetype = (agent.context?.archetype || '').toLowerCase();
     const name = (agent.name || '').toLowerCase();
     const resp = (agent.responsibility || '').toLowerCase();
 
-    if (archetype === 'felipe' || name.includes('felipe') || name.includes('blue') || resp.includes('launch')) {
-        return 'assets/dots/felipe_avatar.png';
+    if (archetype === 'nova' || archetype === 'felipe' || name.includes('nova') || name.includes('felipe') || name.includes('blue') || resp.includes('launch')) {
+        return 'assets/dots/nova_avatar.png';
     }
-    if (archetype === 'todd' || name.includes('todd') || name.includes('green') || resp.includes('scientist') || resp.includes('research')) {
-        return 'assets/dots/todd_avatar.png';
+    if (archetype === 'sage' || archetype === 'todd' || name.includes('sage') || name.includes('todd') || name.includes('green') || resp.includes('scientist') || resp.includes('research')) {
+        return 'assets/dots/sage_avatar.png';
     }
-    if (archetype === 'alfred' || name.includes('alfred') || name.includes('yellow') || resp.includes('sales') || resp.includes('enterprise') || resp.includes('poc')) {
-        return 'assets/dots/alfred_avatar.png';
+    if (archetype === 'axis' || archetype === 'alfred' || name.includes('axis') || name.includes('alfred') || name.includes('yellow') || resp.includes('sales') || resp.includes('enterprise') || resp.includes('poc')) {
+        return 'assets/dots/axis_avatar.png';
     }
-    if (archetype === 'jojo' || name.includes('jojo') || name.includes('purple') || resp.includes('content') || resp.includes('media') || resp.includes('viral')) {
-        return 'assets/dots/jojo_avatar.png';
+    if (archetype === 'muse' || archetype === 'jojo' || name.includes('muse') || name.includes('jojo') || name.includes('purple') || resp.includes('content') || resp.includes('media') || resp.includes('viral')) {
+        return 'assets/dots/muse_avatar.png';
     }
-    if (archetype === 'dev' || name.includes('sentry') || name.includes('dev') || resp.includes('software') || resp.includes('bug')) {
-        return 'assets/dots/sentry_avatar.png';
+    if (archetype === 'hex' || archetype === 'dev' || name.includes('hex') || name.includes('sentry') || name.includes('dev') || resp.includes('software') || resp.includes('bug') || name.includes('navy')) {
+        return 'assets/dots/hex_avatar.png';
     }
     const c = getDotColor(agent);
-    if (c === 'green') return 'assets/dots/todd_avatar.png';
-    if (c === 'yellow') return 'assets/dots/alfred_avatar.png';
-    if (c === 'purple') return 'assets/dots/jojo_avatar.png';
-    if (c === 'cyan') return 'assets/dots/sentry_avatar.png';
-    return 'assets/dots/felipe_avatar.png';
+    if (c === 'green') return 'assets/dots/sage_avatar.png';
+    if (c === 'yellow') return 'assets/dots/axis_avatar.png';
+    if (c === 'purple') return 'assets/dots/muse_avatar.png';
+    if (c === 'cyan') return 'assets/dots/hex_avatar.png';
+    return 'assets/dots/nova_avatar.png';
 }
 
 function getDotColorHex(agent) {
@@ -674,37 +706,44 @@ function playCartoonPopSound(pitchMultiplier = 1.0) {
 }
 
 const CARTOON_QUIPS = {
-    felipe: [
-        "Hey! Ready to launch this product! 🚀",
+    nova: [
+        "Hey! NOVA is ready to launch this product! 🚀",
         "Audience positioning locked & loaded! ✨",
         "Launch story looks stellar! Let's go! ◈",
-        "Checking blockers and shipping today!"
+        "NOVA checking blockers and shipping today!"
     ],
-    todd: [
-        "Aha! A breakthrough hypothesis! 🔬",
-        "Running statistical verification now... 📊",
+    sage: [
+        "Aha! SAGE verified the breakthrough hypothesis! 🔬",
+        "Running statistical verification in Python sandbox... 📊",
         "Data correlation verified 100%! 🧪",
         "The experimental evidence is crystal clear!"
     ],
-    alfred: [
+    axis: [
         "Deal closed! Handshake verified 🤝",
-        "Enterprise ROI is looking phenomenal! 💼",
+        "AXIS calculated enterprise ROI at 420%! 💼",
         "RFP documentation drafted & approved! 📈",
         "Solutions engineers synced for the POC!"
     ],
-    jojo: [
+    muse: [
         "This is totally viral material! 🎬",
-        "Dropping fresh podcast clips now! 🎧",
+        "MUSE dropping fresh podcast clips now! 🎧",
         "High-engagement hooks ready for socials! ✨",
         "Trending audio matched to our creator voice! 🔥"
     ],
-    dev: [
-        "Bug squashed, PR merged cleanly! ⚡",
-        "All 42 sandbox unit tests passing! 🛡️",
-        "Commit signed and verified in cloud computer! </>>",
+    hex: [
+        "HEX squashed the bug, PR merged cleanly! ⚡",
+        "All 42 sandbox unit tests passing with cyan telemetry! 🛡️",
+        "Commit signed and verified in cloud computer! ◈",
         "Zero regressions detected! Code is rock-solid!"
     ]
 };
+// Aliases for backwards compatibility
+CARTOON_QUIPS.felipe = CARTOON_QUIPS.nova;
+CARTOON_QUIPS.todd = CARTOON_QUIPS.sage;
+CARTOON_QUIPS.alfred = CARTOON_QUIPS.axis;
+CARTOON_QUIPS.jojo = CARTOON_QUIPS.muse;
+CARTOON_QUIPS.dev = CARTOON_QUIPS.hex;
+CARTOON_QUIPS.sentry = CARTOON_QUIPS.hex;
 
 function touchDotCartoon(dotType, element, event, dotName) {
     if (event) event.stopPropagation();
@@ -713,16 +752,21 @@ function touchDotCartoon(dotType, element, event, dotName) {
     let key = dotType;
     if (!key && dotName) {
         const lower = dotName.toLowerCase();
-        if (lower.includes('felipe') || lower.includes('blue')) key = 'felipe';
-        else if (lower.includes('todd') || lower.includes('green') || lower.includes('scientist')) key = 'todd';
-        else if (lower.includes('alfred') || lower.includes('yellow') || lower.includes('sales')) key = 'alfred';
-        else if (lower.includes('jojo') || lower.includes('purple') || lower.includes('content')) key = 'jojo';
-        else if (lower.includes('sentry') || lower.includes('dev')) key = 'dev';
+        if (lower.includes('nova') || lower.includes('felipe') || lower.includes('blue')) key = 'nova';
+        else if (lower.includes('sage') || lower.includes('todd') || lower.includes('green') || lower.includes('scientist')) key = 'sage';
+        else if (lower.includes('axis') || lower.includes('alfred') || lower.includes('yellow') || lower.includes('sales')) key = 'axis';
+        else if (lower.includes('muse') || lower.includes('jojo') || lower.includes('purple') || lower.includes('content')) key = 'muse';
+        else if (lower.includes('hex') || lower.includes('sentry') || lower.includes('dev') || lower.includes('cyan')) key = 'hex';
     }
-    if (!key) key = 'felipe';
+    if (!key) key = 'nova';
+    if (key === 'felipe') key = 'nova';
+    if (key === 'todd') key = 'sage';
+    if (key === 'alfred') key = 'axis';
+    if (key === 'jojo') key = 'muse';
+    if (key === 'dev' || key === 'sentry') key = 'hex';
 
     // Play rubbery cartoon pop sound
-    const pitchMap = { felipe: 1.1, todd: 1.25, alfred: 0.9, jojo: 1.35, dev: 0.85 };
+    const pitchMap = { nova: 1.1, sage: 1.25, axis: 0.9, muse: 1.35, hex: 0.85, felipe: 1.1, todd: 1.25, alfred: 0.9, jojo: 1.35, dev: 0.85 };
     playCartoonPopSound(pitchMap[key] || 1.0);
 
     // Find the image element to squish
@@ -735,7 +779,7 @@ function touchDotCartoon(dotType, element, event, dotName) {
     }
 
     // Pick a random personality quip
-    const quipList = CARTOON_QUIPS[key] || CARTOON_QUIPS.felipe;
+    const quipList = CARTOON_QUIPS[key] || CARTOON_QUIPS.nova;
     const quip = quipList[Math.floor(Math.random() * quipList.length)];
 
     // Show speech bubbles (both hero cluster and showcase cards)
@@ -1707,20 +1751,20 @@ const FILM_TOTAL_SECONDS = 150; // 5 specialists x 30s = 02:30 total duration
 
 const FILM_CHAPTERS = [
     {
-        dotKey: "felipe",
-        dotName: "Felipe",
-        title: "Blue Dot (Felipe): Product Launch Lead",
-        badge: "SPECIALIST 1 • BLUE DOT (FELIPE) • 00:00 - 00:30",
+        dotKey: "nova",
+        dotName: "NOVA",
+        title: "Blue Dot (NOVA): Autonomous Product Launch Lead",
+        badge: "SPECIALIST 1 • BLUE DOT (NOVA) • 00:00 - 00:30",
         startSec: 0,
         endSec: 30,
-        desc: "Learns positioning and audience standards. When product scope shifts, Felipe automatically revises launch narratives, updates Linear roadmaps, and syncs 4,000+ app connectors without delay.",
-        narration: "Meet Felipe, the Blue Dot and autonomous Product Launch Lead. When product scope shifts, Felipe automatically rewrites launch narratives, syncs Linear tickets, and prepares customer drafts across your connected apps.",
+        desc: "Blue droplet face. Learns positioning and audience standards. When product scope shifts, NOVA automatically revises launch narratives, updates Linear roadmaps, and syncs 4,000+ app connectors without delay.",
+        narration: "Meet NOVA, the Blue Dot and autonomous Product Launch Lead. With its friendly blue face, when product scope shifts, NOVA automatically rewrites launch narratives, syncs Linear tickets, and prepares customer drafts across your connected apps.",
         renderVisual: () => `
-            <div class="film-dot-stage-row felipe-theme">
-                <div class="film-character-spotlight" onclick="touchDotCartoon('felipe', this, event)" title="Touch Felipe!">
+            <div class="film-dot-stage-row nova-theme felipe-theme">
+                <div class="film-character-spotlight" onclick="touchDotCartoon('nova', this, event)" title="Touch NOVA!">
                     <div class="spotlight-halo halo-blue"></div>
-                    <img src="assets/dots/felipe.png" alt="Felipe" class="film-stage-character cartoon-float" />
-                    <div class="film-char-badge blue">Blue Dot • Launch Lead</div>
+                    <img src="assets/dots/nova.png" alt="NOVA" class="film-stage-character cartoon-float" />
+                    <div class="film-char-badge blue">Blue Dot (NOVA) • Launch Lead</div>
                 </div>
                 <div class="film-widget-box">
                     <div class="widget-header">
@@ -1764,20 +1808,20 @@ const FILM_CHAPTERS = [
         `
     },
     {
-        dotKey: "todd",
-        dotName: "Todd",
-        title: "Green Dot (Todd): Research Scientist",
-        badge: "SPECIALIST 2 • GREEN DOT (TODD) • 00:30 - 01:00",
+        dotKey: "sage",
+        dotName: "SAGE",
+        title: "Lime-Green Dot (SAGE): Research Scientist & Evidence",
+        badge: "SPECIALIST 2 • LIME-GREEN DOT (SAGE) • 00:30 - 01:00",
         startSec: 30,
         endSec: 60,
-        desc: "Formulates hypotheses and inspects live telemetry. As new evidence arrives, Todd reruns statistical analyses in its Python cloud sandbox, flags anomalies, and updates figures.",
-        narration: "Meet Todd, the Green Dot and autonomous Research Scientist. Powered by its dedicated cloud computer, Todd runs statistical regressions in Python, monitors real-time telemetry, and instantly alerts you when data anomalies are detected.",
+        desc: "Lime-green face with round glasses. Formulates hypotheses and inspects live telemetry. As new evidence arrives, SAGE reruns statistical analyses in its Python cloud sandbox, flags anomalies, and updates figures.",
+        narration: "Meet SAGE, the Lime-Green Dot with round glasses and autonomous Research Scientist. Powered by its dedicated cloud computer, SAGE runs statistical regressions in Python, monitors real-time telemetry, and instantly alerts you when data anomalies are detected.",
         renderVisual: () => `
-            <div class="film-dot-stage-row todd-theme">
-                <div class="film-character-spotlight" onclick="touchDotCartoon('todd', this, event)" title="Touch Todd!">
+            <div class="film-dot-stage-row sage-theme todd-theme">
+                <div class="film-character-spotlight" onclick="touchDotCartoon('sage', this, event)" title="Touch SAGE!">
                     <div class="spotlight-halo halo-green"></div>
-                    <img src="assets/dots/todd.png" alt="Todd" class="film-stage-character cartoon-float" />
-                    <div class="film-char-badge green">Green Dot • Research Scientist</div>
+                    <img src="assets/dots/sage.png" alt="SAGE" class="film-stage-character cartoon-float" />
+                    <div class="film-char-badge green">Lime-Green Dot (SAGE) • Research Scientist</div>
                 </div>
                 <div class="film-widget-box">
                     <div class="widget-header">
@@ -1788,15 +1832,15 @@ const FILM_CHAPTERS = [
                         <svg class="regression-svg" viewBox="0 0 360 85">
                             <defs>
                                 <linearGradient id="todd-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+                                    <stop offset="0%" stop-color="#84cc16" stop-opacity="0.3"/>
                                     <stop offset="60%" stop-color="#10b981" stop-opacity="1"/>
                                     <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.9"/>
                                 </linearGradient>
                             </defs>
                             <path d="M 15,70 Q 90,62 150,38 T 270,22 T 345,12" fill="none" stroke="url(#todd-grad)" stroke-width="3" stroke-linecap="round" class="animated-curve-line" />
-                            <circle cx="65" cy="66" r="3.5" fill="#10b981" />
-                            <circle cx="120" cy="48" r="3.5" fill="#10b981" />
-                            <circle cx="190" cy="32" r="3.5" fill="#10b981" />
+                            <circle cx="65" cy="66" r="3.5" fill="#84cc16" />
+                            <circle cx="120" cy="48" r="3.5" fill="#84cc16" />
+                            <circle cx="190" cy="32" r="3.5" fill="#84cc16" />
                             <circle cx="240" cy="24" r="3.5" fill="#10b981" />
                             <circle cx="315" cy="16" r="3.5" fill="#10b981" />
                             <circle cx="280" cy="52" r="5" fill="#ef4444" class="pulse-anomaly" />
@@ -1813,20 +1857,20 @@ const FILM_CHAPTERS = [
         `
     },
     {
-        dotKey: "alfred",
-        dotName: "Alfred",
-        title: "Yellow Dot (Alfred): Enterprise Sales Lead",
-        badge: "SPECIALIST 3 • YELLOW DOT (ALFRED) • 01:00 - 01:30",
+        dotKey: "axis",
+        dotName: "AXIS",
+        title: "Golden-Yellow Dot (AXIS): Enterprise Sales Lead",
+        badge: "SPECIALIST 3 • GOLDEN-YELLOW DOT (AXIS) • 01:00 - 01:30",
         startSec: 60,
         endSec: 90,
-        desc: "Parses dense 80+ page RFPs against your technical documentation, executes proof-of-concept scripts in its cloud sandbox, and automatically qualifies enterprise security requirements.",
-        narration: "Meet Alfred, the Yellow Dot and Enterprise Sales Lead. Alfred inspects incoming customer RFPs against your technical documentation, executes sandbox proof of concepts, and automates high-value deal closing.",
+        desc: "Golden-yellow star face. Parses dense 80+ page RFPs against your technical documentation, executes proof-of-concept scripts in its cloud sandbox, and automatically qualifies enterprise security requirements.",
+        narration: "Meet AXIS, the Golden-Yellow Dot and Enterprise Sales Lead. AXIS inspects incoming customer RFPs against your technical documentation, executes sandbox proof of concepts, and automates high-value deal closing.",
         renderVisual: () => `
-            <div class="film-dot-stage-row alfred-theme">
-                <div class="film-character-spotlight" onclick="touchDotCartoon('alfred', this, event)" title="Touch Alfred!">
+            <div class="film-dot-stage-row axis-theme alfred-theme">
+                <div class="film-character-spotlight" onclick="touchDotCartoon('axis', this, event)" title="Touch AXIS!">
                     <div class="spotlight-halo halo-yellow"></div>
-                    <img src="assets/dots/alfred.png" alt="Alfred" class="film-stage-character cartoon-float" />
-                    <div class="film-char-badge yellow">Yellow Dot • Enterprise Sales</div>
+                    <img src="assets/dots/axis.png" alt="AXIS" class="film-stage-character cartoon-float" />
+                    <div class="film-char-badge yellow">Golden-Yellow Dot (AXIS) • Enterprise Sales</div>
                 </div>
                 <div class="film-widget-box">
                     <div class="widget-header">
@@ -1850,27 +1894,27 @@ const FILM_CHAPTERS = [
                         <div class="comp-badge verified">✓ AWS VPC Sandbox</div>
                     </div>
                     <div class="rfp-note-line">
-                        <span class="rfp-icon">📄</span> Alfred verified 142 technical criteria in 6.2s — zero bottlenecks
+                        <span class="rfp-icon">📄</span> AXIS verified 142 technical criteria in 6.2s — zero bottlenecks
                     </div>
                 </div>
             </div>
         `
     },
     {
-        dotKey: "jojo",
-        dotName: "Jojo",
-        title: "Purple Dot (Jojo): Content Creator & Media",
-        badge: "SPECIALIST 4 • PURPLE DOT (JOJO) • 01:30 - 02:00",
+        dotKey: "muse",
+        dotName: "MUSE",
+        title: "Purple Dot (MUSE): Content Creator & Media",
+        badge: "SPECIALIST 4 • PURPLE DOT (MUSE) • 01:30 - 02:00",
         startSec: 90,
         endSec: 120,
-        desc: "Ingests raw podcasts, keynotes, and videos. Jojo extracts high-retention clips, drafts viral social threads, and formats show notes while preserving your authentic voice.",
-        narration: "Meet Jojo, the Purple Dot and Content Creator. Jojo ingests your raw recordings and podcasts, identifies viral moments through retention analysis, and writes engaging threads and video scripts in your exact voice.",
+        desc: "Purple face with planetary ring. Ingests raw podcasts, keynotes, and videos. MUSE extracts high-retention clips, drafts viral social threads, and formats show notes while preserving your authentic voice.",
+        narration: "Meet MUSE, the Purple Dot with planetary ring and Content Creator. MUSE ingests your raw recordings and podcasts, identifies viral moments through retention analysis, and writes engaging threads and video scripts in your exact voice.",
         renderVisual: () => `
-            <div class="film-dot-stage-row jojo-theme">
-                <div class="film-character-spotlight" onclick="touchDotCartoon('jojo', this, event)" title="Touch Jojo!">
+            <div class="film-dot-stage-row muse-theme jojo-theme">
+                <div class="film-character-spotlight" onclick="touchDotCartoon('muse', this, event)" title="Touch MUSE!">
                     <div class="spotlight-halo halo-purple"></div>
-                    <img src="assets/dots/jojo.png" alt="Jojo" class="film-stage-character cartoon-float" />
-                    <div class="film-char-badge purple">Purple Dot • Content &amp; Media</div>
+                    <img src="assets/dots/muse.png" alt="MUSE" class="film-stage-character cartoon-float" />
+                    <div class="film-char-badge purple">Purple Dot (MUSE) • Content &amp; Media</div>
                 </div>
                 <div class="film-widget-box">
                     <div class="widget-header">
@@ -1904,25 +1948,25 @@ const FILM_CHAPTERS = [
         `
     },
     {
-        dotKey: "dev",
-        dotName: "Sentry",
-        title: "Dev Dot (Sentry): Autonomous Software Dev",
-        badge: "SPECIALIST 5 • DEV DOT (SENTRY) • 02:00 - 02:30",
+        dotKey: "hex",
+        dotName: "HEX",
+        title: "Dark Navy Dot (HEX): Autonomous Software Dev",
+        badge: "SPECIALIST 5 • DARK NAVY DOT (HEX) • 02:00 - 02:30",
         startSec: 120,
         endSec: 150,
-        desc: "Equipped with an isolated development sandbox, Sentry monitors bug reports, writes Git patches, executes complete test suites, and opens automated pull requests with zero regressions.",
-        narration: "Meet Sentry, the autonomous Software Developer. Sentry runs your code in dedicated terminal sandboxes, fixes bugs, executes test suites, and opens pull requests with automated zero-regression guarantees.",
+        desc: "Dark navy face with glowing cyan features. Equipped with an isolated development sandbox, HEX monitors bug reports, writes Git patches, executes complete test suites, and opens automated pull requests with zero regressions.",
+        narration: "Meet HEX, the Dark Navy Dot with glowing cyan features and autonomous Software Developer. HEX runs your code in dedicated terminal sandboxes, fixes bugs, executes test suites, and opens pull requests with automated zero-regression guarantees.",
         renderVisual: () => `
-            <div class="film-dot-stage-row dev-theme">
-                <div class="film-character-spotlight" onclick="touchDotCartoon('dev', this, event)" title="Touch Sentry!">
-                    <div class="spotlight-halo halo-orange"></div>
-                    <img src="assets/dots/sentry.png" alt="Sentry" class="film-stage-character cartoon-float" />
-                    <div class="film-char-badge orange">Dev Dot • Autonomous Engineer</div>
+            <div class="film-dot-stage-row hex-theme dev-theme">
+                <div class="film-character-spotlight" onclick="touchDotCartoon('hex', this, event)" title="Touch HEX!">
+                    <div class="spotlight-halo halo-hex"></div>
+                    <img src="assets/dots/hex.png" alt="HEX" class="film-stage-character cartoon-float" />
+                    <div class="film-char-badge cyan" style="background: rgba(6, 182, 212, 0.2); color: #00f5ff; border: 1px solid rgba(6, 182, 212, 0.4);">Dark Navy Dot (HEX) • Autonomous Engineer</div>
                 </div>
                 <div class="film-widget-box">
                     <div class="widget-header">
-                        <span class="widget-tag orange">AUTONOMOUS GIT PR &amp; REPL ENGINE</span>
-                        <span class="widget-status"><span class="pulse-dot orange"></span> Terminal Sandbox Isolated</span>
+                        <span class="widget-tag cyan" style="color: #00f5ff;">AUTONOMOUS GIT PR &amp; REPL ENGINE</span>
+                        <span class="widget-status"><span class="pulse-dot cyan" style="background: #00f5ff;"></span> Terminal Sandbox Isolated</span>
                     </div>
                     <div class="diff-terminal-mockup">
                         <div class="diff-header">
@@ -2259,8 +2303,8 @@ function generateLocalDocsReply(query) {
     if (q.includes('stdin') || q.includes('input')) {
         return "The Cloud Computer features an isolated sandbox with a Safe Input Shim. When `input()` is called without terminal interaction, it automatically handles EOFError and defaults to 'User' in milliseconds, preventing 30-second timeouts. Operators can also supply inputs directly in the STDIN input field.";
     }
-    if (q.includes('archetype') || q.includes('felipe') || q.includes('todd') || q.includes('alfred') || q.includes('dev')) {
-        return "ONE DOTS features 5 Specialist Archetypes:\n- **Blue Dot (Felipe)**: Product Launch Lead\n- **Green Dot (Todd)**: Research Scientist & Evidence\n- **Yellow Dot (Alfred)**: Enterprise Deals & Technical POCs\n- **Purple Dot (Jojo)**: Content & Media Creator\n- **Dev Dot (Sentry)**: Autonomous Engineering PRs & Bugfixes.";
+    if (q.includes('archetype') || q.includes('nova') || q.includes('sage') || q.includes('axis') || q.includes('muse') || q.includes('hex') || q.includes('felipe') || q.includes('todd') || q.includes('alfred') || q.includes('dev')) {
+        return "ONE DOTS features 5 Specialist Archetypes:\n- **Blue Dot (NOVA)**: Blue face — Product Launch Lead\n- **Lime-Green Dot (SAGE)**: Lime-green face with round glasses — Research Scientist & Evidence\n- **Golden-Yellow Dot (AXIS)**: Golden-yellow star face — Enterprise Deals & Technical POCs\n- **Purple Dot (MUSE)**: Purple face with planetary ring — Content & Media Creator\n- **Dark Navy Dot (HEX)**: Dark navy face with glowing cyan features — Autonomous Engineering PRs & Bugfixes.";
     }
     if (q.includes('voice') || q.includes('call')) {
         return "Real-Time Voice Calls connect directly to the Google Gemini 3.5 Audio Engine. Click '📞 Start Live Voice Call' anywhere in the platform to speak with full bidirectional audio synthesis.";

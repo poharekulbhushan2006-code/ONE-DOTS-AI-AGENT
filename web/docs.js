@@ -253,8 +253,8 @@ function generateLocalDocsReply(query) {
     if (q.includes('stdin') || q.includes('input')) {
         return "The Cloud Computer features an isolated execution sandbox equipped with a Safe Input Shim. When `input()` is called without terminal interaction, it automatically handles EOFError and defaults to 'User' in milliseconds, preventing the 30-second timeout. Operators can also supply inputs directly in the STDIN input field.";
     }
-    if (q.includes('archetype') || q.includes('felipe') || q.includes('todd') || q.includes('alfred') || q.includes('dev')) {
-        return "DOTS features 5 Specialist Archetypes:\n- **Blue Dot (Felipe)**: Product Launch Lead\n- **Green Dot (Todd)**: Research Scientist & Evidence\n- **Yellow Dot (Alfred)**: Enterprise Deals & Technical POCs\n- **Purple Dot (Jojo)**: Content & Media Creator\n- **Dev Dot (Sentry)**: Autonomous Engineering PRs & Bugfixes.";
+    if (q.includes('archetype') || q.includes('nova') || q.includes('sage') || q.includes('axis') || q.includes('muse') || q.includes('hex') || q.includes('felipe') || q.includes('todd') || q.includes('alfred') || q.includes('dev')) {
+        return "DOTS features 5 Specialist Archetypes:\n- **Blue Dot (NOVA)**: Blue face — Product Launch Lead\n- **Lime-Green Dot (SAGE)**: Lime-green face with round glasses — Research Scientist & Evidence\n- **Golden-Yellow Dot (AXIS)**: Golden-yellow star face — Enterprise Deals & Technical POCs\n- **Purple Dot (MUSE)**: Purple face with planetary ring — Content & Media Creator\n- **Dark Navy Dot (HEX)**: Dark navy face with glowing cyan features — Autonomous Engineering PRs & Bugfixes.";
     }
     if (q.includes('voice') || q.includes('call')) {
         return "Real-Time Voice Calls connect directly to the Google Gemini 3.5 Audio Engine. Click '📞 Voice Call' in any Dot profile to begin speaking with full bidirectional audio synthesis.";

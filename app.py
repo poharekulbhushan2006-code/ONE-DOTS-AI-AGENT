@@ -31,6 +31,6 @@ if __name__ == "__main__":
     print("     - Live Voice Call Experience   : Hop on a real-time call directly in browser")
     print("     - Autonomous Agent Fleet API   : http://127.0.0.1:8000/api/agents")
     print("     - Integrated Google Gemini AI  : ACTIVE (gemini-3.5-flash-lite / 3.8-flash)")
-    print("     - 5 Specialist Dot Archetypes  : Felipe (Blue), Todd (Green), Alfred (Yellow), Jojo (Purple), Sentry (Dev)")
+    print("     - 5 Specialist Dot Archetypes  : NOVA (Blue), SAGE (Lime-Green), AXIS (Golden-Yellow), MUSE (Purple), HEX (Dark Navy & Cyan)")
     print("=" * 72 + "\n")
     uvicorn.run("api.app:app", host="127.0.0.1", port=port, reload=True)

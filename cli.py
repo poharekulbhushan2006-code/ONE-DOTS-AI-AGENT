@@ -66,37 +66,44 @@ def cmd_list():
 
 
 ARCHETYPES = {
-    "felipe": {
-        "name": "Blue Dot (Felipe)",
-        "mission": "Product Launch Lead: learn audience and positioning, revise launch story as scope changes, and prepare email and social drafts.",
+    "nova": {
+        "name": "Blue Dot (NOVA)",
+        "mission": "Product Launch Lead (Blue Face): learn audience and positioning, revise launch story as scope changes, and prepare email and social drafts.",
         "interval": 180,
         "color": "blue",
     },
-    "todd": {
-        "name": "Green Dot (Todd)",
-        "mission": "Research Scientist: learn research goals, evaluate incoming evidence, rerun data analyses, and flag unexpected results.",
+    "sage": {
+        "name": "Lime-Green Dot (SAGE)",
+        "mission": "Research Scientist (Lime-Green Face with Round Glasses): learn research goals, evaluate incoming evidence, rerun data analyses, and flag unexpected results.",
         "interval": 180,
         "color": "green",
     },
-    "alfred": {
-        "name": "Yellow Dot (Alfred)",
-        "mission": "Enterprise Sales Lead: review customer requirements against docs, test integrations, generate sandbox proof-of-concepts, and update proposals.",
-        "interval": 300,
+    "axis": {
+        "name": "Golden-Yellow Dot (AXIS)",
+        "mission": "Enterprise Sales Lead (Golden-Yellow Face): review customer requirements against docs, test integrations, generate sandbox proof-of-concepts, and update proposals.",
+        "interval: 300,
         "color": "yellow",
     },
-    "jojo": {
-        "name": "Purple Dot (Jojo)",
-        "mission": "Content Creator & Media Lead: learn creator voice, extract clip moments from interview transcripts, generate show notes, and draft social posts.",
+    "muse": {
+        "name": "Purple Dot (MUSE)",
+        "mission": "Content Creator & Media Lead (Purple Face with Celestial Ring): learn creator voice, extract clip moments from interview transcripts, generate show notes, and draft social posts.",
         "interval": 180,
         "color": "purple",
     },
-    "dev": {
-        "name": "Dev Dot (Sentry)",
-        "mission": "Software Developer: monitor customer feedback for bug reports, scope fixes, execute test suites in sandbox cloud computer, and prepare verified PRs.",
+    "hex": {
+        "name": "Dark Navy Dot (HEX)",
+        "mission": "Software Developer (Dark Navy Face with Glowing Cyan Features): monitor customer feedback for bug reports, scope fixes, execute test suites in sandbox cloud computer, and prepare verified PRs.",
         "interval": 120,
         "color": "cyan",
     },
 }
+# Backward compatibility aliases
+ARCHETYPES["felipe"] = ARCHETYPES["nova"]
+ARCHETYPES["todd"] = ARCHETYPES["sage"]
+ARCHETYPES["alfred"] = ARCHETYPES["axis"]
+ARCHETYPES["jojo"] = ARCHETYPES["muse"]
+ARCHETYPES["dev"] = ARCHETYPES["hex"]
+ARCHETYPES["sentry"] = ARCHETYPES["hex"]
 
 
 def cmd_deploy(name: str = None, mission: str = None, interval: int = 180, template: str = None):
@@ -215,7 +222,7 @@ def main():
 
     # deploy
     deploy_p = subparsers.add_parser("deploy", help="Deploy an always-on Dot with a mission or archetype")
-    deploy_p.add_argument("--template", choices=["felipe", "todd", "alfred", "jojo", "dev"], help="Specialist Dot template: felipe (launch), todd (science), alfred (sales), jojo (creator), dev (developer)")
+    deploy_p.add_argument("--template", choices=["nova", "sage", "axis", "muse", "hex", "felipe", "todd", "alfred", "jojo", "dev"], help="Specialist Dot template: nova (blue face launch lead), sage (lime-green glasses science), axis (golden sales), muse (purple media), hex (dark navy dev)")
     deploy_p.add_argument("--name", help="Custom Dot name")
     deploy_p.add_argument("--mission", help="Custom enduring responsibility / mission")
     deploy_p.add_argument("--interval", type=int, default=180, help="Cadence interval in seconds")
