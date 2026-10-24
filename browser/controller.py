@@ -37,6 +37,21 @@ class AgentBrowser:
         title, links, and captures a full-page screenshot.
         Gracefully falls back to resilient HTTP extraction if Playwright cannot launch on Windows.
         """
+        from core.security import is_safe_external_url
+        is_safe, reason = is_safe_external_url(url)
+        if not is_safe:
+            return {
+                "success": False,
+                "url": url,
+                "title": "Blocked URL",
+                "error": f"Security restriction: {reason}",
+                "status_code": 403,
+                "content": "",
+                "links": [],
+                "screenshot_filename": None,
+                "screenshot_path": None,
+            }
+
         try:
             async with async_playwright() as p:
                 browser = await p.chromium.launch(

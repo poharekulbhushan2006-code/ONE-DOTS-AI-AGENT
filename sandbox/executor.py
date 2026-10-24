@@ -24,10 +24,8 @@ class SandboxEnvironment:
 
     def _resolve_safe_path(self, relative_path: str) -> Path:
         """Ensures that paths cannot traverse outside the agent's sandbox."""
-        resolved = (self.workspace_dir / relative_path).resolve()
-        if not str(resolved).startswith(str(self.workspace_dir.resolve())):
-            raise PermissionError(f"Access denied: path '{relative_path}' traverses outside sandbox.")
-        return resolved
+        from core.security import resolve_safe_sandbox_path
+        return resolve_safe_sandbox_path(self.workspace_dir, relative_path)
 
     def run_command(self, command: str, timeout_seconds: int = 30, stdin: Optional[str] = None) -> Dict[str, Any]:
         """

@@ -44,6 +44,7 @@ class DecisionStatus(str, Enum):
 class DecisionRequest(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
     agent_id: str
+    user_id: str = "usr_owner_default"
     action_type: str
     tool_name: str
     description: str
@@ -57,6 +58,8 @@ class DecisionRequest(BaseModel):
 
 class TaskStep(BaseModel):
     step_id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    agent_id: Optional[str] = None
+    user_id: str = "usr_owner_default"
     stage: LifecycleStage
     action: str
     tool: Optional[str] = None
@@ -70,6 +73,7 @@ class TaskStep(BaseModel):
 class ReportItem(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
     agent_id: str
+    user_id: str = "usr_owner_default"
     title: str
     summary: str
     content: str
@@ -79,6 +83,7 @@ class ReportItem(BaseModel):
 
 class OneAgent(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    user_id: str = "usr_owner_default"
     name: str
     responsibility: str  # Enduring mission / goal
     status: AgentStatus = AgentStatus.IDLE
@@ -103,7 +108,22 @@ class OneAgent(BaseModel):
 class ChatMessage(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
     agent_id: str
+    user_id: str = "usr_owner_default"
     sender: str  # "user", "agent", "system"
     content: str
     metadata: Optional[Dict[str, Any]] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class AuditLogEntry(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    user_id: str
+    action: str
+    resource_type: str
+    resource_id: Optional[str] = None
+    ip_address: Optional[str] = None
+    user_agent: Optional[str] = None
+    status: str = "SUCCESS"  # SUCCESS, FAILED, BLOCKED
+    details: Dict[str, Any] = Field(default_factory=dict)
+

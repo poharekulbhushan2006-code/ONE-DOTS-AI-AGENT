@@ -1,10 +1,12 @@
 """
 ONE: Always-On Autonomous AI Agent System
 SQLite-based Persistent State Store & Checkpointing
+With Row Level Security (RLS) & Multi-Tenant Data Scoping & Audit Logging
 """
 
 import json
 import sqlite3
+import uuid
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -21,6 +23,7 @@ from core.models import (
     TaskStep,
     ReportItem,
     ChatMessage,
+    AuditLogEntry,
 )
 
 
@@ -46,10 +49,11 @@ class StateStore:
             cursor.execute("PRAGMA busy_timeout=30000")
             cursor.execute("PRAGMA synchronous=NORMAL")
             
-            # Agents table
+            # Agents table with Row Level Security (user_id)
             cursor.execute("""
             CREATE TABLE IF NOT EXISTS agents (
                 id TEXT PRIMARY KEY,
+                user_id TEXT DEFAULT 'usr_owner_default',
                 name TEXT NOT NULL,
                 responsibility TEXT NOT NULL,
                 status TEXT NOT NULL,
@@ -71,6 +75,7 @@ class StateStore:
             CREATE TABLE IF NOT EXISTS task_steps (
                 step_id TEXT PRIMARY KEY,
                 agent_id TEXT NOT NULL,
+                user_id TEXT DEFAULT 'usr_owner_default',
                 stage TEXT NOT NULL,
                 action TEXT NOT NULL,
                 tool TEXT,
@@ -88,6 +93,7 @@ class StateStore:
             CREATE TABLE IF NOT EXISTS decisions (
                 id TEXT PRIMARY KEY,
                 agent_id TEXT NOT NULL,
+                user_id TEXT DEFAULT 'usr_owner_default',
                 action_type TEXT NOT NULL,
                 tool_name TEXT NOT NULL,
                 description TEXT NOT NULL,
@@ -106,6 +112,7 @@ class StateStore:
             CREATE TABLE IF NOT EXISTS reports (
                 id TEXT PRIMARY KEY,
                 agent_id TEXT NOT NULL,
+                user_id TEXT DEFAULT 'usr_owner_default',
                 title TEXT NOT NULL,
                 summary TEXT NOT NULL,
                 content TEXT NOT NULL,
@@ -120,6 +127,7 @@ class StateStore:
             CREATE TABLE IF NOT EXISTS checkpoints (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 agent_id TEXT NOT NULL,
+                user_id TEXT DEFAULT 'usr_owner_default',
                 stage TEXT NOT NULL,
                 snapshot_json TEXT NOT NULL,
                 created_at TEXT NOT NULL,
@@ -132,6 +140,7 @@ class StateStore:
             CREATE TABLE IF NOT EXISTS messages (
                 id TEXT PRIMARY KEY,
                 agent_id TEXT NOT NULL,
+                user_id TEXT DEFAULT 'usr_owner_default',
                 sender TEXT NOT NULL,
                 content TEXT NOT NULL,
                 metadata_json TEXT,
@@ -139,22 +148,55 @@ class StateStore:
                 FOREIGN KEY (agent_id) REFERENCES agents (id) ON DELETE CASCADE
             )
             """)
+
+            # Tamper-Evident Admin & Fleet Audit Logs
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS audit_logs (
+                id TEXT PRIMARY KEY,
+                timestamp TEXT NOT NULL,
+                user_id TEXT NOT NULL,
+                action TEXT NOT NULL,
+                resource_type TEXT NOT NULL,
+                resource_id TEXT,
+                ip_address TEXT,
+                user_agent TEXT,
+                status TEXT NOT NULL,
+                details_json TEXT
+            )
+            """)
+
+            # Dynamic migrations: ensure user_id column exists if table was pre-existing
+            for table in ["agents", "task_steps", "decisions", "reports", "checkpoints", "messages"]:
+                cursor.execute(f"PRAGMA table_info({table})")
+                cols = [row["name"] for row in cursor.fetchall()]
+                if "user_id" not in cols:
+                    try:
+                        cursor.execute(f"ALTER TABLE {table} ADD COLUMN user_id TEXT DEFAULT 'usr_owner_default'")
+                    except sqlite3.OperationalError:
+                        pass
+
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp DESC)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON audit_logs(user_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_agents_user ON agents(user_id)")
+
             conn.commit()
 
-    # ------------------ Agent CRUD ------------------
+    # ------------------ Agent CRUD with Row Level Security ------------------
 
     def save_agent(self, agent: OneAgent) -> OneAgent:
         agent.updated_at = datetime.now(timezone.utc)
+        user_id = agent.user_id or "usr_owner_default"
         with self._get_conn() as conn:
             cursor = conn.cursor()
             cursor.execute("""
             INSERT INTO agents (
-                id, name, responsibility, status, current_stage,
+                id, user_id, name, responsibility, status, current_stage,
                 schedule_interval_seconds, last_tick_at, next_tick_at,
                 total_ticks, successful_cycles, pending_approval_id,
                 context_json, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
+                user_id=excluded.user_id,
                 name=excluded.name,
                 responsibility=excluded.responsibility,
                 status=excluded.status,
@@ -169,6 +211,7 @@ class StateStore:
                 updated_at=excluded.updated_at
             """, (
                 agent.id,
+                user_id,
                 agent.name,
                 agent.responsibility,
                 agent.status.value,
@@ -186,26 +229,38 @@ class StateStore:
             conn.commit()
         return agent
 
-    def get_agent(self, agent_id: str) -> Optional[OneAgent]:
+    def get_agent(self, agent_id: str, user_id: Optional[str] = None, is_admin: bool = False) -> Optional[OneAgent]:
         with self._get_conn() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM agents WHERE id = ?", (agent_id,))
+            if not is_admin and user_id:
+                cursor.execute("SELECT * FROM agents WHERE id = ? AND user_id = ?", (agent_id, user_id))
+            else:
+                cursor.execute("SELECT * FROM agents WHERE id = ?", (agent_id,))
             row = cursor.fetchone()
             if not row:
                 return None
             return self._row_to_agent(row)
 
-    def list_agents(self) -> List[OneAgent]:
+    def list_agents(self, user_id: Optional[str] = None, is_admin: bool = False) -> List[OneAgent]:
         with self._get_conn() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM agents ORDER BY created_at DESC")
+            if not is_admin and user_id:
+                cursor.execute("SELECT * FROM agents WHERE user_id = ? ORDER BY created_at DESC", (user_id,))
+            else:
+                cursor.execute("SELECT * FROM agents ORDER BY created_at DESC")
             rows = cursor.fetchall()
             return [self._row_to_agent(r) for r in rows]
 
-    def delete_agent(self, agent_id: str) -> bool:
-        """Deletes an agent and cascades to its steps, decisions, reports, and messages."""
+    def delete_agent(self, agent_id: str, user_id: Optional[str] = None, is_admin: bool = False) -> bool:
+        """Deletes an agent with row-level ownership verification and cascades child items."""
         with self._get_conn() as conn:
             cursor = conn.cursor()
+            # Verify ownership if not admin
+            if not is_admin and user_id:
+                cursor.execute("SELECT id FROM agents WHERE id = ? AND user_id = ?", (agent_id, user_id))
+                if not cursor.fetchone():
+                    return False
+
             cursor.execute("DELETE FROM messages WHERE agent_id = ?", (agent_id,))
             cursor.execute("DELETE FROM task_steps WHERE agent_id = ?", (agent_id,))
             cursor.execute("DELETE FROM decisions WHERE agent_id = ?", (agent_id,))
@@ -217,8 +272,11 @@ class StateStore:
             return deleted
 
     def _row_to_agent(self, row: sqlite3.Row) -> OneAgent:
+        # Handle backward compatibility if user_id column wasn't originally present in row
+        u_id = row["user_id"] if "user_id" in row.keys() and row["user_id"] else "usr_owner_default"
         return OneAgent(
             id=row["id"],
+            user_id=u_id,
             name=row["name"],
             responsibility=row["responsibility"],
             status=AgentStatus(row["status"]),
@@ -236,17 +294,19 @@ class StateStore:
 
     # ------------------ Steps & History ------------------
 
-    def record_step(self, agent_id: str, step: TaskStep):
+    def record_step(self, agent_id: str, step: TaskStep, user_id: Optional[str] = None):
+        u_id = user_id or step.user_id or "usr_owner_default"
         with self._get_conn() as conn:
             cursor = conn.cursor()
             cursor.execute("""
             INSERT INTO task_steps (
-                step_id, agent_id, stage, action, tool,
+                step_id, agent_id, user_id, stage, action, tool,
                 inputs_json, output_json, success, error_message, timestamp
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 step.step_id,
                 agent_id,
+                u_id,
                 step.stage.value,
                 step.action,
                 step.tool,
@@ -267,8 +327,11 @@ class StateStore:
             rows = cursor.fetchall()
             steps = []
             for r in rows:
+                u_id = r["user_id"] if "user_id" in r.keys() and r["user_id"] else "usr_owner_default"
                 steps.append(TaskStep(
                     step_id=r["step_id"],
+                    agent_id=r["agent_id"],
+                    user_id=u_id,
                     stage=LifecycleStage(r["stage"]),
                     action=r["action"],
                     tool=r["tool"],
@@ -283,16 +346,18 @@ class StateStore:
     # ------------------ Decision Requests ------------------
 
     def create_decision_request(self, req: DecisionRequest) -> DecisionRequest:
+        u_id = req.user_id or "usr_owner_default"
         with self._get_conn() as conn:
             cursor = conn.cursor()
             cursor.execute("""
             INSERT INTO decisions (
-                id, agent_id, action_type, tool_name, description,
+                id, agent_id, user_id, action_type, tool_name, description,
                 proposed_payload_json, risk_level, status, created_at, decided_at, human_notes
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 req.id,
                 req.agent_id,
+                u_id,
                 req.action_type,
                 req.tool_name,
                 req.description,
@@ -303,7 +368,6 @@ class StateStore:
                 req.decided_at.isoformat() if req.decided_at else None,
                 req.human_notes,
             ))
-            # update agent pending_approval_id and status
             cursor.execute("""
             UPDATE agents SET status = ?, pending_approval_id = ?, updated_at = ?
             WHERE id = ?
@@ -332,7 +396,6 @@ class StateStore:
             WHERE id = ?
             """, (status.value, now_iso, human_notes, decision_id))
             
-            # Free the agent to resume or sleep
             cursor.execute("""
             UPDATE agents SET status = ?, pending_approval_id = NULL, updated_at = ?
             WHERE id = ?
@@ -352,9 +415,11 @@ class StateStore:
             row = cursor.fetchone()
             if not row:
                 return None
+            u_id = row["user_id"] if "user_id" in row.keys() and row["user_id"] else "usr_owner_default"
             return DecisionRequest(
                 id=row["id"],
                 agent_id=row["agent_id"],
+                user_id=u_id,
                 action_type=row["action_type"],
                 tool_name=row["tool_name"],
                 description=row["description"],
@@ -366,15 +431,26 @@ class StateStore:
                 human_notes=row["human_notes"],
             )
 
-    def list_pending_decisions(self) -> List[DecisionRequest]:
+    def list_pending_decisions(self, user_id: Optional[str] = None, is_admin: bool = False) -> List[DecisionRequest]:
         with self._get_conn() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM decisions WHERE status = 'pending' ORDER BY created_at DESC")
+            if not is_admin and user_id:
+                cursor.execute("""
+                SELECT d.* FROM decisions d
+                JOIN agents a ON d.agent_id = a.id
+                WHERE d.status = 'pending' AND a.user_id = ?
+                ORDER BY d.created_at DESC
+                """, (user_id,))
+            else:
+                cursor.execute("SELECT * FROM decisions WHERE status = 'pending' ORDER BY created_at DESC")
             rows = cursor.fetchall()
-            return [
-                DecisionRequest(
+            decisions = []
+            for r in rows:
+                u_id = r["user_id"] if "user_id" in r.keys() and r["user_id"] else "usr_owner_default"
+                decisions.append(DecisionRequest(
                     id=r["id"],
                     agent_id=r["agent_id"],
+                    user_id=u_id,
                     action_type=r["action_type"],
                     tool_name=r["tool_name"],
                     description=r["description"],
@@ -384,21 +460,22 @@ class StateStore:
                     created_at=datetime.fromisoformat(r["created_at"]),
                     decided_at=datetime.fromisoformat(r["decided_at"]) if r["decided_at"] else None,
                     human_notes=r["human_notes"],
-                )
-                for r in rows
-            ]
+                ))
+            return decisions
 
     # ------------------ Chat & Conversation ------------------
 
     def save_chat_message(self, msg: ChatMessage) -> ChatMessage:
+        u_id = msg.user_id or "usr_owner_default"
         with self._get_conn() as conn:
             cursor = conn.cursor()
             cursor.execute("""
-            INSERT INTO messages (id, agent_id, sender, content, metadata_json, created_at)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO messages (id, agent_id, user_id, sender, content, metadata_json, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (
                 msg.id,
                 msg.agent_id,
+                u_id,
                 msg.sender,
                 msg.content,
                 json.dumps(msg.metadata) if msg.metadata else None,
@@ -414,28 +491,33 @@ class StateStore:
             SELECT * FROM messages WHERE agent_id = ? ORDER BY created_at ASC LIMIT ?
             """, (agent_id, limit))
             rows = cursor.fetchall()
-            return [
-                ChatMessage(
+            messages = []
+            for r in rows:
+                u_id = r["user_id"] if "user_id" in r.keys() and r["user_id"] else "usr_owner_default"
+                messages.append(ChatMessage(
                     id=r["id"],
                     agent_id=r["agent_id"],
+                    user_id=u_id,
                     sender=r["sender"],
                     content=r["content"],
                     metadata=json.loads(r["metadata_json"]) if r["metadata_json"] else None,
                     created_at=datetime.fromisoformat(r["created_at"]),
-                )
-                for r in rows
-            ]
+                ))
+            return messages
 
+    # ------------------ Reports & Deliverables ------------------
 
     def save_report(self, report: ReportItem) -> ReportItem:
+        u_id = report.user_id or "usr_owner_default"
         with self._get_conn() as conn:
             cursor = conn.cursor()
             cursor.execute("""
-            INSERT INTO reports (id, agent_id, title, summary, content, format, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO reports (id, agent_id, user_id, title, summary, content, format, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 report.id,
                 report.agent_id,
+                u_id,
                 report.title,
                 report.summary,
                 report.content,
@@ -450,17 +532,85 @@ class StateStore:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM reports WHERE agent_id = ? ORDER BY created_at DESC LIMIT ?", (agent_id, limit))
             rows = cursor.fetchall()
-            return [
-                ReportItem(
+            reports = []
+            for r in rows:
+                u_id = r["user_id"] if "user_id" in r.keys() and r["user_id"] else "usr_owner_default"
+                reports.append(ReportItem(
                     id=r["id"],
                     agent_id=r["agent_id"],
+                    user_id=u_id,
                     title=r["title"],
                     summary=r["summary"],
                     content=r["content"],
                     format=r["format"],
                     created_at=datetime.fromisoformat(r["created_at"]),
-                )
-                for r in rows
-            ]
+                ))
+            return reports
+
+    # ------------------ Tamper-Evident Admin Audit Logging ------------------
+
+    def record_audit_log(self, entry: AuditLogEntry) -> AuditLogEntry:
+        """Records an immutable security audit event into the database."""
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            INSERT INTO audit_logs (
+                id, timestamp, user_id, action, resource_type,
+                resource_id, ip_address, user_agent, status, details_json
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                entry.id,
+                entry.timestamp.isoformat(),
+                entry.user_id,
+                entry.action,
+                entry.resource_type,
+                entry.resource_id,
+                entry.ip_address,
+                entry.user_agent,
+                entry.status,
+                json.dumps(entry.details),
+            ))
+            conn.commit()
+        return entry
+
+    def list_audit_logs(
+        self,
+        limit: int = 50,
+        offset: int = 0,
+        user_id: Optional[str] = None
+    ) -> List[AuditLogEntry]:
+        """Lists audit log records with parameterized limits and optional user filtering."""
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            if user_id:
+                cursor.execute("""
+                SELECT * FROM audit_logs
+                WHERE user_id = ?
+                ORDER BY timestamp DESC
+                LIMIT ? OFFSET ?
+                """, (user_id, limit, offset))
+            else:
+                cursor.execute("""
+                SELECT * FROM audit_logs
+                ORDER BY timestamp DESC
+                LIMIT ? OFFSET ?
+                """, (limit, offset))
+            rows = cursor.fetchall()
+            logs = []
+            for r in rows:
+                logs.append(AuditLogEntry(
+                    id=r["id"],
+                    timestamp=datetime.fromisoformat(r["timestamp"]),
+                    user_id=r["user_id"],
+                    action=r["action"],
+                    resource_type=r["resource_type"],
+                    resource_id=r["resource_id"],
+                    ip_address=r["ip_address"],
+                    user_agent=r["user_agent"],
+                    status=r["status"],
+                    details=json.loads(r["details_json"]) if r["details_json"] else {},
+                ))
+            return logs
+
 
 state_store = StateStore()

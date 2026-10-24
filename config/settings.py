@@ -56,9 +56,32 @@ class Settings(BaseSettings):
     TELEGRAM_CHAT_ID: str = Field(default="")
     WEBHOOK_ALERT_URL: str = Field(default="")
 
-    # API Server
+    # API Server & Environment
     SERVER_HOST: str = "127.0.0.1"
     SERVER_PORT: int = 8000
+    ENVIRONMENT: str = "development"  # "development" or "production"
+    DEBUG: bool = False
+    ENABLE_DOCS_IN_PROD: bool = False
+
+    # Security & Access Control
+    SECRET_KEY: str = Field(default="dots-production-secret-key-change-in-env-98234710")
+    ADMIN_API_KEY: str = Field(default="dots-admin-sec-key-770021")
+    WEBHOOK_SECRET: str = Field(default="dots-webhook-secret-sig-verify-8899")
+    CAPTCHA_SECRET: str = Field(default="dots-captcha-challenge-salt-4455")
+    ALLOWED_ORIGINS: list[str] = [
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "http://localhost:3000",
+        "https://*.vercel.app",
+    ]
+
+    # Rate Limiting & Storage Security
+    RATE_LIMIT_ENABLED: bool = True
+    RATE_LIMIT_PER_MINUTE: int = 120
+    MAX_UPLOAD_SIZE_BYTES: int = 10 * 1024 * 1024  # 10 MB
+    ALLOWED_UPLOAD_EXTENSIONS: list[str] = [
+        ".txt", ".py", ".json", ".csv", ".md", ".png", ".jpg", ".jpeg", ".pdf", ".yaml", ".yml"
+    ]
 
 
 settings = Settings()

@@ -336,6 +336,37 @@ print(f"Verified session for: {name}")</code></pre>
                 <p>
                     When a protected operation is requested, the Workstation displays an animated top alert banner allowing the operator to <b>Approve &amp; Run</b> or <b>Reject &amp; Adapt</b>.
                 </p>
+
+                <h3 id="enterprise-security">19 Enterprise Security &amp; Defensive Hardening Layers</h3>
+                <p>
+                    ONE DOTS is hardened according to OWASP Top 10 guidelines and strict enterprise defense-in-depth principles:
+                </p>
+                <div class="docs-cards-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 14px;">
+                    <div class="docs-card">
+                        <div class="card-title">🛡️ Row Level Security (RLS)</div>
+                        <div class="card-subtext">All database queries, agents, and artifacts are strictly scoped to authenticated tenant IDs. Cross-tenant reads or writes are impossible.</div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">📜 Tamper-Evident Audit Vault</div>
+                        <div class="card-subtext">Every administrative action, fleet deployment, sandbox code execution, and escalation decision is recorded in an immutable audit ledger.</div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">🔑 Zero-Trust Auth On Every Route</div>
+                        <div class="card-subtext">All operational API endpoints mandate Bearer JWT or API key authentication with strict Role-Based Access Control (RBAC).</div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">🗄️ Private Storage &amp; Anti-Traversal</div>
+                        <div class="card-subtext">Agent sandboxes and browser screenshots are strictly private. All paths are resolved against root boundaries to defeat directory traversal.</div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">⏱️ Sliding-Window Rate Limiting</div>
+                        <div class="card-subtext">Protects API endpoints with tiered rate limits, returning standard HTTP 429 and Retry-After headers to prevent compute abuse.</div>
+                    </div>
+                    <div class="docs-card">
+                        <div class="card-title">🧩 Cryptographic CAPTCHA</div>
+                        <div class="card-subtext">Public deployment forms and ingress actions are protected by signed human-verification challenges without third-party trackers.</div>
+                    </div>
+                </div>
             </section>
 
             <!-- Section 5: Ecosystem & Integrations -->

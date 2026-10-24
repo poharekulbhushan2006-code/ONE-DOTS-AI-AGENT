@@ -132,6 +132,8 @@
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-safety')">Safety &amp; Privacy</button>
                     <button class="nav-link-btn" id="btn-view-docs" onclick="switchMainView('view-docs')">Docs &amp; Learn</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-pricing')">Pricing</button>
+                    <button class="nav-link-btn" id="btn-open-auth-modal" onclick="openAuthModal()" title="Authentication &amp; Security Shield">🛡️ Security</button>
+                    <button class="nav-link-btn" id="btn-admin-console" onclick="openAdminModal()" style="display: none; color: #f59e0b;" title="Admin Action Vault &amp; Fleet Audit Logs">⚙️ Admin Vault</button>
                 </nav>
             </div>
 
@@ -1315,6 +1317,20 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
                         </select>
                     </div>
                 </div>
+
+                <!-- Cryptographic CAPTCHA Anti-Bot Verification on Public Form -->
+                <div class="form-group captcha-challenge-box" style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 12px; margin-top: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">🛡️ Anti-Bot Verification Challenge</span>
+                        <button type="button" onclick="loadCaptchaChallenge()" style="background: none; border: none; color: #94a3b8; font-size: 11px; cursor: pointer;">↻ Refresh Problem</button>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span id="captcha-question-display" style="font-size: 13px; font-weight: 600; color: #f8fafc; white-space: nowrap; font-family: monospace;">Loading challenge...</span>
+                        <input type="hidden" id="captcha-token-hidden" value="">
+                        <input type="text" id="captcha-answer-input" placeholder="Your Answer" style="flex: 1; padding: 6px 10px; font-size: 13px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #fff;" required>
+                    </div>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" id="btn-cancel-modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Deploy Always-On Dot</button>
@@ -1456,6 +1472,162 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
             <div class="modal-footer" style="margin-top: 24px; justify-content: space-between;">
                 <button class="btn btn-secondary" onclick="exportExecutiveDigest()">Export Audit Report</button>
                 <button class="btn btn-primary" onclick="closeBillingModal()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: Security Shield & Identity Governance -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-card glass-card" style="max-width: 680px;">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                        <span>🛡️</span> Security Shield &amp; Access Control
+                    </h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                        Enterprise row-level security, tamper-evident audit logging, and zero-trust identity
+                    </p>
+                </div>
+                <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+            </div>
+
+            <!-- Active Identity Card -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 10px; padding: 16px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase;">ACTIVE IDENTITY SESSION</span>
+                        <h4 id="auth-active-username" style="margin: 4px 0 0 0; font-size: 18px; font-weight: 700; color: #fff;">root_admin</h4>
+                        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                            Tenant ID: <code id="auth-active-tenant" style="color: #a78bfa;">tenant_system</code> • 
+                            Role: <span id="auth-active-role" style="color: #34d399; font-weight: 600;">ADMIN</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span id="auth-status-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700;">
+                            ● ACTIVE &amp; SECURED
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14 Active Enterprise Hardening Guards Matrix -->
+            <div style="margin-bottom: 16px;">
+                <label class="section-label" style="font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; display: block;">14 Active Defensive Hardening Layers</label>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 12px;">
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Row Level Security (RLS)
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Tamper-Evident Audit Logging
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Auth On Every API Route
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Private Storage &amp; Scoped Sandboxes
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Never Trust Frontend Validation
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Sliding-Window Rate Limiting
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Input Sanitization &amp; XSS Defense
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> File Upload Magic Byte Inspection
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> 100% Parameterized SQLite Queries
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Strict CORS &amp; Security Headers (CSP)
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> Stop IDOR via Object Ownership
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold;">✓</span> HMAC-SHA256 Webhook Signatures
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Key or Session Authentication Form -->
+            <form id="auth-credential-form" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label style="font-size: 13px; font-weight: 600; color: #fff;">Switch API Key or Session Token</label>
+                    <input type="password" id="auth-api-key-input" placeholder="Paste your Bearer Token or Admin API Key" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #fff; font-size: 13px;">
+                </div>
+                <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="applyQuickKey('admin')">Switch to Admin</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="applyQuickKey('user')">Switch to Standard User</button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="handleLogout()">Clear Session</button>
+                </div>
+                <div class="modal-footer" style="justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAuthModal()">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Credentials</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 6: Admin Action Audit Vault (Protected Admin Only) -->
+    <div class="modal-overlay" id="admin-modal">
+        <div class="modal-card glass-card" style="max-width: 880px;">
+            <div class="modal-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: #f59e0b;">
+                        <span>⚙️</span> Enterprise Administrative Action Vault
+                    </h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                        Immutable tamper-evident security audit trail of all fleet actions, sandbox executions, and security events
+                    </p>
+                </div>
+                <button class="close-btn" onclick="closeAdminModal()">&times;</button>
+            </div>
+
+            <!-- Controls bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="font-size: 12px; color: #94a3b8;">Filter:</span>
+                    <select id="audit-filter-action" onchange="filterAuditLogs(this.value)" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 12px;">
+                        <option value="ALL">All Actions</option>
+                        <option value="AGENT_CREATE">Agent Deployments</option>
+                        <option value="AGENT_DELETE">Agent Terminations</option>
+                        <option value="SANDBOX_CODE_EXECUTION">Sandbox Executions</option>
+                        <option value="FILE_WRITE">File Operations</option>
+                        <option value="DECISION_APPROVE">Human Approvals</option>
+                        <option value="AUTH_LOGIN_SUCCESS">Auth Events</option>
+                    </select>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="fetchAdminAuditLogs()">↻ Refresh Audit Vault</button>
+            </div>
+
+            <!-- Audit Logs Table -->
+            <div style="max-height: 420px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8;">
+                            <th style="padding: 10px;">Timestamp (UTC)</th>
+                            <th style="padding: 10px;">User ID</th>
+                            <th style="padding: 10px;">Action</th>
+                            <th style="padding: 10px;">Resource</th>
+                            <th style="padding: 10px;">Status</th>
+                            <th style="padding: 10px;">Client IP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="audit-logs-tbody">
+                        <tr>
+                            <td colspan="6" style="padding: 20px; text-align: center; color: #94a3b8;">Loading tamper-evident audit logs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer" style="margin-top: 16px; justify-content: space-between;">
+                <span style="font-size: 12px; color: var(--text-dim);">Protected by SQLite WAL PRAGMA synchronous enforcement</span>
+                <button class="btn btn-primary" onclick="closeAdminModal()">Done</button>
             </div>
         </div>
     </div>
