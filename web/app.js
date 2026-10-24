@@ -248,7 +248,10 @@ let cachedAgents = [];
 let pendingDecisions = [];
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.remove('splash-active');
+    document.body.classList.add('site-revealed');
     initEntrySplash();
+    initDemoWindow();
     initUI();
     fetchCurrentUserProfile();
     fetchFleetData();
@@ -2335,145 +2338,271 @@ function copyCurrentUrl() {
 // =========================================================================
 // CINEMATIC "ONE DOTS" ENTRY ANIMATION CONTROLLER
 // =========================================================================
-let splashCanvasAnimId = null;
-let splashAutoDismissTimer = null;
-let splashSequenceTimers = [];
+// SENIOR INTERACTIVE LIVE WORKSTATION DEMO CONTROLLER
+// =========================================================================
+const DEMO_SPECIALISTS = {
+    nova: {
+        key: 'nova',
+        name: 'NOVA',
+        role: 'Autonomous Product Launch Lead',
+        color: '#38bdf8',
+        tag: 'GTM & ROADMAPS',
+        avatar: 'assets/dots/nova.png',
+        mission: 'Lead product launch readiness: learn audience standards, revise launch narrative as scope shifts, and dispatch Linear roadmaps.',
+        tools: ['Linear API', 'GitHub Connect', 'Slack Dispatcher', 'Document Synthesizer'],
+        dialogue: [
+            { sender: 'user', text: 'NOVA, our enterprise tier scope just expanded to include SOC2 compliance and multi-tenant RLS.' },
+            { sender: 'agent', text: 'Understood. Accessing Linear roadmap workspace and cross-referencing with customer launch criteria...', status: 'Syncing 4 Linear Milestones' },
+            { sender: 'tool', text: '✓ Updated Linear issue ENG-4129: [P0] Implement Row Level Security and Parameterized Queries\n✓ Generated customer-facing launch announcement changelog\n✓ Sent draft executive briefing to #product-leadership on Slack' },
+            { sender: 'agent', text: 'Launch narrative revised and synchronized across Linear and marketing channels. Zero human intervention needed for docs update.' }
+        ],
+        terminal: {
+            title: 'bash - nova@cloud-repl:~/launch-orchestrator',
+            code: `$ python3 -m dots.launch_sync --project "ONE-DOTS-Q4"
+[NOVA] Authenticated with Linear API (OAuth2 scoped)
+[NOVA] Fetched 14 active milestones; 1 scope delta detected:
+       + Security Architecture: SOC2 / Row-Level Security
+[NOVA] Updating changelog and customer documentation...
+[NOVA] Re-indexing 4,000+ app connectors status -> SUCCESS
+[NOVA] Automated GTM checklist: 100% complete.
+[NOVA] Next autonomous tick scheduled in 180s.`
+        }
+    },
+    sage: {
+        key: 'sage',
+        name: 'SAGE',
+        role: 'Research Scientist & Evidence Evaluation',
+        color: '#10b981',
+        tag: 'STATISTICAL RIGOR',
+        avatar: 'assets/dots/sage.png',
+        mission: 'Evaluate incoming empirical evidence, rerun statistical analyses in isolated Python sandboxes, and verify research metrics.',
+        tools: ['Python REPL', 'ArXiv Ingestion', 'NumPy / SciPy Engine', 'Jupyter Kernel'],
+        dialogue: [
+            { sender: 'user', text: 'SAGE, test the new multi-agent consensus dataset for latency anomalies and statistical significance.' },
+            { sender: 'agent', text: 'Spinning up ephemeral Python REPL sandbox container. Loading 50,000 interaction samples...', status: 'Running Welch t-test & ANOVA' },
+            { sender: 'tool', text: '✓ Ephemeral sandbox container provisioned (VPC isolated)\n✓ Evaluated p-value: p = 0.00042 (significant at α = 0.01)\n✓ Zero memory leaks detected; latency reduced by 34.2%' },
+            { sender: 'agent', text: 'Hypothesis verified with statistical rigor (p < 0.001). Generated updated vector distribution figure in sandbox filesystem.' }
+        ],
+        terminal: {
+            title: 'python3 - sage@cloud-repl:~/statistical-eval',
+            code: `>>> import numpy as np, scipy.stats as stats
+>>> data_v1 = np.load('telemetry_baseline.npy')
+>>> data_v2 = np.load('telemetry_multiagent.npy')
+>>> t_stat, p_val = stats.ttest_ind(data_v1, data_v2, equal_var=False)
+>>> print(f"Welch t-statistic: {t_stat:.4f}, p-value: {p_val:.6f}")
+Welch t-statistic: -4.8912, p-value: 0.000421
+>>> print("Status: Statistical significance confirmed. Null hypothesis rejected.")
+>>> dots_sandbox.save_figure("latency_distribution.png")
+[SAGE] Figure saved to /sandbox/artifacts/latency_distribution.png`
+        }
+    },
+    axis: {
+        key: 'axis',
+        name: 'AXIS',
+        role: 'Enterprise Sales & Technical POCs',
+        color: '#f59e0b',
+        tag: 'DEALS & COMPLIANCE',
+        avatar: 'assets/dots/axis.png',
+        mission: 'Analyze enterprise RFPs against documentation, generate custom sandbox POC scripts, and accelerate deal velocity.',
+        tools: ['RFP Parser', 'Salesforce API', 'Sandbox Provisioner', 'Contract Diff'],
+        dialogue: [
+            { sender: 'user', text: 'AXIS, enterprise prospect Fortune 500 submitted a 92-question security RFP regarding data residency.' },
+            { sender: 'agent', text: 'Parsing questionnaire sections against SOC2 Type II audit criteria and SQLite WAL architecture...', status: '92/92 Questions Verified' },
+            { sender: 'tool', text: '✓ 89/92 questions auto-answered with verified security documentation references\n✓ 3 custom VPC questions drafted with architectural diagrams\n✓ Sandbox demo instance pre-configured at enterprise.dots.internal' },
+            { sender: 'agent', text: 'Complete RFP response package compiled and synchronized to Salesforce pipeline. Deal momentum maintained.' }
+        ],
+        terminal: {
+            title: 'bash - axis@cloud-repl:~/rfp-automation',
+            code: `$ dots-sales parse-rfp --file "Fortune500_Security_RFP.pdf"
+[AXIS] Document parsed: 92 enterprise compliance criteria
+[AXIS] Matching with ONE DOTS security whitepaper...
+[AXIS] Row Level Security: COMPLIANT (Section 4.1)
+[AXIS] Tamper-Evident WAL: COMPLIANT (Section 7.3)
+[AXIS] Zero Model Training: COMPLIANT (Section 9.8)
+[AXIS] Generating customer sandbox token: tok_ent_9941a8
+[AXIS] Salesforce pipeline updated -> Stage: Technical Validation`
+        }
+    },
+    muse: {
+        key: 'muse',
+        name: 'MUSE',
+        role: 'Content Studio & Multi-Channel Media',
+        color: '#a855f7',
+        tag: 'CONTENT & MEDIA',
+        avatar: 'assets/dots/muse.png',
+        mission: 'Transform raw transcripts and audio into viral highlights, technical show notes, and brand-consistent social broadcasts.',
+        tools: ['Media Transcriber', 'Keyframe Indexer', 'Tone Classifier', 'Social Publisher'],
+        dialogue: [
+            { sender: 'user', text: 'MUSE, we just finished the 45-minute live podcast with the Chief Scientist. Extract the top 3 soundbites.' },
+            { sender: 'agent', text: 'Ingesting 45-minute uncompressed WAV stream. Segmenting semantic topic boundaries...', status: 'Extracting High-Engagement Hooks' },
+            { sender: 'tool', text: '✓ Hook 1 (14:22): "Why always-on agents will replace traditional SaaS tabs"\n✓ Hook 2 (28:05): "The mathematics of autonomous feedback loops"\n✓ Drafted 3 LinkedIn executive summaries & technical newsletter release' },
+            { sender: 'agent', text: 'Full multimedia package indexed, show notes formatted with Markdown anchors, and scheduled for review.' }
+        ],
+        terminal: {
+            title: 'node - muse@cloud-repl:~/media-studio',
+            code: `$ dots-media process-stream --source "podcast_ep42_raw.wav"
+[MUSE] Whisper-large-v3 transcription completed in 4.1s
+[MUSE] Audio sentiment analysis: High technical enthusiasm (0.94)
+[MUSE] Extracted 3 viral clips with optimal timestamps
+[MUSE] Formatting technical show notes with markdown anchors...
+[MUSE] Generating multi-platform variants (Twitter / LinkedIn / Newsletter)
+[MUSE] Output package saved to /studio/builds/ep42_release/`
+        }
+    },
+    hex: {
+        key: 'hex',
+        name: 'HEX',
+        role: 'Autonomous Software Dev & Self-Healing SRE',
+        color: '#06b6d4',
+        tag: 'DEV & SELF-HEALING',
+        avatar: 'assets/dots/hex.png',
+        mission: 'Monitor production error telemetry, isolate bug reproductions, build pytest suites in cloud sandboxes, and create verified PRs.',
+        tools: ['Docker Sandbox', 'Chromium Driver', 'Pytest Runner', 'Git Engine'],
+        dialogue: [
+            { sender: 'user', text: 'HEX, production telemetry caught a rare 400 Bad Request on file uploads with spaces in filenames.' },
+            { sender: 'agent', text: 'Reproducing in isolated container environment with pytest test harness...', status: 'Isolating Filename Sanitizer' },
+            { sender: 'tool', text: '✓ Reproduced failure: test_upload_spaces() FAILED\n✓ Patched secure_filename regex in core/storage.py\n✓ Ran test suite: 12 passed in 1.2s; Zero regressions detected\n✓ Drafted GitHub PR #148 with diff review' },
+            { sender: 'agent', text: 'Fix verified in sandbox. PR ready for one-click human merge. Zero downtime incurred.' }
+        ],
+        terminal: {
+            title: 'pytest - hex@cloud-repl:~/repo-workspace',
+            code: `$ ./.venv/bin/pytest tests/ -v
+tests/test_dots_agents.py::test_agent_lifecycle PASSED      [ 25%]
+tests/test_dots_agents.py::test_sandbox_execution PASSED    [ 50%]
+tests/test_security_suite.py::test_row_level_security PASSED [ 75%]
+tests/test_security_suite.py::test_tamper_evident_wal PASSED [100%]
+
+======================== 12 passed in 1.18s ========================
+[HEX] Git status: branch patch/sanitize-upload-spaces
+[HEX] Commit: 9d14f2e "fix: sanitize spaces in multi-part file uploads"
+[HEX] PR ready for operator approval at github.com/repo/pull/148`
+        }
+    }
+};
+
+let currentDemoSpecialist = 'nova';
+
+function initDemoWindow() {
+    switchDemoSpecialist('nova');
+}
+
+function switchDemoSpecialist(key, btnEl) {
+    currentDemoSpecialist = key;
+    const spec = DEMO_SPECIALISTS[key] || DEMO_SPECIALISTS.nova;
+
+    // Update active tab button
+    if (btnEl) {
+        document.querySelectorAll('#demo-tabs-bar .demo-tab-btn').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    } else {
+        const btns = document.querySelectorAll('#demo-tabs-bar .demo-tab-btn');
+        btns.forEach(b => {
+            if (b.innerText.toLowerCase().includes(key)) b.classList.add('active');
+            else b.classList.remove('active');
+        });
+    }
+
+    const stage = document.getElementById('demo-window-stage');
+    if (!stage) return;
+
+    // Render Split-Screen Workstation
+    stage.innerHTML = `
+        <div class="demo-split-grid">
+            <!-- Left Pane: Collaborative Mission Stream -->
+            <div class="demo-dialogue-pane">
+                <div class="demo-pane-header">
+                    <div class="demo-header-left">
+                        <img src="${spec.avatar}" alt="${spec.name}" class="demo-pane-avatar" />
+                        <div>
+                            <div class="demo-pane-name">${spec.name}</div>
+                            <div class="demo-pane-role">${spec.role}</div>
+                        </div>
+                    </div>
+                    <span class="demo-status-pill" style="border-color: ${spec.color}44; color: ${spec.color}; background: ${spec.color}14;">
+                        ● ACTIVE GOAL
+                    </span>
+                </div>
+
+                <div class="demo-chat-stream">
+                    ${spec.dialogue.map(msg => {
+                        if (msg.sender === 'user') {
+                            return `
+                                <div class="demo-msg msg-user">
+                                    <div class="demo-msg-bubble">${escapeHTML(msg.text)}</div>
+                                </div>
+                            `;
+                        } else if (msg.sender === 'tool') {
+                            return `
+                                <div class="demo-msg msg-tool">
+                                    <div class="demo-tool-card">
+                                        <div class="demo-tool-header">
+                                            <span class="tool-run-icon">⚙</span>
+                                            <span>AUTONOMOUS TOOL EXECUTION</span>
+                                        </div>
+                                        <pre class="demo-tool-pre">${escapeHTML(msg.text)}</pre>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            return `
+                                <div class="demo-msg msg-agent">
+                                    ${msg.status ? `<div class="demo-action-status"><span class="pulse-cyan"></span> ${escapeHTML(msg.status)}</div>` : ''}
+                                    <div class="demo-msg-bubble agent-bubble" style="border-left-color: ${spec.color};">
+                                        ${escapeHTML(msg.text)}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }).join('')}
+                </div>
+
+                <div class="demo-toolchain-footer">
+                    <span class="footer-label">CONNECTED APIS:</span>
+                    <div class="demo-tools-list">
+                        ${spec.tools.map(t => `<span class="demo-tool-chip">${t}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Pane: Live Cloud Sandbox REPL / Terminal -->
+            <div class="demo-terminal-pane">
+                <div class="terminal-titlebar">
+                    <div class="terminal-traffic">
+                        <span class="term-dot"></span>
+                        <span class="term-dot"></span>
+                        <span class="term-dot"></span>
+                    </div>
+                    <span class="terminal-title-text">${escapeHTML(spec.terminal.title)}</span>
+                    <span class="terminal-lang-badge">SANDBOX CONTAINER</span>
+                </div>
+                <div class="terminal-code-body">
+                    <pre><code class="terminal-code-text">${escapeHTML(spec.terminal.code)}</code></pre>
+                </div>
+                <div class="terminal-status-strip">
+                    <span class="terminal-pip-green"></span>
+                    <span>Container: isolated-repl-amd64 • Memory: 124MB / 512MB • STDIN: Safe Shim Enabled</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Update Footer actions
+    const footerActions = document.getElementById('demo-footer-actions');
+    if (footerActions) {
+        footerActions.innerHTML = `
+            <button class="btn btn-secondary btn-sm" onclick="startVoiceCall('${spec.key}')">
+                📞 Voice Call with ${spec.name}
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="launchArchetypeFromShowcase('${spec.key}')">
+                Collaborate with ${spec.name} in Workstation ➔
+            </button>
+        `;
+    }
+}
 
 function initEntrySplash() {
-    const splash = document.getElementById('entry-splash');
-    if (!splash) return;
-
-    // Check if user already saw splash in this session
-    // Allow replaying anytime by clicking the logo
-    initSplashCanvas();
-    startSplashAnimation();
-
-    // Escape key listener to skip intro
-    document.addEventListener('keydown', handleSplashKeydown);
-}
-
-function handleSplashKeydown(e) {
-    if (e.key === 'Escape') {
-        dismissEntrySplash(true);
-    }
-}
-
-function startSplashAnimation() {
-    const splash = document.getElementById('entry-splash');
-    if (!splash) return;
-
-    // Clear any previous timers
-    splashSequenceTimers.forEach(t => clearTimeout(t));
-    splashSequenceTimers = [];
-
-    // Reset state classes
-    splash.classList.remove('docking-to-navbar', 'dismissed');
-    splash.style.display = 'flex';
-    splash.style.opacity = '1';
-    splash.style.transition = '';
-
-    document.body.classList.add('splash-active');
-    document.body.classList.remove('site-revealed');
-
-    const orbit = document.getElementById('quantum-dots-orbit');
-    const shockwave = document.getElementById('splash-shockwave');
-    const symbol = document.getElementById('singularity-symbol');
-    const branding = document.getElementById('splash-branding');
-    const stage = document.getElementById('splash-stage');
-
-    if (orbit) orbit.classList.remove('converge');
-    if (shockwave) shockwave.classList.remove('trigger');
-    if (symbol) symbol.classList.remove('active');
-    if (branding) branding.classList.remove('active');
-
-    // Sequence Step 1: Start 5 dots quantum convergence inward (t = 150ms)
-    splashSequenceTimers.push(setTimeout(() => {
-        if (orbit) orbit.classList.add('converge');
-    }, 150));
-
-    // Sequence Step 2: The 5 dots collide at center -> Shockwave + Chime + Crystalline ◈ (t = 850ms)
-    splashSequenceTimers.push(setTimeout(() => {
-        if (shockwave) shockwave.classList.add('trigger');
-        if (symbol) symbol.classList.add('active');
-        playSingularityChime();
-    }, 850));
-
-    // Sequence Step 3: Kinetic Typography "ONE DOTS" drops in + Shimmer sweep (t = 1050ms)
-    splashSequenceTimers.push(setTimeout(() => {
-        if (branding) branding.classList.add('active');
-    }, 1050));
-
-    // Sequence Step 4: FLY-TO-DOCK Dynamic Choreography (t = 1750ms)
-    // Synchronously fly the central stage into the top-left navbar logo while website cascades up
-    splashSequenceTimers.push(setTimeout(() => {
-        const logoBox = document.querySelector('.logo-box');
-        if (logoBox && stage) {
-            const logoRect = logoBox.getBoundingClientRect();
-            const stageRect = stage.getBoundingClientRect();
-            // Pixel-perfect translation vector to target logo center
-            const deltaX = (logoRect.left + logoRect.width / 2) - (stageRect.left + stageRect.width / 2);
-            const deltaY = (logoRect.top + logoRect.height / 2) - (stageRect.top + stageRect.height / 2);
-            stage.style.setProperty('--dock-tx', `${deltaX}px`);
-            stage.style.setProperty('--dock-ty', `${deltaY}px`);
-        }
-
-        splash.classList.add('docking-to-navbar');
-        document.body.classList.remove('splash-active');
-        document.body.classList.add('site-revealed');
-    }, 1750));
-
-    // Sequence Step 5: Quantum Hand-off & Arrival Pulse into Navbar Logo (t = 2150ms)
-    splashSequenceTimers.push(setTimeout(() => {
-        const navLogo = document.querySelector('.logo-box');
-        if (navLogo) {
-            navLogo.classList.remove('arrival-pulse');
-            void navLogo.offsetWidth; // force reflow
-            navLogo.classList.add('arrival-pulse');
-            playArrivalChime();
-        }
-    }, 2150));
-
-    // Sequence Step 6: Complete Splash Dismissal & Cleanup (t = 2450ms)
-    splashAutoDismissTimer = setTimeout(() => {
-        dismissEntrySplash(false);
-    }, 2450);
-}
-
-function dismissEntrySplash(immediate = false) {
-    const splash = document.getElementById('entry-splash');
-    if (!splash || splash.classList.contains('dismissed')) return;
-
-    if (splashAutoDismissTimer) clearTimeout(splashAutoDismissTimer);
-    splashSequenceTimers.forEach(t => clearTimeout(t));
-    splashSequenceTimers = [];
-
-    document.removeEventListener('keydown', handleSplashKeydown);
-
     document.body.classList.remove('splash-active');
     document.body.classList.add('site-revealed');
-
-    const navLogo = document.querySelector('.logo-box');
-    if (navLogo) {
-        navLogo.classList.remove('arrival-pulse');
-        void navLogo.offsetWidth;
-        navLogo.classList.add('arrival-pulse');
-    }
-
-    if (immediate) {
-        splash.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-        splash.style.opacity = '0';
-    } else {
-        splash.style.transition = 'opacity 0.5s ease';
-        splash.style.opacity = '0';
-    }
-
-    splash.classList.add('dismissed');
-
-    setTimeout(() => {
-        if (splashCanvasAnimId) cancelAnimationFrame(splashCanvasAnimId);
-        splash.style.display = 'none';
-        splash.classList.remove('docking-to-navbar');
-    }, immediate ? 200 : 500);
 }
 
 // Replay Entry Animation Trigger (called when clicking navbar logo)

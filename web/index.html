@@ -11,89 +11,8 @@
     <link rel="stylesheet" href="docs.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="splash-active">
-    <!-- =========================================================================
-         PREMIUM HIGH-QUALITY ENTRY ANIMATION: "ONE DOTS" SINGULARITY SPLASH
-         ========================================================================= -->
-    <div class="one-dots-entry-splash" id="entry-splash">
-        <!-- Deep Space Cybernetic Backdrop with Dynamic Canvas Particles -->
-        <canvas class="splash-canvas" id="splash-canvas"></canvas>
-        <div class="splash-glow-sphere"></div>
-        <div class="splash-shockwave" id="splash-shockwave"></div>
+<body>
 
-        <!-- Central Quantum Convergence Stage -->
-        <div class="splash-stage" id="splash-stage">
-            <!-- 3D Gyroscopic Orbital Rings -->
-            <div class="gyro-ring gyro-ring-1"></div>
-            <div class="gyro-ring gyro-ring-2"></div>
-            <div class="gyro-ring gyro-ring-3"></div>
-
-            <!-- The 5 Luminous Specialist Dots Spiraling into Singularity -->
-            <div class="quantum-dots-orbit" id="quantum-dots-orbit">
-                <div class="orbit-dot dot-1-blue" title="NOVA (Blue Face • Product Launch)">
-                    <span class="dot-core"></span>
-                    <span class="dot-tail"></span>
-                </div>
-                <div class="orbit-dot dot-2-green" title="SAGE (Lime-Green Face with Round Glasses • Research Scientist)">
-                    <span class="dot-core"></span>
-                    <span class="dot-tail"></span>
-                </div>
-                <div class="orbit-dot dot-3-yellow" title="AXIS (Golden-Yellow Face • Enterprise Sales)">
-                    <span class="dot-core"></span>
-                    <span class="dot-tail"></span>
-                </div>
-                <div class="orbit-dot dot-4-purple" title="MUSE (Purple Face • Content &amp; Media)">
-                    <span class="dot-core"></span>
-                    <span class="dot-tail"></span>
-                </div>
-                <div class="orbit-dot dot-5-orange" title="HEX (Dark Navy Face with Glowing Cyan • Autonomous Dev)">
-                    <span class="dot-core"></span>
-                    <span class="dot-tail"></span>
-                </div>
-            </div>
-
-            <!-- Central Crystalline Monogram & Shockwave Core -->
-            <div class="singularity-symbol-wrap" id="singularity-symbol">
-                <div class="symbol-ambient-flare"></div>
-                <div class="symbol-glyph">◈</div>
-                <div class="symbol-rays"></div>
-            </div>
-
-            <!-- Kinetic Typography: O N E   D O T S -->
-            <div class="splash-branding-wrap" id="splash-branding">
-                <div class="splash-logo-title" id="splash-logo-text">
-                    <span class="letter" style="--l-idx: 0;">O</span>
-                    <span class="letter" style="--l-idx: 1;">N</span>
-                    <span class="letter" style="--l-idx: 2;">E</span>
-                    <span class="letter-space"></span>
-                    <span class="letter dot-accent" style="--l-idx: 3;">D</span>
-                    <span class="letter dot-accent" style="--l-idx: 4;">O</span>
-                    <span class="letter dot-accent" style="--l-idx: 5;">T</span>
-                    <span class="letter dot-accent" style="--l-idx: 6;">S</span>
-                </div>
-                <div class="splash-shimmer-sweep"></div>
-                <div class="splash-subtitle" id="splash-subtitle">
-                    <span class="sub-line">ALWAYS-ON FRONTIER INTELLIGENCE</span>
-                    <span class="sub-sep">•</span>
-                    <span class="sub-tag">FIVE SPECIALISTS AS ONE</span>
-                </div>
-                <!-- 5 Agent Mini Pulse Status Pips -->
-                <div class="splash-cores-status">
-                    <span class="core-pip pip-blue active" title="NOVA Active"></span>
-                    <span class="core-pip pip-green active" title="SAGE Active"></span>
-                    <span class="core-pip pip-yellow active" title="AXIS Active"></span>
-                    <span class="core-pip pip-purple active" title="MUSE Active"></span>
-                    <span class="core-pip pip-orange active" title="HEX Active"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Top-Right Skip / Dismiss Trigger -->
-        <button class="splash-skip-btn" id="btn-skip-splash" onclick="dismissEntrySplash(true)" title="Skip Intro (Esc)">
-            <span>Skip</span>
-            <kbd>Esc</kbd>
-        </button>
-    </div>
 
     <!-- Ambient Cybernetic Glow Background -->
     <div class="app-background">
@@ -126,12 +45,12 @@
                 
                 <nav class="nav-links">
                     <button class="nav-link-btn active" id="btn-view-showcase" onclick="switchMainView('view-showcase')">Overview</button>
-                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-film')">Launch Film</button>
-                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-archetypes')">Specialists</button>
-                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-capabilities')">The Magic of Dot</button>
-                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-safety')">Safety &amp; Privacy</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('hero-demo-window')">Live Workstation</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('specialists-matrix')">Specialists</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('security-architecture')">Security Matrix</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('capabilities-grid')">Capabilities</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('pricing-tiers')">Pricing</button>
                     <button class="nav-link-btn" id="btn-view-docs" onclick="switchMainView('view-docs')">Docs &amp; Learn</button>
-                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('showcase-pricing')">Pricing</button>
                     <button class="nav-link-btn" id="btn-open-auth-modal" onclick="openAuthModal()" title="Authentication &amp; Security Shield">🛡️ Security</button>
                     <button class="nav-link-btn" id="btn-admin-console" onclick="openAdminModal()" style="display: none; color: #f59e0b;" title="Admin Action Vault &amp; Fleet Audit Logs">⚙️ Admin Vault</button>
                 </nav>
@@ -152,316 +71,412 @@
 
     <!-- =========================================================================
          VIEW 1: FLAGSHIP OFFICIAL PRODUCT SHOWCASE & INFORMATION WEBSITE
+         SENIOR ADVANCED FULL-STACK ARCHITECTURE (LINEAR / VERCEL CALIBER)
          ========================================================================= -->
     <section class="app-view active" id="view-showcase">
         <div class="showcase-container">
             
-            <!-- Editorial Article Header (OpenAI Introducing Dots) -->
-            <div class="article-editorial-header">
-                <div class="article-meta-row">
-                    <span class="meta-badge-cat">PRODUCT ANNOUNCEMENT</span>
-                    <span class="meta-sep">/</span>
-                    <span class="meta-date">FRONTIER INTELLIGENCE SYSTEM</span>
-                    <span class="meta-sep">/</span>
-                    <span class="meta-read">POWERED BY GEMINI 3.5</span>
+            <!-- Senior Executive Hero Section -->
+            <div class="senior-hero-wrapper">
+                <div class="hero-eyebrow-pill">
+                    <span class="live-pulse-emerald"></span>
+                    <span class="eyebrow-text">ALWAYS-ON FLEET ACTIVE • ENTERPRISE FRONTIER SYSTEM • 19-LAYER HARDENED</span>
+                    <span class="eyebrow-tag">v2.4 PROD</span>
                 </div>
-                <h1 class="article-title">Introducing ONE DOTS</h1>
-                <p class="article-deck">
-                    Dots are remarkably capable, always-on agents built to handle everything. They’re a whole new way to work with AI—one that gets to know what matters to you, is always working on your behalf, and takes important work off your plate so you get more of your time and attention back.
+
+                <h1 class="senior-hero-headline">
+                    Autonomous frontier intelligence <br>
+                    <span class="headline-gradient">that never clocks out.</span>
+                </h1>
+
+                <p class="senior-hero-subdeck">
+                    Dots are remarkably capable, always-on AI specialists equipped with isolated cloud sandboxes, persistent memory, and 4,000+ app connectors. While you sleep, your fleet analyzes telemetry, executes Python scripts, and prepares executive deliverables.
                 </p>
-                <div class="article-byline-bar">
-                    <div class="byline-team-group">
-                        <div class="mini-dot-cluster">
-                            <span class="mini-dot dot-blue" title="NOVA (Blue Face • Product Launch)"></span>
-                            <span class="mini-dot dot-green" title="SAGE (Lime-Green Face with Round Glasses • Research Scientist)"></span>
-                            <span class="mini-dot dot-yellow" title="AXIS (Golden-Yellow Face • Enterprise Sales)"></span>
-                            <span class="mini-dot dot-purple" title="MUSE (Purple Face • Content & Media)"></span>
-                            <span class="mini-dot dot-cyan" title="HEX (Dark Navy Face with Glowing Cyan Features • Autonomous Dev)"></span>
-                        </div>
-                        <span class="byline-label">By ONE DOTS Frontier Intelligence &amp; Agent Architecture Team</span>
+
+                <div class="senior-hero-cta-bar">
+                    <button class="btn btn-primary btn-lg" onclick="switchMainView('view-workstation')">
+                        Launch Agent Workstation ◈
+                    </button>
+                    <button class="btn btn-secondary btn-lg" onclick="scrollToShowcaseSection('specialists-matrix')">
+                        Explore 5 Specialists ↓
+                    </button>
+                    <button class="btn btn-call btn-lg" onclick="startVoiceCall()">
+                        📞 Live Voice Call
+                    </button>
+                </div>
+
+                <!-- Senior Telemetry Badges Strip -->
+                <div class="senior-telemetry-strip">
+                    <div class="telemetry-stat">
+                        <span class="stat-dot dot-blue"></span>
+                        <span class="stat-num" id="stat-active-specialists">5</span>
+                        <span class="stat-desc">Specialists Online</span>
                     </div>
-                    <div class="byline-actions">
+                    <div class="telemetry-sep">/</div>
+                    <div class="telemetry-stat">
+                        <span class="stat-dot dot-emerald"></span>
+                        <span class="stat-num">100%</span>
+                        <span class="stat-desc">Ephemeral Sandboxes</span>
+                    </div>
+                    <div class="telemetry-sep">/</div>
+                    <div class="telemetry-stat">
+                        <span class="stat-dot dot-cyan"></span>
+                        <span class="stat-num">&lt; 14ms</span>
+                        <span class="stat-desc">Execution Latency</span>
+                    </div>
+                    <div class="telemetry-sep">/</div>
+                    <div class="telemetry-stat">
+                        <span class="stat-dot dot-purple"></span>
+                        <span class="stat-num">0</span>
+                        <span class="stat-desc">Unreviewed Actions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================================================
+                 INTERACTIVE HERO WORKSTATION PREVIEW WINDOW (MACOS / LINEAR CALIBER)
+                 ========================================================================= -->
+            <div class="senior-demo-window-card" id="hero-demo-window">
+                <!-- Window Chrome Titlebar -->
+                <div class="demo-window-titlebar">
+                    <div class="window-controls-traffic">
+                        <span class="traffic-dot dot-red"></span>
+                        <span class="traffic-dot dot-yellow"></span>
+                        <span class="traffic-dot dot-green"></span>
+                    </div>
+
+                    <!-- Specialist Tab Switcher -->
+                    <div class="demo-specialist-tabs" id="demo-tabs-bar">
+                        <button class="demo-tab-btn active" onclick="switchDemoSpecialist('nova', this)">
+                            <span class="tab-indicator-pip" style="background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
+                            <span class="tab-label">NOVA (Product Launch)</span>
+                        </button>
+                        <button class="demo-tab-btn" onclick="switchDemoSpecialist('sage', this)">
+                            <span class="tab-indicator-pip" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+                            <span class="tab-label">SAGE (Research Scientist)</span>
+                        </button>
+                        <button class="demo-tab-btn" onclick="switchDemoSpecialist('axis', this)">
+                            <span class="tab-indicator-pip" style="background: #f59e0b; box-shadow: 0 0 8px #f59e0b;"></span>
+                            <span class="tab-label">AXIS (Enterprise Deals)</span>
+                        </button>
+                        <button class="demo-tab-btn" onclick="switchDemoSpecialist('muse', this)">
+                            <span class="tab-indicator-pip" style="background: #a855f7; box-shadow: 0 0 8px #a855f7;"></span>
+                            <span class="tab-label">MUSE (Content Studio)</span>
+                        </button>
+                        <button class="demo-tab-btn" onclick="switchDemoSpecialist('hex', this)">
+                            <span class="tab-indicator-pip" style="background: #06b6d4; box-shadow: 0 0 8px #06b6d4;"></span>
+                            <span class="tab-label">HEX (Autonomous Dev)</span>
+                        </button>
+                    </div>
+
+                    <div class="demo-window-meta">
+                        <span class="demo-live-badge"><span class="ping-cyan"></span> REPL ACTIVE</span>
+                    </div>
+                </div>
+
+                <!-- Window Content Grid: Split Screen Workstation Preview -->
+                <div class="demo-window-stage" id="demo-window-stage">
+                    <!-- Populated dynamically via switchDemoSpecialist() -->
+                </div>
+
+                <!-- Demo Window Footer Actions -->
+                <div class="demo-window-footer">
+                    <div class="demo-footer-left">
+                        <span class="footer-hint-mono">Isolated Linux Container Sandbox • SQLite WAL Protected • Safe STDIN Shim Active</span>
+                    </div>
+                    <div class="demo-footer-right" id="demo-footer-actions">
                         <button class="btn btn-primary btn-sm" onclick="switchMainView('view-workstation')">
-                            Launch Workstation ◈
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="switchMainView('view-docs')">
-                            Docs &amp; Learn
-                        </button>
-                        <button class="btn btn-call btn-sm" onclick="startVoiceCall()">
-                            📞 Live Voice Call
+                            Open Full Workstation ◈
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Cinematic Playable Launch Film Section (OpenAI Dots Live from the Lab) -->
-            <div class="showcase-film-card" id="showcase-film">
-                <div class="film-header-bar">
-                    <div class="film-title-left">
-                        <span class="film-live-pill"><span class="pulse-red"></span> LIVE FROM THE LAB</span>
-                        <span class="film-headline">Live from the Lab launch film introducing dots (5 Specialists • 30s Each)</span>
-                    </div>
-                    <div class="film-chapter-pills" id="film-chapter-pills">
-                        <button class="chapter-pill active" onclick="jumpToFilmChapter(0, event)">1. NOVA (0:00)</button>
-                        <button class="chapter-pill" onclick="jumpToFilmChapter(1, event)">2. SAGE (0:30)</button>
-                        <button class="chapter-pill" onclick="jumpToFilmChapter(2, event)">3. AXIS (1:00)</button>
-                        <button class="chapter-pill" onclick="jumpToFilmChapter(3, event)">4. MUSE (1:30)</button>
-                        <button class="chapter-pill" onclick="jumpToFilmChapter(4, event)">5. HEX (2:00)</button>
-                    </div>
-                    <div class="film-badges-right">
-                        <button class="film-voice-toggle-btn" id="film-voice-toggle" onclick="toggleFilmAudio(event)" title="Toggle Voiceover Narration">
-                            <span id="film-voice-icon">🔇</span> Narration
-                        </button>
-                        <span class="film-tech-badge">4K Ultra HD</span>
-                    </div>
-                </div>
-
-                <div class="film-screen" id="film-screen" onclick="toggleFilmPlayback()">
-                    <!-- Interactive Multi-Scene Video Screen Stage -->
-                    <div class="film-stage-container" id="film-stage-container">
-                        
-                        <!-- Scene Content Overlay (Dynamically Updated) -->
-                        <div class="film-scene-box" id="film-scene-box">
-                            <div class="scene-chapter-badge" id="scene-chapter-badge">SPECIALIST 1 • BLUE DOT (NOVA) • 00:00 - 00:30</div>
-                            <h2 class="scene-title" id="scene-title">NOVA: Autonomous Product Launch Lead</h2>
-                            <p class="scene-description" id="scene-description">
-                                Learns positioning and audience standards. When product scope shifts, NOVA automatically revises launch narratives, updates Linear roadmaps, and syncs 4,000+ app connectors.
-                            </p>
-
-                            <!-- Dynamic Scene Visual Demonstrator -->
-                            <div class="scene-visual-display" id="scene-visual-display">
-                                <!-- Populated dynamically by FILM_CHAPTERS -->
-                            </div>
-
-                            <div class="scene-action-row" id="scene-action-row">
-                                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); launchArchetypeFromShowcase('nova')">
-                                    Collaborate with NOVA ➔
-                                </button>
-                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); startVoiceCall('nova')">
-                                    📞 Start Voice Call with NOVA
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Big Center Play / Pause Indicator (fades during active playback) -->
-                        <div class="film-center-play-overlay" id="film-center-play-overlay">
-                            <button class="film-play-btn" id="film-play-btn" title="Play / Pause Launch Film">
-                                <span id="film-play-icon">▶</span>
-                            </button>
-                            <div class="film-preview-caption" id="film-status-text">
-                                Click to watch the 5 Dots in Action — 30s Dedicated Demo for Each Dot (02:30)
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Bottom Video Controls Bar -->
-                    <div class="film-controls-bar" onclick="event.stopPropagation()">
-                        <button class="film-ctrl-icon" onclick="toggleFilmPlayback()" id="film-ctrl-play-btn" title="Play/Pause">▶</button>
-                        <span class="film-timecode" id="film-timecode">00:00 / 02:30</span>
-                        <div class="film-scrubber" onclick="scrubFilm(event)" id="film-scrubber-track">
-                            <div class="film-scrubber-fill" id="film-scrubber-fill" style="width: 0%;"></div>
-                        </div>
-                        <button class="film-ctrl-icon" onclick="toggleFilmAudio(event)" id="film-audio-ctrl" title="Toggle Narration Voice">🔇</button>
-                        <button class="film-ctrl-icon" onclick="startVoiceCall()" title="Hop on Voice Call">📞</button>
-                        <button class="film-ctrl-icon" onclick="switchMainView('view-workstation')" title="Launch Agent Workstation">◈</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Editorial Narrative Block (OpenAI Exact Article Text) -->
-            <div class="editorial-narrative-section">
-                <div class="narrative-content-wrap">
-                    <div class="narrative-section-kicker">PERSISTENT FRONTIER INTELLIGENCE</div>
-                    <h2 class="narrative-headline">Frontier intelligence that has your back</h2>
-                    <p class="narrative-lead">
-                        Dots are frontier intelligence that have your back. Powered by GPT‑6 Astra &amp; Google Gemini 3.5, they have their own cloud computer, learn from feedback over time, and can work towards your goals 24/7. Through our ecosystem of plugins, they can readily connect to over 4,000 apps, giving them the tools to help wherever you need them.
-                    </p>
-
-                    <div class="editorial-pullquote-box">
-                        <div class="pullquote-decor">“</div>
-                        <blockquote class="pullquote-text">
-                            Your dot is always within reach, whether it is through ChatGPT, Slack, or Teams. You can ask questions, explore ideas, and give feedback along the way; or you can simply hop on a voice call when you need to talk something out. The more you work together, the more your dot learns your preferences, how you think, and what good looks like to you.
-                        </blockquote>
-                        <div class="pullquote-attribution">— The Magic of Dot: Collaborative Continuous Learning</div>
-                    </div>
-
-                    <p class="narrative-paragraph">
-                        Traditional AI interfaces require manual prompting for every step. When you close the tab, execution halts. Dots introduce a fundamentally different paradigm: persistent autonomous progress. Each Dot operates inside an isolated cloud sandbox equipped with an autonomous Python REPL, dedicated browser engine, and secure API bridges. When you're asleep, in meetings, or offline, your Dot continues analyzing telemetry, building proof-of-concepts, reviewing PRs, and preparing executive briefings.
-                    </p>
-                </div>
-            </div>
-
-            <!-- OpenAI-Style Interactive Floating Dots Cluster (Meet the 5 Specialists) -->
-            <div class="hero-dots-orbit-stage" id="hero-dots-orbit-stage">
-                <div class="hero-cluster-glow"></div>
-                <div class="hero-dots-orbit-header">
-                    <span class="orbit-badge"><span class="orbit-pulse"></span> FIVE SPECIALIST DOTS • ALWAYS-ON CLUSTER</span>
-                    <span class="orbit-hint">Touch any Dot to interact, hear voice &amp; feel cartoon physics</span>
-                </div>
-                <div class="hero-dots-cluster">
-                    <!-- NOVA (Blue Face) -->
-                    <div class="hero-dot-item dot-nova dot-felipe" onclick="touchDotCartoon('nova', this, event)" title="Touch NOVA (Blue Face • Product Launch Lead)">
-                        <div class="hero-dot-halo halo-blue"></div>
-                        <div class="cartoon-dot-wrapper">
-                            <img src="assets/dots/nova.png" alt="NOVA" class="cartoon-dot-img cartoon-float float-del-0" />
-                            <div class="cartoon-speech-bubble" id="speech-nova-hero">Let's ship this! 🚀</div>
-                        </div>
-                        <div class="hero-dot-meta">
-                            <span class="hero-dot-name">NOVA</span>
-                            <span class="hero-dot-role">Product Launch</span>
-                        </div>
-                    </div>
-
-                    <!-- SAGE (Lime-Green Face with round glasses) -->
-                    <div class="hero-dot-item dot-sage dot-todd" onclick="touchDotCartoon('sage', this, event)" title="Touch SAGE (Lime-Green Face with Round Glasses • Research Scientist)">
-                        <div class="hero-dot-halo halo-green"></div>
-                        <div class="cartoon-dot-wrapper">
-                            <img src="assets/dots/sage.png" alt="SAGE" class="cartoon-dot-img cartoon-float float-del-1" />
-                            <div class="cartoon-speech-bubble" id="speech-sage-hero">Hypothesis verified! 🔬</div>
-                        </div>
-                        <div class="hero-dot-meta">
-                            <span class="hero-dot-name">SAGE</span>
-                            <span class="hero-dot-role">Research Scientist</span>
-                        </div>
-                    </div>
-
-                    <!-- AXIS (Golden-Yellow Face) -->
-                    <div class="hero-dot-item dot-axis dot-alfred" onclick="touchDotCartoon('axis', this, event)" title="Touch AXIS (Golden-Yellow Face • Enterprise Sales Lead)">
-                        <div class="hero-dot-halo halo-yellow"></div>
-                        <div class="cartoon-dot-wrapper">
-                            <img src="assets/dots/axis.png" alt="AXIS" class="cartoon-dot-img cartoon-float float-del-2" />
-                            <div class="cartoon-speech-bubble" id="speech-axis-hero">Deal closed! 🤝</div>
-                        </div>
-                        <div class="hero-dot-meta">
-                            <span class="hero-dot-name">AXIS</span>
-                            <span class="hero-dot-role">Enterprise Deals</span>
-                        </div>
-                    </div>
-
-                    <!-- MUSE (Purple Face) -->
-                    <div class="hero-dot-item dot-muse dot-jojo" onclick="touchDotCartoon('muse', this, event)" title="Touch MUSE (Purple Face • Content Creator & Media)">
-                        <div class="hero-dot-halo halo-purple"></div>
-                        <div class="cartoon-dot-wrapper">
-                            <img src="assets/dots/muse.png" alt="MUSE" class="cartoon-dot-img cartoon-float float-del-3" />
-                            <div class="cartoon-speech-bubble" id="speech-muse-hero">Viral content ready! 🎬</div>
-                        </div>
-                        <div class="hero-dot-meta">
-                            <span class="hero-dot-name">MUSE</span>
-                            <span class="hero-dot-role">Content &amp; Media</span>
-                        </div>
-                    </div>
-
-                    <!-- HEX (Dark Navy Face with Glowing Cyan Features) -->
-                    <div class="hero-dot-item dot-hex dot-sentry" onclick="touchDotCartoon('hex', this, event)" title="Touch HEX (Dark Navy Face with Glowing Cyan Features • Autonomous Dev)">
-                        <div class="hero-dot-halo halo-hex"></div>
-                        <div class="cartoon-dot-wrapper">
-                            <img src="assets/dots/hex.png" alt="HEX" class="cartoon-dot-img cartoon-float float-del-4" />
-                            <div class="cartoon-speech-bubble" id="speech-hex-hero">PR merged cleanly! ⚡</div>
-                        </div>
-                        <div class="hero-dot-meta">
-                            <span class="hero-dot-name">HEX</span>
-                            <span class="hero-dot-role">Autonomous Dev</span>
-                        </div>
-                    </div>
-            </div>
-
-            <!-- Specialist Archetypes Section -->
-            <div class="section-heading-box" id="showcase-archetypes">
+            <!-- =========================================================================
+                 EXECUTIVE SPECIALIST BENTO MATRIX (5 TURNKEY FLEET ARCHETYPES)
+                 ========================================================================= -->
+            <div class="section-heading-box" id="specialists-matrix" style="margin-top: 100px;">
                 <div class="section-kicker">Department Specialists</div>
                 <h2 class="section-main-title">Specialist Dots for Your Entire Organization</h2>
                 <p class="section-desc">
-                    Your primary Dot works as your strategic partner; specialist Dots take on dedicated departmental responsibilities across engineering, research, sales, product launches, and media production.
+                    Deploy 5 turnkey specialist archetypes—engineered with domain-specific toolchains, dedicated cloud REPL sandboxes, and continuous learning feedback loops.
                 </p>
             </div>
-            <div class="showcase-archetypes-grid">
-                <!-- Blue Dot: NOVA -->
-                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
-                    <div>
-                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('nova', this, event)" title="Touch NOVA to interact!">
-                            <img src="assets/dots/nova.png" alt="NOVA - Blue Face Product Launch Lead" class="cartoon-dot-img cartoon-float" />
-                            <div class="cartoon-speech-bubble" id="speech-nova">Let's ship this! 🚀</div>
+
+            <div class="specialist-bento-grid">
+                <!-- 1. NOVA: Product Launch Lead -->
+                <div class="bento-specialist-card bento-nova">
+                    <div class="bento-card-top">
+                        <div class="bento-avatar-wrap halo-nova">
+                            <img src="assets/dots/nova.png" alt="NOVA - Blue Face Product Launch Lead" class="bento-avatar-img" />
                         </div>
-                        <div class="archetype-card-name">Blue Dot (NOVA)</div>
-                        <div class="archetype-card-role">Product Launch Lead</div>
-                        <p class="archetype-card-body">
-                            Blue droplet face. Learns positioning and audience standards. When product scope shifts, NOVA automatically revises launch narratives, updates roadmaps, and prepares customer drafts.
+                        <div class="bento-status-pill pill-nova">
+                            <span class="pip-pulse"></span> GTM ACTIVE
+                        </div>
+                    </div>
+                    <div class="bento-card-meta">
+                        <div class="bento-agent-name">NOVA</div>
+                        <div class="bento-agent-role">Product Launch Lead &bull; Strategy</div>
+                        <p class="bento-agent-desc">
+                            Learns product positioning, audience standards, and launch criteria. When scope shifts, NOVA automatically revises launch narratives, updates Linear roadmaps, and syncs 4,000+ app connectors.
                         </p>
                     </div>
-                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('nova')">Collaborate with NOVA ➔</button>
+                    <div class="bento-toolchain-row">
+                        <span class="tool-tag">Linear API</span>
+                        <span class="tool-tag">GitHub Connect</span>
+                        <span class="tool-tag">Slack Dispatcher</span>
+                        <span class="tool-tag">Launch Synthesizer</span>
+                    </div>
+                    <div class="bento-actions-row">
+                        <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('nova')">
+                            Collaborate with NOVA ➔
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="startVoiceCall('nova')" title="Hop on Voice Call with NOVA">
+                            📞
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Green Dot: SAGE -->
-                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
-                    <div>
-                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('sage', this, event)" title="Touch SAGE to interact!">
-                            <img src="assets/dots/sage.png" alt="SAGE - Lime-Green Face with Round Glasses" class="cartoon-dot-img cartoon-float" />
-                            <div class="cartoon-speech-bubble" id="speech-sage">Hypothesis verified! 🔬</div>
+                <!-- 2. SAGE: Research Scientist -->
+                <div class="bento-specialist-card bento-sage">
+                    <div class="bento-card-top">
+                        <div class="bento-avatar-wrap halo-sage">
+                            <img src="assets/dots/sage.png" alt="SAGE - Lime-Green Face with Round Glasses" class="bento-avatar-img" />
                         </div>
-                        <div class="archetype-card-name">Lime-Green Dot (SAGE)</div>
-                        <div class="archetype-card-role">Research Scientist &amp; Evidence</div>
-                        <p class="archetype-card-body">
-                            Lime-green face with round glasses. Learns hypotheses and evaluation metrics. As new evidence arrives, SAGE reruns statistical analyses in its cloud computer, flags anomalies, and updates figures.
+                        <div class="bento-status-pill pill-sage">
+                            <span class="pip-pulse"></span> ANALYSIS RUNNING
+                        </div>
+                    </div>
+                    <div class="bento-card-meta">
+                        <div class="bento-agent-name">SAGE</div>
+                        <div class="bento-agent-role">Research Scientist &bull; Statistical Rigor</div>
+                        <p class="bento-agent-desc">
+                            Lime-green face with round glasses. Learns hypotheses and evaluation metrics. As new evidence arrives, SAGE reruns statistical analyses in its isolated cloud sandbox, flags anomalies, and updates figures.
                         </p>
                     </div>
-                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('sage')">Collaborate with SAGE ➔</button>
+                    <div class="bento-toolchain-row">
+                        <span class="tool-tag">Python REPL</span>
+                        <span class="tool-tag">ArXiv Ingest</span>
+                        <span class="tool-tag">NumPy Engine</span>
+                        <span class="tool-tag">Jupyter Kernel</span>
+                    </div>
+                    <div class="bento-actions-row">
+                        <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('sage')">
+                            Collaborate with SAGE ➔
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="startVoiceCall('sage')" title="Hop on Voice Call with SAGE">
+                            📞
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Yellow Dot: AXIS -->
-                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
-                    <div>
-                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('axis', this, event)" title="Touch AXIS to interact!">
-                            <img src="assets/dots/axis.png" alt="AXIS - Golden-Yellow Face" class="cartoon-dot-img cartoon-float" />
-                            <div class="cartoon-speech-bubble" id="speech-axis">Deal closed! 🤝</div>
+                <!-- 3. AXIS: Enterprise Sales Lead -->
+                <div class="bento-specialist-card bento-axis">
+                    <div class="bento-card-top">
+                        <div class="bento-avatar-wrap halo-axis">
+                            <img src="assets/dots/axis.png" alt="AXIS - Golden-Yellow Face" class="bento-avatar-img" />
                         </div>
-                        <div class="archetype-card-name">Golden-Yellow Dot (AXIS)</div>
-                        <div class="archetype-card-role">Enterprise Sales Lead</div>
-                        <p class="archetype-card-body">
-                            Golden-yellow star face. Checks customer RFPs against documentation, builds proof-of-concept scripts in its cloud computer sandbox, and identifies solutions engineers for technical reviews.
+                        <div class="bento-status-pill pill-axis">
+                            <span class="pip-pulse"></span> PIPELINE SYNC
+                        </div>
+                    </div>
+                    <div class="bento-card-meta">
+                        <div class="bento-agent-name">AXIS</div>
+                        <div class="bento-agent-role">Enterprise Sales &bull; Technical POCs</div>
+                        <p class="bento-agent-desc">
+                            Checks customer RFPs against documentation, builds proof-of-concept scripts in its cloud computer sandbox, verifies compliance standards, and identifies solutions engineers for technical reviews.
                         </p>
                     </div>
-                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('axis')">Collaborate with AXIS ➔</button>
+                    <div class="bento-toolchain-row">
+                        <span class="tool-tag">RFP Parser</span>
+                        <span class="tool-tag">Salesforce Sync</span>
+                        <span class="tool-tag">POC Sandbox</span>
+                        <span class="tool-tag">Contract Diff</span>
+                    </div>
+                    <div class="bento-actions-row">
+                        <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('axis')">
+                            Collaborate with AXIS ➔
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="startVoiceCall('axis')" title="Hop on Voice Call with AXIS">
+                            📞
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Purple Dot: MUSE -->
-                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
-                    <div>
-                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('muse', this, event)" title="Touch MUSE to interact!">
-                            <img src="assets/dots/muse.png" alt="MUSE - Purple Face Content & Media" class="cartoon-dot-img cartoon-float" />
-                            <div class="cartoon-speech-bubble" id="speech-muse">Viral content ready! 🎬</div>
+                <!-- 4. MUSE: Content Creator & Media -->
+                <div class="bento-specialist-card bento-muse">
+                    <div class="bento-card-top">
+                        <div class="bento-avatar-wrap halo-muse">
+                            <img src="assets/dots/muse.png" alt="MUSE - Purple Face Content & Media" class="bento-avatar-img" />
                         </div>
-                        <div class="archetype-card-name">Purple Dot (MUSE)</div>
-                        <div class="archetype-card-role">Content Creator &amp; Media</div>
-                        <p class="archetype-card-body">
-                            Purple face with celestial ring. Ingests raw transcripts, highlights moments for video clips, formats show notes, and drafts social posts with creator tone consistency.
+                        <div class="bento-status-pill pill-muse">
+                            <span class="pip-pulse"></span> STUDIO READY
+                        </div>
+                    </div>
+                    <div class="bento-card-meta">
+                        <div class="bento-agent-name">MUSE</div>
+                        <div class="bento-agent-role">Content Studio &bull; Multi-Channel Media</div>
+                        <p class="bento-agent-desc">
+                            Purple face with celestial halo. Ingests raw audio and transcripts, indexes key moments for video clips, formats show notes, and drafts social posts with creator tone consistency across platforms.
                         </p>
                     </div>
-                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('muse')">Collaborate with MUSE ➔</button>
+                    <div class="bento-toolchain-row">
+                        <span class="tool-tag">Media Transcribe</span>
+                        <span class="tool-tag">Clip Indexer</span>
+                        <span class="tool-tag">Tone Classifier</span>
+                        <span class="tool-tag">Social Engine</span>
+                    </div>
+                    <div class="bento-actions-row">
+                        <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('muse')">
+                            Collaborate with MUSE ➔
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="startVoiceCall('muse')" title="Hop on Voice Call with MUSE">
+                            📞
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Dark Navy Dot: HEX -->
-                <div class="showcase-archetype-card" onmousemove="handleDotCardTilt(event, this)" onmouseleave="resetDotCardTilt(this)">
-                    <div>
-                        <div class="cartoon-dot-wrapper" onclick="touchDotCartoon('hex', this, event)" title="Touch HEX to interact!">
-                            <img src="assets/dots/hex.png" alt="HEX - Dark Navy Face with Glowing Cyan Features" class="cartoon-dot-img cartoon-float" />
-                            <div class="cartoon-speech-bubble" id="speech-hex">PR merged cleanly! ⚡</div>
+                <!-- 5. HEX: Autonomous Software Dev -->
+                <div class="bento-specialist-card bento-hex">
+                    <div class="bento-card-top">
+                        <div class="bento-avatar-wrap halo-hex">
+                            <img src="assets/dots/hex.png" alt="HEX - Dark Navy Face with Glowing Cyan Features" class="bento-avatar-img" />
                         </div>
-                        <div class="archetype-card-name">Dark Navy Dot (HEX)</div>
-                        <div class="archetype-card-role">Autonomous Software Dev</div>
-                        <p class="archetype-card-body">
-                            Dark navy face with glowing cyan features. Monitors feedback for recurring bug requests, scopes smaller fixes, builds and tests them in its cloud computer, and drafts verified PRs with diff summaries.
+                        <div class="bento-status-pill pill-hex">
+                            <span class="pip-pulse"></span> CI/CD VERIFIED
+                        </div>
+                    </div>
+                    <div class="bento-card-meta">
+                        <div class="bento-agent-name">HEX</div>
+                        <div class="bento-agent-role">Autonomous Software Dev &bull; Self-Healing</div>
+                        <p class="bento-agent-desc">
+                            Dark navy face with glowing cyan features. Monitors telemetry for recurring bug requests, scopes atomic fixes, builds and runs pytest suites in its cloud container, and drafts clean PRs with diff summaries.
                         </p>
                     </div>
-                    <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('hex')">Collaborate with HEX ➔</button>
+                    <div class="bento-toolchain-row">
+                        <span class="tool-tag">Docker Sandbox</span>
+                        <span class="tool-tag">Chromium Driver</span>
+                        <span class="tool-tag">Pytest Runner</span>
+                        <span class="tool-tag">Git Engine</span>
+                    </div>
+                    <div class="bento-actions-row">
+                        <button class="btn btn-secondary btn-sm btn-full" onclick="launchArchetypeFromShowcase('hex')">
+                            Collaborate with HEX ➔
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="startVoiceCall('hex')" title="Hop on Voice Call with HEX">
+                            📞
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Features Breakdown: The Magic of Dot (Official OpenAI Architecture) -->
-            <div class="section-heading-box" id="showcase-capabilities" style="margin-top: 80px;">
-                <div class="section-kicker">Core Architectural Capabilities</div>
-                <h2 class="section-main-title">The Magic of Dot</h2>
+            <!-- =========================================================================
+                 19-LAYER HARDENED ENTERPRISE SECURITY ARCHITECTURE
+                 ========================================================================= -->
+            <div class="section-heading-box" id="security-architecture" style="margin-top: 100px;">
+                <div class="section-kicker">Enterprise Trust &amp; Cryptographic Architecture</div>
+                <h2 class="section-main-title">19-Layer Hardened Security &amp; Governance</h2>
                 <p class="section-desc">
-                    Dots are remarkably capable, always-on agents built to handle everything. Powered by GPT‑6 Astra &amp; Google Gemini 3.5, they have their own cloud computer, learn from feedback over time, and work towards your goals 24/7.
+                    Always-on autonomous agents demand zero-trust architectural hardening. Every execution operates in isolated sandboxes with tamper-evident audit logging and mandatory human approval gates.
+                </p>
+            </div>
+
+            <div class="security-architecture-grid">
+                <div class="security-card">
+                    <div class="sec-card-header">
+                        <div class="sec-icon-pill">🛡️</div>
+                        <span class="sec-layer-num">LAYER 01</span>
+                    </div>
+                    <h3 class="sec-card-title">Row Level Security (RLS) &amp; Param Queries</h3>
+                    <p class="sec-card-desc">
+                        Every single database access enforces strict tenant and user boundaries with parameterized queries, eliminating SQL injection and IDOR vulnerabilities.
+                    </p>
+                    <div class="sec-card-footer">
+                        <span class="sec-badge">OWASP Top 10 Compliant</span>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-card-header">
+                        <div class="sec-icon-pill">🔒</div>
+                        <span class="sec-layer-num">LAYER 02</span>
+                    </div>
+                    <h3 class="sec-card-title">Ephemeral Cloud Sandboxes</h3>
+                    <p class="sec-card-desc">
+                        Each Dot runs in an isolated container sandbox with dedicated virtual filesystems, Safe STDIN shims, and strict outbound VPC firewall policies.
+                    </p>
+                    <div class="sec-card-footer">
+                        <span class="sec-badge">Zero Host Contamination</span>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-card-header">
+                        <div class="sec-icon-pill">⚡</div>
+                        <span class="sec-layer-num">LAYER 03</span>
+                    </div>
+                    <h3 class="sec-card-title">Action Auto-Review &amp; Sign-off Gates</h3>
+                    <p class="sec-card-desc">
+                        Real-time safety classifiers evaluate every proposed mutation. Low-risk operations run autonomously; high-risk actions halt for operator approval.
+                    </p>
+                    <div class="sec-card-footer">
+                        <span class="sec-badge">Human-in-the-Loop Enforced</span>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-card-header">
+                        <div class="sec-icon-pill">📜</div>
+                        <span class="sec-layer-num">LAYER 04</span>
+                    </div>
+                    <h3 class="sec-card-title">Tamper-Evident WAL Audit Vault</h3>
+                    <p class="sec-card-desc">
+                        Every agent tick, terminal command, and credential event is permanently recorded in SQLite WAL with PRAGMA synchronous enforcement.
+                    </p>
+                    <div class="sec-card-footer">
+                        <button class="sec-action-link" onclick="openAdminModal()">
+                            Open Audit Vault ➔
+                        </button>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-card-header">
+                        <div class="sec-icon-pill">🔑</div>
+                        <span class="sec-layer-num">LAYER 05</span>
+                    </div>
+                    <h3 class="sec-card-title">HMAC Webhook &amp; Bearer Tokens</h3>
+                    <p class="sec-card-desc">
+                        All ingress and egress API routes enforce cryptographic HMAC-SHA256 signatures, timestamp drift validation, and scoped Bearer session tokens.
+                    </p>
+                    <div class="sec-card-footer">
+                        <span class="sec-badge">Cryptographic Integrity</span>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <div class="sec-card-header">
+                        <div class="sec-icon-pill">🚫</div>
+                        <span class="sec-layer-num">LAYER 06</span>
+                    </div>
+                    <h3 class="sec-card-title">Zero Foundational Model Training</h3>
+                    <p class="sec-card-desc">
+                        Your proprietary code, internal communications, and enterprise knowledge items are never used to train foundational AI models.
+                    </p>
+                    <div class="sec-card-footer">
+                        <span class="sec-badge">Airtight Enterprise Boundaries</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================================================
+                 CORE CAPABILITIES BREAKDOWN
+                 ========================================================================= -->
+            <div class="section-heading-box" id="capabilities-grid" style="margin-top: 100px;">
+                <div class="section-kicker">Core Architectural Capabilities</div>
+                <h2 class="section-main-title">Built for Continuous Autonomous Progress</h2>
+                <p class="section-desc">
+                    Dots operate on an autonomous tick-loop powered by Google Gemini 3.5 &amp; Astra REPL, keeping your work moving 24/7.
                 </p>
             </div>
 
@@ -471,9 +486,9 @@
                         <div class="feature-box-icon">💻</div>
                         <span class="pillar-num">01</span>
                     </div>
-                    <h3 class="feature-box-title">Dots Work on Their Own</h3>
+                    <h3 class="feature-box-title">Dedicated Cloud Sandboxes</h3>
                     <p class="feature-box-text">
-                        Dots do nearly anything using their own dedicated cloud computer, browser, and connected apps. When you assign a goal—from debugging code to statistical analyses—your Dot executes workflows in its sandbox and reports back.
+                        Every Dot commands its own sandboxed Python REPL, dedicated headless browser, and virtual workspace to run code, scrape APIs, and test workflows.
                     </p>
                 </div>
 
@@ -482,9 +497,9 @@
                         <div class="feature-box-icon">⚡</div>
                         <span class="pillar-num">02</span>
                     </div>
-                    <h3 class="feature-box-title">Dots Connect to the Tools You Use</h3>
+                    <h3 class="feature-box-title">4,000+ Ecosystem Integrations</h3>
                     <p class="feature-box-text">
-                        From Slack and Microsoft Teams to GitHub, Linear, Google Workspace, and Notion, Dots integrate readily with over 4,000 apps to work wherever you need them.
+                        Connect effortlessly to Linear, Slack, Teams, GitHub, Jira, Google Workspace, Notion, and enterprise webhooks for seamless cross-tool operations.
                     </p>
                 </div>
 
@@ -493,112 +508,36 @@
                         <div class="feature-box-icon">🧠</div>
                         <span class="pillar-num">03</span>
                     </div>
-                    <h3 class="feature-box-title">Dots Learn How You Like to Work</h3>
+                    <h3 class="feature-box-title">Continuous Feedback Learning</h3>
                     <p class="feature-box-text">
-                        As you work together, your Dot learns what matters to you, your goals, preferences, and what good looks like to you. You can give feedback along the way, and your Dot continuously adapts its approach.
+                        Dots maintain persistent memory across sessions. With each interaction and review, they learn your stylistic preferences and team standards.
                     </p>
                 </div>
 
                 <div class="showcase-feature-box">
                     <div class="feature-box-top">
-                        <div class="feature-box-icon">🎭</div>
+                        <div class="feature-box-icon">📞</div>
                         <span class="pillar-num">04</span>
                     </div>
-                    <h3 class="feature-box-title">Dots Are Customizable</h3>
+                    <h3 class="feature-box-title">Bidirectional Voice Synthesis</h3>
                     <p class="feature-box-text">
-                        Deploy 5 turnkey specialist archetypes—NOVA (Product Launches), SAGE (Research), AXIS (Enterprise Sales), MUSE (Media), and HEX (Autonomous Dev)—or customize appearance, voice, and default tone.
-                    </p>
-                </div>
-
-                <div class="showcase-feature-box" style="grid-column: 1 / -1; max-width: 680px; margin: 0 auto; width: 100%;">
-                    <div class="feature-box-top">
-                        <div class="feature-box-icon">🛡️</div>
-                        <span class="pillar-num">05</span>
-                    </div>
-                    <h3 class="feature-box-title">Dots Have Built-In Safeguards</h3>
-                    <p class="feature-box-text">
-                        Built-in Action Auto-Review halts high-consequence operations for human sign-off. Safe operations execute automatically while high-risk actions request operator approval.
+                        Need to talk through a complex decision? Hop on a real-time voice call with any specialist dot for immediate spoken reasoning and feedback.
                     </p>
                 </div>
             </div>
 
-            <!-- Safety, Security, and Governance Section (OpenAI Dedicated Whitepaper Focus) -->
-            <div class="section-heading-box" id="showcase-safety" style="margin-top: 90px;">
-                <div class="section-kicker">Enterprise Trust &amp; Governance</div>
-                <h2 class="section-main-title">How We Build Safety, Security, and Privacy into Dots</h2>
-                <p class="section-desc">
-                    Always-on agents require frontier safety architecture. Dots operate within strict sandbox perimeters with real-time autonomous risk classification and mandatory human approval gates.
-                </p>
-            </div>
-
-            <div class="safety-pillars-grid">
-                <div class="safety-pillar-card">
-                    <div class="safety-card-icon">🛡️</div>
-                    <h3 class="safety-card-title">Action Auto-Review</h3>
-                    <p class="safety-card-desc">
-                        Every agent action is evaluated by real-time safety classifiers. Low-risk operations (reading files, executing sandbox tests) run autonomously; high-risk actions (external emails, DB mutations, financial ops) require operator sign-off.
-                    </p>
-                    <div class="safety-badge-tag">Zero Unapproved Actions</div>
-                </div>
-
-                <div class="safety-pillar-card">
-                    <div class="safety-card-icon">🔒</div>
-                    <h3 class="safety-card-title">Ephemeral Cloud Sandboxes</h3>
-                    <p class="safety-card-desc">
-                        Each Dot runs in an isolated, dedicated container sandbox. Script executions, browser scraping, and file manipulations cannot compromise local machines or cross over into unauthorized data silos.
-                    </p>
-                    <div class="safety-badge-tag">VPC Network Isolation</div>
-                </div>
-
-                <div class="safety-pillar-card">
-                    <div class="safety-card-icon">🔐</div>
-                    <h3 class="safety-card-title">Strict Privacy Boundaries</h3>
-                    <p class="safety-card-desc">
-                        Your proprietary code, internal communications, customer records, and private notes are never used to train foundational AI models. Enterprise data boundaries remain airtight.
-                    </p>
-                    <div class="safety-badge-tag">Zero Model Training</div>
-                </div>
-
-                <div class="safety-pillar-card">
-                    <div class="safety-card-icon">📜</div>
-                    <h3 class="safety-card-title">Immutable Audit Trails</h3>
-                    <p class="safety-card-desc">
-                        Every single autonomous tick, decision, web interaction, and terminal execution is permanently logged with cryptographic timestamps, ready for 1-click export to enterprise SIEM and compliance systems.
-                    </p>
-                    <div class="safety-badge-tag">SOC2 &bull; HIPAA &bull; ISO 27001</div>
-                </div>
-            </div>
-
-            <!-- Live Telemetry Ticker -->
-            <div class="showcase-ticker-card" style="margin-top: 70px;">
-                <div class="ticker-item">
-                    <div class="ticker-val" id="ticker-active-dots">13</div>
-                    <div class="ticker-label">Active Autonomous Dots</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-val" id="ticker-total-cycles">430+</div>
-                    <div class="ticker-label">Background Cycles Executed</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-val" style="color: #38bdf8;">Gemini 3.5</div>
-                    <div class="ticker-label">Active Frontier Model</div>
-                </div>
-                <div class="ticker-item">
-                    <div class="ticker-val" style="color: #10b981;">100%</div>
-                    <div class="ticker-label">Action Auto-Review Safety</div>
-                </div>
-            </div>
-
-            <!-- Commercial SaaS Pricing Section -->
-            <div class="section-heading-box" id="showcase-pricing" style="margin-top: 80px;">
+            <!-- =========================================================================
+                 COMMERCIAL SAAS PRICING TIERS
+                 ========================================================================= -->
+            <div class="section-heading-box" id="pricing-tiers" style="margin-top: 100px;">
                 <div class="section-kicker">Commercial SaaS Deployment</div>
-                <h2 class="section-main-title">Flexible Pricing Built for Profit &amp; Scale</h2>
+                <h2 class="section-main-title">Transparent Pricing Built for Scale</h2>
                 <p class="section-desc">
                     Deploy ONE DOTS across your business or resell with turnkey commercial tiers and monthly deep work cycle allowances.
                 </p>
             </div>
 
-            <div class="tier-cards-grid" style="margin-top: 20px;">
+            <div class="tier-cards-grid" style="margin-top: 30px;">
                 <div class="tier-card">
                     <div class="tier-title">Starter</div>
                     <div class="tier-price">Free</div>
@@ -627,57 +566,58 @@
             </div>
 
             <!-- Showcase Bottom CTA Banner -->
-            <div class="docs-hero-card" style="margin-top: 80px; text-align: center;">
-                <h2 style="font-size: 28px; font-weight: 800; color: #fff;">Start collaborating with ONE DOTS today</h2>
-                <p style="font-size: 14px; color: #cbd5e1; margin: 10px auto 20px auto; max-width: 600px;">
-                    Experience work where frontier intelligence is always working by your side. Deploy your first Dot in seconds.
+            <div class="docs-hero-card" style="margin-top: 100px; text-align: center;">
+                <h2 style="font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">Ready to deploy your always-on AI workforce?</h2>
+                <p style="font-size: 15px; color: #cbd5e1; margin: 12px auto 24px auto; max-width: 620px; line-height: 1.6;">
+                    Experience work where autonomous intelligence works relentlessly on your behalf. Launch your first specialist Dot in seconds.
                 </p>
-                <div style="display: flex; justify-content: center; gap: 12px;">
+                <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
                     <button class="btn btn-primary btn-lg" onclick="switchMainView('view-workstation')">Open Agent Workstation ◈</button>
                     <button class="btn btn-secondary btn-lg" onclick="switchMainView('view-docs')">Read Full Documentation</button>
                 </div>
             </div>
 
-            <!-- Authentic OpenAI Editorial Footer -->
+            <!-- Authentic Editorial Footer -->
             <footer class="editorial-footer">
                 <div class="footer-cols-grid">
                     <div class="footer-col">
-                        <div class="footer-col-title">Research</div>
+                        <div class="footer-col-title">Architecture</div>
                         <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Overview</a>
-                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Index &amp; Publications</a>
-                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">GPT-6 Astra Architecture</a>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Gemini 3.5 Engine</a>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Isolated Cloud REPL</a>
                         <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Frontier Safety Protocol</a>
                     </div>
                     <div class="footer-col">
-                        <div class="footer-col-title">Product</div>
-                        <a href="javascript:void(0)" onclick="switchMainView('view-workstation')">ONE DOTS Platform</a>
-                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-film')">Launch Film (02:26)</a>
-                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-archetypes')">Specialist Dots</a>
-                        <a href="javascript:void(0)" onclick="openIntegrationsModal()">4,000+ App Connectors</a>
+                        <div class="footer-col-title">Fleet Specialists</div>
+                        <a href="javascript:void(0)" onclick="launchArchetypeFromShowcase('nova')">NOVA &bull; Product Launch</a>
+                        <a href="javascript:void(0)" onclick="launchArchetypeFromShowcase('sage')">SAGE &bull; Research Scientist</a>
+                        <a href="javascript:void(0)" onclick="launchArchetypeFromShowcase('axis')">AXIS &bull; Enterprise Sales</a>
+                        <a href="javascript:void(0)" onclick="launchArchetypeFromShowcase('muse')">MUSE &bull; Content Studio</a>
+                        <a href="javascript:void(0)" onclick="launchArchetypeFromShowcase('hex')">HEX &bull; Autonomous Dev</a>
                     </div>
                     <div class="footer-col">
-                        <div class="footer-col-title">Safety &amp; Trust</div>
-                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-safety')">Action Auto-Review</a>
-                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-safety')">Ephemeral Cloud Sandboxes</a>
-                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('showcase-safety')">Security Whitepaper</a>
-                        <a href="javascript:void(0)" onclick="exportExecutiveDigest()">Compliance Audit Export</a>
+                        <div class="footer-col-title">Hardened Security</div>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('security-architecture')">19-Layer Hardening</a>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('security-architecture')">Row Level Security (RLS)</a>
+                        <a href="javascript:void(0)" onclick="scrollToShowcaseSection('security-architecture')">Ephemeral Sandboxes</a>
+                        <a href="javascript:void(0)" onclick="openAdminModal()">Tamper-Evident Audit Vault</a>
                     </div>
                     <div class="footer-col">
-                        <div class="footer-col-title">Company</div>
-                        <a href="javascript:void(0)" onclick="switchMainView('view-showcase')">Live from the Lab</a>
+                        <div class="footer-col-title">Platform</div>
+                        <a href="javascript:void(0)" onclick="switchMainView('view-workstation')">Autonomous Workstation</a>
                         <a href="javascript:void(0)" onclick="openBillingModal()">Commercial Pricing</a>
-                        <a href="javascript:void(0)" onclick="startVoiceCall()">Talk to an Agent</a>
-                        <a href="javascript:void(0)" onclick="switchMainView('view-docs')">Documentation &amp; API</a>
+                        <a href="javascript:void(0)" onclick="startVoiceCall()">Bidirectional Voice Call</a>
+                        <a href="javascript:void(0)" onclick="openIntegrationsModal()">4,000+ App Connectors</a>
                     </div>
                 </div>
                 <div class="footer-bottom-bar">
                     <div class="footer-copy-text">
-                        <strong>ONE DOTS</strong> &copy; 2026 OpenAI &bull; Always-On Frontier Intelligence Platform. Powered by Google Gemini 3.5 &amp; Astra Engine.
+                        <strong>ONE DOTS</strong> &copy; 2026 Frontier Intelligence Systems &bull; Always-On Autonomous Multi-Agent Platform.
                     </div>
                     <div class="footer-legal-links">
+                        <span>SOC2 Compliance</span>
                         <span>Privacy Policy</span>
-                        <span>Terms of Use</span>
-                        <span>Security &amp; Privacy</span>
+                        <span>Security Hardening</span>
                     </div>
                 </div>
             </footer>
