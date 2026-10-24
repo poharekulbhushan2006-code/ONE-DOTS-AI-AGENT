@@ -5133,6 +5133,281 @@ textarea:focus {
 }
 
 /* =========================================================================
+   INTRODUCING ONE DOTS — OFFICIAL LAUNCH VIDEO THEATER
+   ========================================================================= */
+.introducing-dots-section {
+    margin: 48px auto 60px auto;
+    max-width: 1240px;
+    position: relative;
+    z-index: 10;
+}
+
+.video-theater-container {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-dialog);
+    padding: 28px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.video-theater-container:hover {
+    border-color: var(--border-strong);
+}
+
+.video-theater-header {
+    margin-bottom: 22px;
+}
+
+.theater-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.theater-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 10px;
+    background: rgba(214, 183, 121, 0.12);
+    border: 1px solid rgba(214, 183, 121, 0.3);
+    border-radius: var(--radius-sm);
+    color: var(--brand-gold);
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+}
+
+.pip-gold {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand-gold);
+    box-shadow: 0 0 6px var(--brand-gold);
+    animation: livePulse 2s infinite ease-in-out;
+}
+
+.theater-meta-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.theater-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.03em;
+}
+
+.theater-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.video-frame-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: #08090B;
+    border: 1px solid var(--border-default);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+.dots-theater-video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background: #08090B;
+}
+
+.video-playback-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 20px;
+    background: linear-gradient(180deg, transparent 0%, rgba(13, 14, 16, 0.85) 35%, rgba(13, 14, 16, 0.98) 100%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.92;
+    z-index: 10;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.video-frame-wrapper:hover .video-playback-controls,
+.video-frame-wrapper:focus-within .video-playback-controls {
+    opacity: 1;
+}
+
+.v-ctrl-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition:
+        background var(--duration-fast) var(--ease-standard),
+        border-color var(--duration-fast) var(--ease-standard),
+        color var(--duration-fast) var(--ease-standard);
+}
+
+.v-ctrl-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--brand-gold);
+    color: var(--brand-gold);
+}
+
+.v-progress-container {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.v-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--brand-gold);
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+.v-time-display {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    min-width: 75px;
+    text-align: center;
+}
+
+/* 5 Interactive Dot Avatars Strip */
+.theater-dots-lineup {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.theater-dot-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-card);
+    cursor: pointer;
+    transition:
+        background var(--duration-fast) var(--ease-standard),
+        border-color var(--duration-fast) var(--ease-standard),
+        transform var(--duration-fast) var(--ease-standard);
+}
+
+.theater-dot-item:hover {
+    background: var(--bg-hover);
+    border-color: var(--brand-gold);
+    transform: translateY(-2px);
+}
+
+.theater-dot-avatar-box {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-app);
+    border: 1px solid var(--border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.theater-dot-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.theater-dot-item:hover .theater-dot-img {
+    transform: scale(1.1);
+}
+
+.theater-dot-info {
+    overflow: hidden;
+}
+
+.theater-dot-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.theater-dot-role {
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Fluid Organic Dot Breathing Animation */
+@keyframes dotBreathe {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-5px) scale(1.03);
+    }
+}
+
+.dot-anim-breathe {
+    animation: dotBreathe 3.5s ease-in-out infinite;
+}
+
+@media (max-width: 900px) {
+    .theater-dots-lineup {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .video-theater-container {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    .theater-dots-lineup {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================================
    INTERACTIVE HERO WORKSTATION PREVIEW WINDOW (MACOS / LINEAR CALIBER)
    ========================================================================= */
 .senior-demo-window-card {
@@ -5779,4 +6054,5 @@ textarea:focus {
         border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 }
+
 

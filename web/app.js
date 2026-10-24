@@ -3045,3 +3045,621 @@ function playArrivalChime() {
         // Fallback
     }
 }
+
+/* =========================================================================
+   INTRODUCING ONE DOTS — INTERACTIVE 60 FPS CANVAS ANIMATION ENGINE
+   ========================================================================= */
+const dotsAnimState = {
+    isPlaying: true,
+    currentTime: 0.0,
+    duration: 16.0,
+    soundEnabled: false,
+    lastFrameTime: performance.now(),
+    lastAct: -1,
+    images: {},
+    imagesLoaded: false,
+    particles: []
+};
+
+// Initialize Drifting Ambient Particles
+for (let i = 0; i < 70; i++) {
+    dotsAnimState.particles.push({
+        x: Math.random() * 1280,
+        y: Math.random() * 720,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -0.2 - Math.random() * 0.35,
+        size: 1.5 + Math.random() * 2.5,
+        alpha: 30 + Math.random() * 90
+    });
+}
+
+// Preload Character Avatars
+function preloadDotAvatars() {
+    const dotKeys = ['nova', 'sage', 'axis', 'muse', 'hex'];
+    let loadedCount = 0;
+    dotKeys.forEach(k => {
+        const img = new Image();
+        img.src = `assets/dots/${k}.png?v=20261024_theater`;
+        img.onload = () => {
+            dotsAnimState.images[k] = img;
+            loadedCount++;
+            if (loadedCount === dotKeys.length) {
+                dotsAnimState.imagesLoaded = true;
+            }
+        };
+    });
+}
+
+function initDotsTheaterCanvas() {
+    const canvas = document.getElementById('dots-theater-canvas');
+    if (!canvas) return;
+
+    preloadDotAvatars();
+    requestAnimationFrame(renderDotsTheaterFrame);
+}
+
+function renderDotsTheaterFrame(now) {
+    const canvas = document.getElementById('dots-theater-canvas');
+    if (!canvas) {
+        requestAnimationFrame(renderDotsTheaterFrame);
+        return;
+    }
+
+    const ctx = canvas.getContext('2d');
+    const curNow = typeof now === 'number' && !isNaN(now) ? now : performance.now();
+    let dt = 0.016;
+    if (typeof dotsAnimState.lastFrameTime === 'number' && dotsAnimState.lastFrameTime > 0) {
+        dt = Math.min(0.1, Math.max(0.001, (curNow - dotsAnimState.lastFrameTime) / 1000.0));
+    }
+    dotsAnimState.lastFrameTime = curNow;
+
+    if (typeof dotsAnimState.currentTime !== 'number' || isNaN(dotsAnimState.currentTime)) {
+        dotsAnimState.currentTime = 0.0;
+    }
+
+    if (dotsAnimState.isPlaying) {
+        dotsAnimState.currentTime += dt;
+        if (dotsAnimState.currentTime >= dotsAnimState.duration) {
+            dotsAnimState.currentTime = 0.0;
+        }
+    }
+
+    const t = dotsAnimState.currentTime;
+    const curAct = Math.floor(t / 4.0); // 0, 1, 2, 3
+
+    // Sound chime on act transition if enabled
+    if (curAct !== dotsAnimState.lastAct && dotsAnimState.soundEnabled) {
+        playActChime(curAct);
+        dotsAnimState.lastAct = curAct;
+    }
+
+    // Update Progress Bar & Timestamp UI
+    const progressBar = document.getElementById('video-progress-bar');
+    const timeDisplay = document.getElementById('video-time-display');
+    if (progressBar) {
+        progressBar.style.width = ((t / dotsAnimState.duration) * 100).toFixed(1) + '%';
+    }
+    if (timeDisplay) {
+        const curS = Math.floor(t).toString().padStart(2, '0');
+        timeDisplay.innerText = `0:${curS} / 0:16`;
+    }
+
+    // --- DRAWING STAGE (1280 x 720) ---
+    const W = 1280;
+    const H = 720;
+
+    // 1. Deep Obsidian Base (#0D0E10)
+    ctx.fillStyle = '#0D0E10';
+    ctx.fillRect(0, 0, W, H);
+
+    // 2. Subtle Precision Grid
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let gx = 0; gx < W; gx += 48) {
+        ctx.moveTo(gx, 0); ctx.lineTo(gx, H);
+    }
+    for (let gy = 0; gy < H; gy += 48) {
+        ctx.moveTo(0, gy); ctx.lineTo(W, gy);
+    }
+    ctx.stroke();
+
+    // 3. Central Warm Metallic Halo
+    const glowRad = 260 + Math.sin(t * 1.5) * 30;
+    const glowGrad = ctx.createRadialGradient(W / 2, H / 2 + 20, 20, W / 2, H / 2 + 20, glowRad);
+    glowGrad.addColorStop(0, 'rgba(214, 183, 121, 0.12)');
+    glowGrad.addColorStop(0.6, 'rgba(214, 183, 121, 0.03)');
+    glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = glowGrad;
+    ctx.beginPath();
+    ctx.arc(W / 2, H / 2 + 20, glowRad, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 4. Drifting Gold Metallic Particles
+    ctx.fillStyle = '#D6B779';
+    dotsAnimState.particles.forEach(p => {
+        p.x = (p.x + p.vx + W) % W;
+        p.y = (p.y + p.vy + H) % H;
+        const pAlpha = (p.alpha / 255.0) * (0.6 + 0.4 * Math.sin(t * 3.0 + p.x));
+        ctx.globalAlpha = pAlpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+    });
+    ctx.globalAlpha = 1.0;
+
+    // 5. Render Storyboard Acts
+    if (t < 4.0) {
+        renderAct1Awakening(ctx, t, W, H);
+    } else if (t < 8.0) {
+        renderAct2DeepWork(ctx, t - 4.0, W, H);
+    } else if (t < 12.0) {
+        renderAct3Synergy(ctx, t - 8.0, W, H);
+    } else {
+        renderAct4Resolution(ctx, t - 12.0, W, H);
+    }
+
+    requestAnimationFrame(renderDotsTheaterFrame);
+}
+
+function drawDotAvatarSafe(ctx, key, x, y, size) {
+    const img = dotsAnimState.images[key];
+    if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
+    } else {
+        const colors = {
+            nova: '#38BDF8',
+            sage: '#10B981',
+            axis: '#F59E0B',
+            muse: '#A855F7',
+            hex: '#06B6D4'
+        };
+        ctx.fillStyle = colors[key] || '#D6B779';
+        ctx.beginPath();
+        ctx.arc(x, y, size * 0.42, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#171512';
+        ctx.font = '700 13px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(key.toUpperCase(), x, y + 5);
+    }
+}
+
+// Act 1: Awakening & 5-Dot Lineup
+function renderAct1Awakening(ctx, t, W, H) {
+    const fade = Math.min(1.0, 0.35 + (t / 0.8) * 0.65);
+
+    // Eyebrow Badge
+    ctx.save();
+    ctx.globalAlpha = fade;
+    ctx.fillStyle = '#151619';
+    ctx.strokeStyle = '#2B2C31';
+    ctx.lineWidth = 1;
+    roundRect(ctx, W / 2 - 160, 48, 320, 32, 16, true, true);
+
+    ctx.fillStyle = '#D6B779';
+    ctx.beginPath();
+    ctx.arc(W / 2 - 140, 64, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#A3A4AA';
+    ctx.font = '600 11.5px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('ONE DOTS · INTRODUCING DOTS', W / 2 - 124, 68);
+
+    // Headline
+    ctx.fillStyle = '#F4F0E8';
+    ctx.font = '600 42px "Geist", system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Intelligent agents. Always on.', W / 2, 130);
+
+    ctx.fillStyle = '#A3A4AA';
+    ctx.font = '400 16px "Geist", system-ui, sans-serif';
+    ctx.fillText('They run continuously on dedicated cloud sandboxes, executing goals while you sleep.', W / 2, 168);
+    ctx.restore();
+
+    // 5 Characters Lineup
+    const lineup = [
+        { key: 'muse', xOff: -380, delay: 0.3, size: 140, role: 'MUSE · Studio' },
+        { key: 'sage', xOff: -190, delay: 0.15, size: 150, role: 'SAGE · Research' },
+        { key: 'nova', xOff: 0, delay: 0.0, size: 190, role: 'NOVA · Lead' },
+        { key: 'axis', xOff: 190, delay: 0.15, size: 150, role: 'AXIS · Enterprise' },
+        { key: 'hex', xOff: 380, delay: 0.3, size: 140, role: 'HEX · Dev' },
+    ];
+
+    lineup.forEach(item => {
+        const itemProg = Math.min(1.0, Math.max(0.0, (t - item.delay) / 0.8));
+        const ease = Math.min(1.0, 0.4 + (1.0 - Math.pow(1.0 - itemProg, 3)) * 0.6);
+        const bob = Math.sin(t * 3.0 + item.xOff * 0.01) * 10;
+        const curX = W / 2 + item.xOff * ease;
+        const curY = 440 - ease * 40 + bob;
+
+        ctx.save();
+        ctx.globalAlpha = ease;
+
+        // Shadow
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        ctx.beginPath();
+        ctx.ellipse(curX, curY + item.size / 2 - 8, item.size * 0.35, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw Avatar Safely
+        drawDotAvatarSafe(ctx, item.key, curX, curY, item.size);
+
+        // Pill Name below
+        ctx.fillStyle = '#151619';
+        ctx.strokeStyle = item.key === 'nova' ? '#D6B779' : '#2B2C31';
+        roundRect(ctx, curX - 65, curY + item.size / 2 + 14, 130, 26, 6, true, true);
+
+        ctx.fillStyle = item.key === 'nova' ? '#D6B779' : '#F4F0E8';
+        ctx.font = '600 11px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(item.role, curX, curY + item.size / 2 + 31);
+
+        ctx.restore();
+    });
+}
+
+// Act 2: Autonomous Execution & Rotating 3D Orbit (NOVA Focus)
+function renderAct2DeepWork(ctx, t, W, H) {
+    const center_x = 360;
+    const center_y = 370 + Math.sin(t * 3.0) * 10;
+    const novaSize = 220;
+
+    // 3D Orbital Rings
+    const orbitAngle = t * 1.6;
+    const rx = 185;
+    const ry = 62;
+
+    ctx.save();
+    // Orbit Ellipse path
+    ctx.strokeStyle = 'rgba(214, 183, 121, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.ellipse(center_x, center_y, rx, ry, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Shadow
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+    ctx.beginPath();
+    ctx.ellipse(center_x, center_y + 115, 80, 16, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw NOVA in center
+    drawDotAvatarSafe(ctx, 'nova', center_x, center_y, novaSize);
+
+    // Orbiting Tool Satellites
+    const tools = [
+        { name: 'Linear API', angle: 0 },
+        { name: 'GitHub Connect', angle: 120 },
+        { name: 'Slack Dispatcher', angle: 240 }
+    ];
+    tools.forEach(tool => {
+        const rad = ((tool.angle + orbitAngle * 60) * Math.PI) / 180;
+        const tx = center_x + rx * Math.cos(rad);
+        const ty = center_y + ry * Math.sin(rad);
+
+        ctx.fillStyle = '#1C1D21';
+        ctx.strokeStyle = '#D6B779';
+        ctx.lineWidth = 1;
+        roundRect(ctx, tx - 50, ty - 14, 100, 28, 6, true, true);
+
+        ctx.fillStyle = '#F4F0E8';
+        ctx.font = '600 11px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(tool.name, tx, ty + 4);
+    });
+
+    // Right Side: High-Tech REPL Terminal Window
+    const rxWin = 620, ryWin = 120, rwWin = 590, rhWin = 490;
+    ctx.fillStyle = '#151619';
+    ctx.strokeStyle = '#2B2C31';
+    roundRect(ctx, rxWin, ryWin, rwWin, rhWin, 12, true, true);
+
+    // Titlebar
+    ctx.fillStyle = '#111215';
+    roundRect(ctx, rxWin, ryWin, rwWin, 42, 12, true, false);
+    ctx.fillRect(rxWin, ryWin + 20, rwWin, 22);
+    ctx.strokeStyle = '#2B2C31';
+    ctx.beginPath();
+    ctx.moveTo(rxWin, ryWin + 42); ctx.lineTo(rxWin + rwWin, ryWin + 42);
+    ctx.stroke();
+
+    // Traffic Lights
+    ctx.fillStyle = '#E58B88'; ctx.beginPath(); ctx.arc(rxWin + 20, ryWin + 21, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#E6BD75'; ctx.beginPath(); ctx.arc(rxWin + 36, ryWin + 21, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#6FC49A'; ctx.beginPath(); ctx.arc(rxWin + 52, ryWin + 21, 5, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#A3A4AA';
+    ctx.font = '500 12px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('nova@isolated-sandbox-wal: ~/gtm-orchestration', rxWin + 72, ryWin + 25);
+
+    ctx.fillStyle = '#6FC49A';
+    ctx.fillText('● REPL ACTIVE', rxWin + rwWin - 110, ryWin + 25);
+
+    // Terminal Code Lines (Progressive Typing)
+    const logs = [
+        { text: '$ python3 -m dots.orchestrator --agent NOVA', col: '#38BDF8' },
+        { text: '[NOVA] Authenticated with Linear API (OAuth2 scoped)', col: '#A3A4AA' },
+        { text: '[NOVA] Scope delta in ENG-4129: SOC2 RLS Policy Required', col: '#D6B779' },
+        { text: '[NOVA] Running 19-layer security hardening test harness...', col: '#A3A4AA' },
+        { text: '>>> pytest tests/test_security_suite.py', col: '#F4F0E8' },
+        { text: '[PASS] Row Level Security (RLS) Active & Verified', col: '#6FC49A' },
+        { text: '[PASS] Parameterized Queries & Input Sanitization: 100%', col: '#6FC49A' },
+        { text: '[PASS] Isolated Container WAL Sandbox: Protected', col: '#6FC49A' },
+        { text: '[NOVA] Linear roadmap updated • PR #4129 Created', col: '#38BDF8' },
+        { text: '[NOVA] Slack executive briefing dispatched to #product-leadership', col: '#D6B779' },
+        { text: 'STATUS: 0 human interventions needed. Next task in 180s.', col: '#6FC49A' },
+    ];
+
+    const linesToShow = Math.min(logs.length, Math.floor((t / 4.0) * logs.length) + 2);
+    let ly = ryWin + 70;
+    for (let i = 0; i < linesToShow; i++) {
+        ctx.fillStyle = logs[i].col;
+        ctx.font = '400 13px monospace';
+        ctx.fillText(logs[i].text, rxWin + 20, ly);
+        ly += 34;
+    }
+
+    // Top Section Heading
+    ctx.fillStyle = '#D6B779';
+    ctx.font = '600 12px monospace';
+    ctx.fillText('AUTONOMOUS TASK EXECUTION', rxWin, ryWin - 36);
+
+    ctx.fillStyle = '#F4F0E8';
+    ctx.font = '600 24px "Geist", system-ui, sans-serif';
+    ctx.fillText('Persistent Work in Cloud Sandboxes', rxWin, ryWin - 10);
+    ctx.restore();
+}
+
+// Act 3: Connected Workforce Synergy
+function renderAct3Synergy(ctx, t, W, H) {
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#F4F0E8';
+    ctx.font = '600 36px "Geist", system-ui, sans-serif';
+    ctx.fillText('Connected Workforce Synergy', W / 2, 70);
+
+    ctx.fillStyle = '#A3A4AA';
+    ctx.font = '400 15px "Geist", system-ui, sans-serif';
+    ctx.fillText('Specialist Dots coordinate in real time across your entire stack.', W / 2, 105);
+
+    const nodes = [
+        { key: 'nova', x: 640, y: 350, size: 160, role: 'NOVA · Lead Orchestrator', col: '#D6B779' },
+        { key: 'sage', x: 330, y: 250, size: 125, role: 'SAGE · Research & Stats', col: '#6FC49A' },
+        { key: 'axis', x: 950, y: 250, size: 125, role: 'AXIS · Enterprise Sales', col: '#F59E0B' },
+        { key: 'muse', x: 350, y: 500, size: 125, role: 'MUSE · Content Studio', col: '#C084FC' },
+        { key: 'hex', x: 930, y: 500, size: 125, role: 'HEX · Cloud Compiler', col: '#38BDF8' }
+    ];
+
+    const centerNode = nodes[0];
+    for (let i = 1; i < nodes.length; i++) {
+        const other = nodes[i];
+        // Connection Line
+        ctx.strokeStyle = 'rgba(43, 44, 49, 0.8)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(centerNode.x, centerNode.y);
+        ctx.lineTo(other.x, other.y);
+        ctx.stroke();
+
+        // Pulsing Energy Packet
+        const pulse = (t * 2.5 + i * 0.25) % 1.0;
+        const px = centerNode.x + (other.x - centerNode.x) * pulse;
+        const py = centerNode.y + (other.y - centerNode.y) * pulse;
+
+        ctx.fillStyle = '#D6B779';
+        ctx.beginPath();
+        ctx.arc(px, py, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(214, 183, 121, 0.3)';
+        ctx.beginPath();
+        ctx.arc(px, py, 9, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Render Avatars
+    nodes.forEach(n => {
+        const bob = Math.sin(t * 3.0 + n.x) * 7;
+
+        // Aura Ring
+        ctx.strokeStyle = n.col + '55';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y + bob, n.size / 2 + 6, 0, Math.PI * 2);
+        ctx.stroke();
+
+        drawDotAvatarSafe(ctx, n.key, n.x, n.y + bob, n.size);
+
+        // Pill Label
+        ctx.fillStyle = '#151619';
+        ctx.strokeStyle = '#2B2C31';
+        roundRect(ctx, n.x - 85, n.y + bob + n.size / 2 + 10, 170, 24, 6, true, true);
+
+        ctx.fillStyle = '#F4F0E8';
+        ctx.font = '600 11px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(n.role, n.x, n.y + bob + n.size / 2 + 26);
+    });
+
+    // Bottom Telemetry Bar
+    ctx.fillStyle = '#151619';
+    ctx.strokeStyle = '#2B2C31';
+    roundRect(ctx, W / 2 - 280, 636, 560, 36, 8, true, true);
+
+    ctx.fillStyle = '#6FC49A';
+    ctx.beginPath();
+    ctx.arc(W / 2 - 250, 654, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#A3A4AA';
+    ctx.font = '600 11.5px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('5 SPECIALISTS ACTIVE • CLOUD REPL ISOLATED • 4,000+ CONNECTORS', W / 2 - 235, 658);
+    ctx.restore();
+}
+
+// Act 4: Resolution & ONE DOTS Crest
+function renderAct4Resolution(ctx, t, W, H) {
+    ctx.save();
+    const bob = Math.sin(t * 2.0) * 8;
+    const ny = 240 + bob;
+
+    // Centered NOVA
+    drawDotAvatarSafe(ctx, 'nova', W / 2, ny, 200);
+
+    // Teammates flanking
+    const team = [
+        { key: 'sage', x: W / 2 - 260, y: ny - 10, size: 130 },
+        { key: 'axis', x: W / 2 + 130, y: ny - 10, size: 130 },
+        { key: 'muse', x: W / 2 - 380, y: ny + 15, size: 110 },
+        { key: 'hex', x: W / 2 + 270, y: ny + 15, size: 110 },
+    ];
+    team.forEach(m => {
+        drawDotAvatarSafe(ctx, m.key, m.x, m.y, m.size);
+    });
+
+    // Eyebrow
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#D6B779';
+    ctx.font = '600 12px monospace';
+    ctx.fillText('ONE UNIFIED WORKSPACE', W / 2, 385);
+
+    // Title
+    ctx.fillStyle = '#F4F0E8';
+    ctx.font = '700 48px "Geist", system-ui, sans-serif';
+    ctx.fillText('ONE DOTS', W / 2, 435);
+
+    // 5 Colored Pips
+    const pips = [
+        { col: '#38BDF8', x: -28 },
+        { col: '#6FC49A', x: -14 },
+        { col: '#D6B779', x: 0 },
+        { col: '#C084FC', x: 14 },
+        { col: '#F59E0B', x: 28 },
+    ];
+    pips.forEach(p => {
+        ctx.fillStyle = p.col;
+        ctx.beginPath();
+        ctx.arc(W / 2 + p.x, 460, 4, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // Sub-headline
+    ctx.fillStyle = '#D6B779';
+    ctx.font = '600 24px "Geist", system-ui, sans-serif';
+    ctx.fillText('Work smarter. Coordinate intelligence.', W / 2, 505);
+
+    ctx.fillStyle = '#A3A4AA';
+    ctx.font = '400 15px "Geist", system-ui, sans-serif';
+    ctx.fillText('A unified workspace for AI agents, task execution, and intelligent automation.', W / 2, 545);
+
+    // Simulated Gold CTA button
+    ctx.fillStyle = '#D6B779';
+    roundRect(ctx, W / 2 - 110, 580, 220, 44, 8, true, false);
+
+    ctx.fillStyle = '#171512';
+    ctx.font = '600 15px "Geist", system-ui, sans-serif';
+    ctx.fillText('Explore agents ↗', W / 2, 607);
+
+    ctx.restore();
+}
+
+// Utility: Canvas Rounded Rectangle
+function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
+}
+
+// Web Audio API Chime Synthesizer
+function playActChime(actIdx) {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const freqs = [1046.5, 1318.5, 1567.98, 2093.0]; // C6, E6, G6, C7
+        const freq = freqs[actIdx % freqs.length];
+
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, now + 0.15);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.65);
+    } catch (e) {}
+}
+
+// Interactive Playback Controls
+function toggleDotsAnimation() {
+    dotsAnimState.isPlaying = !dotsAnimState.isPlaying;
+    const playIcon = document.getElementById('video-play-icon');
+    if (playIcon) {
+        playIcon.innerText = dotsAnimState.isPlaying ? '❚❚' : '▶';
+    }
+}
+
+function seekDotsAnimation(e) {
+    const container = e.currentTarget;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    dotsAnimState.currentTime = pos * dotsAnimState.duration;
+}
+
+function toggleDotsAudio() {
+    dotsAnimState.soundEnabled = !dotsAnimState.soundEnabled;
+    const muteIcon = document.getElementById('video-mute-icon');
+    if (muteIcon) {
+        muteIcon.innerText = dotsAnimState.soundEnabled ? '🔊' : '🔇';
+    }
+    if (dotsAnimState.soundEnabled) {
+        playActChime(0);
+    }
+}
+
+function toggleDotsFullscreen() {
+    const wrapper = document.getElementById('video-frame-wrapper');
+    if (!wrapper) return;
+    if (!document.fullscreenElement) {
+        if (wrapper.requestFullscreen) wrapper.requestFullscreen();
+        else if (wrapper.webkitRequestFullscreen) wrapper.webkitRequestFullscreen();
+    } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+    }
+}
+
+// Auto-initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initDotsTheaterCanvas();
+});
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initDotsTheaterCanvas();
+}
+
+

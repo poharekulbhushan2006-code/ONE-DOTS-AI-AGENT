@@ -42,6 +42,7 @@
                 
                 <nav class="nav-links">
                     <button class="nav-link-btn active" id="btn-view-showcase" onclick="switchMainView('view-showcase')">Overview</button>
+                    <button class="nav-link-btn" onclick="scrollToShowcaseSection('introducing-dots-film')"><span style="color: var(--brand-gold); margin-right: 3px;">▶</span> Film</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('hero-demo-window')">Live Workstation</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('specialists-matrix')">Specialists</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('security-architecture')">Security Matrix</button>
@@ -93,6 +94,9 @@
                     <button class="button-primary btn-lg" onclick="switchMainView('view-workstation')">
                         Explore agents ↗
                     </button>
+                    <button class="button-secondary btn-lg" onclick="scrollToShowcaseSection('introducing-dots-film')">
+                        <span style="color: var(--brand-gold); margin-right: 4px;">▶</span> Watch Film
+                    </button>
                     <button class="button-secondary btn-lg" onclick="scrollToShowcaseSection('specialists-matrix')">
                         View platform
                     </button>
@@ -119,6 +123,95 @@
                         <span class="stat-dot dot-cyan"></span>
                         <span class="stat-num">Execution</span>
                         <span class="stat-desc">Live activity</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================================================
+                 INTRODUCING ONE DOTS — OFFICIAL LAUNCH VIDEO SECTION
+                 ========================================================================= -->
+            <div class="introducing-dots-section" id="introducing-dots-film">
+                <div class="video-theater-container">
+                    <div class="video-theater-header">
+                        <div class="theater-badge-row">
+                            <span class="theater-pill"><span class="pip-gold"></span> OFFICIAL LAUNCH FILM</span>
+                            <span class="theater-meta-tag">1080P HD • 60 FPS • DOLBY COMPATIBLE • ALWAYS-ON AGENTS</span>
+                        </div>
+                        <h2 class="theater-title">Introducing ONE DOTS</h2>
+                        <p class="theater-desc">
+                            Meet the next generation of always-on, persistent AI agents that run continuously in isolated cloud sandboxes, executing multi-step goals while you sleep.
+                        </p>
+                    </div>
+
+                    <div class="video-frame-wrapper" id="video-frame-wrapper">
+                        <canvas id="dots-theater-canvas" class="dots-theater-video" width="1280" height="720"></canvas>
+                        <video id="introducing-dots-video" src="assets/introducing_dots.mp4" style="display:none;" playsinline muted></video>
+                        
+                        <!-- Custom Playback Overlay Controls -->
+                        <div class="video-playback-controls">
+                            <button class="v-ctrl-btn" id="video-play-btn" onclick="toggleDotsAnimation()" title="Play / Pause">
+                                <span id="video-play-icon">❚❚</span>
+                            </button>
+                            <div class="v-progress-container" onclick="seekDotsAnimation(event)">
+                                <div class="v-progress-bar" id="video-progress-bar"></div>
+                            </div>
+                            <span class="v-time-display" id="video-time-display">0:00 / 0:16</span>
+                            <button class="v-ctrl-btn" id="video-mute-btn" onclick="toggleDotsAudio()" title="Sound On / Off">
+                                <span id="video-mute-icon">🔇</span>
+                            </button>
+                            <button class="v-ctrl-btn" onclick="toggleDotsFullscreen()" title="Fullscreen">
+                                <span>⛶</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5 Interactive Dot Avatars Lineup Strip with Live Hover Animation -->
+                    <div class="theater-dots-lineup">
+                        <div class="theater-dot-item" onclick="switchDemoSpecialist('nova'); scrollToShowcaseSection('hero-demo-window');">
+                            <div class="theater-dot-avatar-box halo-nova">
+                                <img src="assets/dots/nova.png?v=20261024_theater" alt="NOVA" class="theater-dot-img dot-anim-breathe" />
+                            </div>
+                            <div class="theater-dot-info">
+                                <div class="theater-dot-name">NOVA</div>
+                                <div class="theater-dot-role">Product Lead · Strategy</div>
+                            </div>
+                        </div>
+                        <div class="theater-dot-item" onclick="switchDemoSpecialist('sage'); scrollToShowcaseSection('hero-demo-window');">
+                            <div class="theater-dot-avatar-box halo-sage">
+                                <img src="assets/dots/sage.png?v=20261024_theater" alt="SAGE" class="theater-dot-img dot-anim-breathe" style="animation-delay: 0.4s;" />
+                            </div>
+                            <div class="theater-dot-info">
+                                <div class="theater-dot-name">SAGE</div>
+                                <div class="theater-dot-role">Research Scientist</div>
+                            </div>
+                        </div>
+                        <div class="theater-dot-item" onclick="switchDemoSpecialist('axis'); scrollToShowcaseSection('hero-demo-window');">
+                            <div class="theater-dot-avatar-box halo-axis">
+                                <img src="assets/dots/axis.png?v=20261024_theater" alt="AXIS" class="theater-dot-img dot-anim-breathe" style="animation-delay: 0.8s;" />
+                            </div>
+                            <div class="theater-dot-info">
+                                <div class="theater-dot-name">AXIS</div>
+                                <div class="theater-dot-role">Enterprise Sales</div>
+                            </div>
+                        </div>
+                        <div class="theater-dot-item" onclick="switchDemoSpecialist('muse'); scrollToShowcaseSection('hero-demo-window');">
+                            <div class="theater-dot-avatar-box halo-muse">
+                                <img src="assets/dots/muse.png?v=20261024_theater" alt="MUSE" class="theater-dot-img dot-anim-breathe" style="animation-delay: 1.2s;" />
+                            </div>
+                            <div class="theater-dot-info">
+                                <div class="theater-dot-name">MUSE</div>
+                                <div class="theater-dot-role">Content Studio</div>
+                            </div>
+                        </div>
+                        <div class="theater-dot-item" onclick="switchDemoSpecialist('hex'); scrollToShowcaseSection('hero-demo-window');">
+                            <div class="theater-dot-avatar-box halo-hex">
+                                <img src="assets/dots/hex.png?v=20261024_theater" alt="HEX" class="theater-dot-img dot-anim-breathe" style="animation-delay: 1.6s;" />
+                            </div>
+                            <div class="theater-dot-info">
+                                <div class="theater-dot-name">HEX</div>
+                                <div class="theater-dot-role">Autonomous Dev</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
