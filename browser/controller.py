@@ -7,8 +7,11 @@ import asyncio
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-from playwright.async_api import async_playwright, Browser, BrowserContext, Page
+try:
+    from playwright.async_api import async_playwright, Browser, BrowserContext, Page
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
 
 from config.settings import settings
 
@@ -51,6 +54,9 @@ class AgentBrowser:
                 "screenshot_filename": None,
                 "screenshot_path": None,
             }
+
+        if not PLAYWRIGHT_AVAILABLE:
+            return self._fallback_http_extract(url, "Playwright browser is unavailable; used HTTP extractor.")
 
         try:
             async with async_playwright() as p:
