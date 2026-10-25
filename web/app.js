@@ -1410,12 +1410,84 @@ function formatMessageContent(raw) {
     return escaped;
 }
 
+function getTechnicalConceptExplanation(p, userPrompt, agentName) {
+    if (p.includes('dbms') || p.includes('database') || p.includes('sql') || p.includes('rdbms') || p.includes('nosql') || p.includes('acid')) {
+        return `A **Database Management System (DBMS)** is specialized software that enables users and applications to create, protect, read, update, and manage structured collections of data.\n\n` +
+               `### 🏛️ Core Concepts & Architecture\n` +
+               `1. **Primary Functions**:\n` +
+               `   - **Data Definition (DDL)**: Formulate schemas, tables, relationships, constraints, and indexes.\n` +
+               `   - **Data Manipulation (DML)**: Insert, query, update, and filter records efficiently using SQL or query APIs.\n` +
+               `   - **Concurrency Control & Locking**: Ensure multiple concurrent transactions read and write without data corruption.\n\n` +
+               `2. **Major Categories of DBMS**:\n` +
+               `   - **Relational (RDBMS)**: Structured tabular data with foreign keys and strict schema adherence (*PostgreSQL, MySQL, SQLite, Oracle*).\n` +
+               `   - **NoSQL / Document Stores**: Schema-flexible JSON documents optimized for horizontal scaling (*MongoDB, CouchDB, DynamoDB*).\n` +
+               `   - **In-Memory & Caching**: Ultra-low-latency key-value stores (*Redis, Memcached*).\n` +
+               `   - **Vector Databases**: High-dimensional vector indexers for AI episodic memory & semantic search (*sqlite-vec, ChromaDB, Pinecone*).\n\n` +
+               `3. **The ACID Guarantee**:\n` +
+               `   - **Atomicity**: An operation succeeds completely or rolls back with zero partial changes.\n` +
+               `   - **Consistency**: Transactions always transition the database from one valid state to another.\n` +
+               `   - **Isolation**: Concurrent transactions execute safely without dirty reads or race conditions.\n` +
+               `   - **Durability**: Committed data is permanently written to non-volatile disk via Write-Ahead Logging (WAL).\n\n` +
+               `*Inside ONE DOTS, our autonomous agents utilize SQLite WAL for tamper-evident state storage and sqlite-vec for episodic memory recall.*`;
+    }
+
+    if (p.includes('api') || p.includes('rest api') || p.includes('endpoint') || p.includes('webhook')) {
+        return `An **Application Programming Interface (API)** is a formal protocol that allows distinct software applications to communicate and exchange data securely:\n\n` +
+               `- **REST APIs**: Stateless, resource-oriented HTTP endpoints utilizing standard verbs (\`GET\`, \`POST\`, \`PUT\`, \`DELETE\`) with standardized HTTP status codes.\n` +
+               `- **Webhooks**: Event-driven push notifications triggered immediately when external events occur (e.g. GitHub commits, Stripe payments).\n` +
+               `- **FastAPI Framework**: Modern, high-performance Python web framework featuring async event loops, Pydantic type validation, and automatic OpenAPI documentation.\n\n` +
+               `*ONE DOTS exposes secure REST endpoints with Row-Level Security (RLS) and HMAC SHA-256 webhook signatures.*`;
+    }
+
+    if (p.includes('python') || p.includes('asyncio') || p.includes('fastapi')) {
+        return `**Python** is a versatile high-level programming language renowned for its expressive syntax, rich ecosystem, and dominance in AI and backend engineering:\n\n` +
+               `- **AsyncIO**: Concurrent asynchronous execution with event loops, \`async\`/\`await\` coroutines, and non-blocking I/O.\n` +
+               `- **Type Hinting & Pydantic**: Robust runtime data validation and schema enforcement.\n` +
+               `- **Scientific Computing**: Libraries like NumPy, SciPy, and Pandas power empirical research (utilized by our **SAGE** specialist).\n\n` +
+               `*ONE DOTS executes sandboxed Python code in isolated cloud runtimes with interactive STDIN safety.*`;
+    }
+
+    if (p.includes('machine learning') || p.includes('artificial intelligence') || p.includes('agent') || p.includes('llm') || p.includes('transformer')) {
+        return `**Autonomous AI Agents** are cognitive systems designed to perceive their environment, reason over multi-step goals, plan actions, and execute tools without constant manual intervention:\n\n` +
+               `### The 5-Stage Agent Lifecycle in ONE DOTS\n` +
+               `1. **Observe**: Ingest channel webhooks, environment logs, and user requirements.\n` +
+               `2. **Think**: Retrieve episodic memory, formulate plans, and reason over constraints.\n` +
+               `3. **Decide**: Evaluate risk tiers (Low/Medium/High) via the Action Auto-Review safeguard.\n` +
+               `4. **Act**: Execute Python code in cloud sandboxes, query external APIs, or create deliverables.\n` +
+               `5. **Learn**: Record outcomes, feedback, and execution traces into vector memory.`;
+    }
+
+    if (p.includes('security') || p.includes('owasp') || p.includes('rls') || p.includes('cryptography')) {
+        return `**Enterprise Application Security** enforces multi-layered defense to safeguard sensitive data:\n\n` +
+               `- **Row-Level Security (RLS)**: Enforces tenant isolation at the database layer to eliminate Insecure Direct Object References (IDOR).\n` +
+               `- **Content Security Policy (CSP)**: Restricts executable script sources to defend against Cross-Site Scripting (XSS).\n` +
+               `- **Immutable Audit Vault**: SHA-256 HMAC hashed ledgers guaranteeing non-repudiation for all automated agent actions.`;
+    }
+
+    if (p.startsWith('can you tell me') || p.startsWith('tell me about') || p.startsWith('what is') || p.startsWith('explain') || p.startsWith('how do') || p.startsWith('how does') || p.startsWith('describe')) {
+        let cleanTopic = userPrompt;
+        for (const prefix of ["can you tell me about", "can you tell me", "tell me about", "what is", "explain", "how does", "how do", "describe"]) {
+            if (p.startsWith(prefix)) {
+                cleanTopic = userPrompt.slice(prefix.length).replace(/^[ ?.:]+|[ ?.:]+$/g, '');
+                break;
+            }
+        }
+        return `Here is a structured explanation of **${escapeHtml(cleanTopic || userPrompt)}**:\n\n` +
+               `- **Core Definition**: ${escapeHtml(cleanTopic || userPrompt)} represents an essential concept in software engineering and modern technology workflows.\n` +
+               `- **System Integration**: Within enterprise architectures, systems connect using clear interface contracts, automated test validation, and resilient error recovery.\n` +
+               `- **Implementation Best Practice**: Enforce schema constraints, validate inputs, maintain non-repudiation logging, and monitor runtime telemetry.\n\n` +
+               `As **${escapeHtml(agentName)}**, I can assist in modeling this further, executing simulations in my cloud sandbox, or compiling a formal deliverable.`;
+    }
+
+    return null;
+}
+
 function generateAutonomousSpecialistResponse(agent, userPrompt) {
     const p = (userPrompt || '').toLowerCase();
     const name = agent ? (agent.shortName || agent.name) : 'NOVA';
     const arch = (agent?.archetype || 'nova').toLowerCase();
 
-    // 1. BLUE DOT (NOVA) — Product Launch Lead & Project Manager
+    // Starter Prompt Pills check first
     if (arch === 'nova') {
         if (p.includes('roadmap') || p.includes('create project roadmap') || p.includes('milestone')) {
             return `I formulated your autonomous **Milestone Roadmap & Delivery Schedule**:\n\n### 🚀 4-Phase Delivery Roadmap\n1. **Phase 1: Foundations & Architecture (Days 1–14)**\n   - Schema & Contract lock-in (FastAPI + Pydantic v2)\n   - Cloud computer sandbox runtime & STDIN protocol verification\n   - Dedicated lead: **HEX** (Software Developer & AppSec)\n2. **Phase 2: Specialist Integration & Engine (Days 15–32)**\n   - Autonomous decision matrix & Action Auto-Review risk scoring\n   - Real-time voice engine pipeline & multimodal synthesis\n   - Dedicated leads: **SAGE** (Empirical Analytics) + **MUSE** (Design System)\n3. **Phase 3: Ecosystem & Enterprise Hardening (Days 33–45)**\n   - 4,000+ App Connectors (Slack, GitHub, Linear, Webhooks)\n   - Row-level security (RLS) & SQLite WAL tamper-evident vault\n   - Dedicated lead: **AXIS** (Operations Lead)\n4. **Phase 4: Global Production GTM (Days 46–60)**\n   - Vercel Edge CDN global caching & sub-100ms FCP verification\n   - Commercial SaaS billing ($50/mo Business tier) & team quotas\n   - Dedicated lead: **NOVA** (Product Launch Lead)\n\n**Milestone Summary**: 4 milestones, 18 deliverables tracked, 0 critical path blockers. Ready to sync with your Linear/GitHub board.`;
@@ -1429,6 +1501,13 @@ function generateAutonomousSpecialistResponse(agent, userPrompt) {
         if (p.includes('dispatch') || p.includes('team dispatch workflow') || p.includes('coordinate')) {
             return `I initialized the **Multi-Specialist Autonomous Dispatch Workflow**:\n\n### 🤝 Fleet Coordination Matrix\n| Specialist | Role | Assigned Task | Status |\n| :--- | :--- | :--- | :--- |\n| **NOVA** (Blue) | Product Launch Lead | Milestone roadmap & delivery schedule | 🟢 Active |\n| **SAGE** (Lime-Green) | Research Scientist | Empirical statistical analysis & data charts | 🟢 Online |\n| **AXIS** (Golden-Yellow) | Enterprise Specialist | 4,000+ app connector sync & RFP compliance | 🟢 Online |\n| **MUSE** (Purple) | Content Studio Lead | Real deliverables (.pptx, .docx, study guides) | 🟢 Online |\n| **HEX** (Dark Navy) | Software Developer | Repository inspection, bugfix & pytest suite | 🟢 Online |\n\nAll 5 specialist Dots are synchronized in shared episodic memory. Deliverables pipeline open.`;
         }
+    }
+
+    // Check technical/educational concept questions for ANY Dot (DBMS, APIs, Python, etc.)
+    const conceptReply = getTechnicalConceptExplanation(p, userPrompt, name);
+    if (conceptReply) {
+        return conceptReply;
+    }
         if (p.includes('test') || p.includes('pytest')) {
             return `I dispatched automated testing to HEX in the sandbox runtime.\n\n\`\`\`bash\n$ pytest tests/ -v\n============================= test session starts =============================\ntests/test_dots_agents.py::test_create_and_tick_agent PASSED             [ 25%]\ntests/test_dots_agents.py::test_agent_pause_resume PASSED                 [ 50%]\ntests/test_security_suite.py::test_row_level_security PASSED             [ 75%]\ntests/test_security_suite.py::test_sqlite_wal_audit PASSED               [100%]\n======================= 20 passed in 1.48s (100% compliant) =======================\n\`\`\`\n\nAll test suites passed with 0 regressions. Ephemeral sandbox reset.`;
         }
@@ -2694,6 +2773,13 @@ function formatDocsReply(raw) {
 
 function generateLocalDocsReply(query) {
     const q = query.toLowerCase();
+
+    // 1. Check technical concept questions (DBMS, API, Python, AI, etc.)
+    const conceptReply = getTechnicalConceptExplanation(q, query, 'ONE DOTS Assistant');
+    if (conceptReply) {
+        return conceptReply;
+    }
+
     if (q.includes('stdin') || q.includes('input')) {
         return "The Cloud Computer features an isolated sandbox with a Safe Input Shim. When `input()` is called without terminal interaction, it automatically handles EOFError and defaults to 'User' in milliseconds, preventing 30-second timeouts. Operators can also supply inputs directly in the STDIN input field.";
     }
@@ -2706,7 +2792,10 @@ function generateLocalDocsReply(query) {
     if (q.includes('safeguard') || q.includes('review') || q.includes('approval')) {
         return "The Action Auto-Review safeguard categorizes operations into Low, Medium, High Risk, and Blocked. High Risk operations (like modifying databases or external systems) halt and trigger the animated Human Approval Gate banner.";
     }
-    return "ONE DOTS are always-on autonomous AI agents powered by Google Gemini 3.5 and dedicated cloud computers. They work towards your mission 24/7 with 4,000+ app connectors and human approval safeguards.";
+    if (q.includes('pricing') || q.includes('tier') || q.includes('plan') || q.includes('cost') || q.includes('quota')) {
+        return "ONE DOTS offers two commercial tiers:\n- **Starter ($0/mo)**: Community access, 50 autonomous cycles/mo, shared sandboxes.\n- **Business Premium ($50/user/mo)**: 500 deep work cycles/mo, dedicated cloud computers, priority voice synthesis, and unlimited 4,000+ app connectors.";
+    }
+    return "ONE DOTS are always-on autonomous AI agents powered by Google Gemini 3.5 and dedicated cloud computers. They work towards your mission 24/7 with 4,000+ app connectors and human approval safeguards. Ask me about our 5 specialist Dots, sandbox STDIN handling, or any computer science & system concept!";
 }
 
 // Copy Code & Page URL

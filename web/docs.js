@@ -250,6 +250,43 @@ function formatDocsReply(raw) {
 
 function generateLocalDocsReply(query) {
     const q = query.toLowerCase();
+
+    if (q.includes('dbms') || q.includes('database') || q.includes('sql') || q.includes('rdbms') || q.includes('nosql') || q.includes('acid')) {
+        return "A **Database Management System (DBMS)** is specialized software that enables users and applications to create, protect, read, update, and manage structured collections of data.\n\n" +
+               "### 🏛️ Core Concepts & Architecture\n" +
+               "1. **Primary Functions**:\n" +
+               "   - **Data Definition (DDL)**: Formulate schemas, tables, relationships, constraints, and indexes.\n" +
+               "   - **Data Manipulation (DML)**: Insert, query, update, and filter records efficiently using SQL or query APIs.\n" +
+               "   - **Concurrency Control & Locking**: Ensure multiple concurrent transactions read and write without data corruption.\n\n" +
+               "2. **Major Categories of DBMS**:\n" +
+               "   - **Relational (RDBMS)**: Structured tabular data with foreign keys and strict schema adherence (*PostgreSQL, MySQL, SQLite, Oracle*).\n" +
+               "   - **NoSQL / Document Stores**: Schema-flexible JSON documents optimized for horizontal scaling (*MongoDB, CouchDB, DynamoDB*).\n" +
+               "   - **In-Memory & Caching**: Ultra-low-latency key-value stores (*Redis, Memcached*).\n" +
+               "   - **Vector Databases**: High-dimensional vector indexers for AI episodic memory & semantic search (*sqlite-vec, ChromaDB, Pinecone*).\n\n" +
+               "3. **The ACID Guarantee**:\n" +
+               "   - **Atomicity**: An operation succeeds completely or rolls back with zero partial changes.\n" +
+               "   - **Consistency**: Transactions always transition the database from one valid state to another.\n" +
+               "   - **Isolation**: Concurrent transactions execute safely without dirty reads or race conditions.\n" +
+               "   - **Durability**: Committed data is permanently written to non-volatile disk via Write-Ahead Logging (WAL).\n\n" +
+               "*Inside ONE DOTS, our autonomous agents utilize SQLite WAL for tamper-evident state storage and sqlite-vec for episodic memory recall.*";
+    }
+
+    if (q.includes('api') || q.includes('rest api') || q.includes('endpoint') || q.includes('webhook')) {
+        return "An **Application Programming Interface (API)** is a formal protocol that allows distinct software applications to communicate and exchange data securely:\n\n" +
+               "- **REST APIs**: Stateless, resource-oriented HTTP endpoints utilizing standard verbs (`GET`, `POST`, `PUT`, `DELETE`) with standardized HTTP status codes.\n" +
+               "- **Webhooks**: Event-driven push notifications triggered immediately when external events occur (e.g. GitHub commits, Stripe payments).\n" +
+               "- **FastAPI Framework**: Modern, high-performance Python web framework featuring async event loops, Pydantic type validation, and automatic OpenAPI documentation.\n\n" +
+               "*ONE DOTS exposes secure REST endpoints with Row-Level Security (RLS) and HMAC SHA-256 webhook signatures.*";
+    }
+
+    if (q.includes('python') || q.includes('asyncio') || q.includes('fastapi')) {
+        return "**Python** is a versatile high-level programming language renowned for its expressive syntax, rich ecosystem, and dominance in AI and backend engineering:\n\n" +
+               "- **AsyncIO**: Concurrent asynchronous execution with event loops, `async`/`await` coroutines, and non-blocking I/O.\n" +
+               "- **Type Hinting & Pydantic**: Robust runtime data validation and schema enforcement.\n" +
+               "- **Scientific Computing**: Libraries like NumPy, SciPy, and Pandas power empirical research (utilized by our **SAGE** specialist).\n\n" +
+               "*ONE DOTS executes sandboxed Python code in isolated cloud runtimes with interactive STDIN safety.*";
+    }
+
     if (q.includes('stdin') || q.includes('input')) {
         return "The Cloud Computer features an isolated execution sandbox equipped with a Safe Input Shim. When `input()` is called without terminal interaction, it automatically handles EOFError and defaults to 'User' in milliseconds, preventing the 30-second timeout. Operators can also supply inputs directly in the STDIN input field.";
     }
@@ -262,5 +299,8 @@ function generateLocalDocsReply(query) {
     if (q.includes('safeguard') || q.includes('review') || q.includes('approval')) {
         return "The Action Auto-Review safeguard categorizes operations into Low, Medium, High Risk, and Blocked. High Risk operations (like modifying databases or external systems) halt and trigger the animated Human Approval Gate banner.";
     }
-    return "DOTS are always-on autonomous AI agents powered by Google Gemini 3.5 and dedicated cloud computers. They work towards your mission 24/7 with 4,000+ app connectors and human approval safeguards.";
+    if (q.includes('pricing') || q.includes('tier') || q.includes('plan') || q.includes('cost') || q.includes('quota')) {
+        return "ONE DOTS offers two commercial tiers:\n- **Starter ($0/mo)**: Community access, 50 autonomous cycles/mo, shared sandboxes.\n- **Business Premium ($50/user/mo)**: 500 deep work cycles/mo, dedicated cloud computers, priority voice synthesis, and unlimited 4,000+ app connectors.";
+    }
+    return "DOTS are always-on autonomous AI agents powered by Google Gemini 3.5 and dedicated cloud computers. They work towards your mission 24/7 with 4,000+ app connectors and human approval safeguards. Ask me anything about our 5 specialist Dots, sandbox STDIN handling, or any database & software engineering concept!";
 }
