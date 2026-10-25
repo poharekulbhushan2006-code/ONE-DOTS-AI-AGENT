@@ -27,7 +27,10 @@ class AgentBrowser:
     def __init__(self, agent_id: str):
         self.agent_id = agent_id
         self.session_dir = settings.BROWSER_SESSIONS_DIR / agent_id
-        self.session_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            self.session_dir.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            pass
         self.state_file = self.session_dir / "storage_state.json"
 
     async def navigate_and_extract(

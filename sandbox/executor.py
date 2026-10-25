@@ -21,7 +21,10 @@ class SandboxEnvironment:
         self.agent_id = agent_id
         self.workspace_dir = settings.SANDBOX_BASE_DIR / agent_id
         self.sandbox_dir = self.workspace_dir
-        self.workspace_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            self.workspace_dir.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            pass
 
     def _resolve_safe_path(self, relative_path: str) -> Path:
         """Ensures that paths cannot traverse outside the agent's sandbox."""

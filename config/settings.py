@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
+from pydantic import Field, model_validator
 
 # Ensure workspace .env overrides any conflicting system-wide environment variables
 _BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,6 +111,17 @@ class Settings(BaseSettings):
     ALLOWED_UPLOAD_EXTENSIONS: list[str] = [
         ".txt", ".py", ".json", ".csv", ".md", ".png", ".jpg", ".jpeg", ".pdf", ".yaml", ".yml"
     ]
+
+    @model_validator(mode="after")
+    def force_serverless_paths(self):
+        if _IS_SERVERLESS:
+            self.DATA_DIR = Path("/tmp/dots_data")
+            self.DB_PATH = self.DATA_DIR / "one_state.db"
+            self.SANDBOX_BASE_DIR = self.DATA_DIR / "sandboxes"
+            self.BROWSER_SESSIONS_DIR = self.DATA_DIR / "browser_sessions"
+            self.SCREENSHOTS_DIR = self.DATA_DIR / "screenshots"
+            self.REPORTS_DIR = self.DATA_DIR / "reports"
+        return self
 
 
 settings = Settings()

@@ -21,7 +21,10 @@ class SemanticMemoryStore:
 
     def __init__(self, db_path: Optional[Path] = None):
         self.db_path = db_path or settings.DATA_DIR / "episodic_memory.db"
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            pass
         self._init_db()
 
     @contextmanager
