@@ -15,9 +15,34 @@ _ENV_FILE = _BASE_DIR / ".env"
 if _ENV_FILE.exists():
     load_dotenv(dotenv_path=str(_ENV_FILE), override=True)
 
-_IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+_IS_SERVERLESS = bool(
+    os.environ.get("VERCEL")
+    or os.environ.get("VERCEL_ENV")
+    or os.environ.get("VERCEL_REGION")
+    or os.environ.get("VERCEL_URL")
+    or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")
+    or os.environ.get("LAMBDA_TASK_ROOT")
+    or os.environ.get("NOW_REGION")
+    or Path("/var/task").exists()
+)
+
+if not _IS_SERVERLESS:
+    try:
+        test_file = _BASE_DIR / ".write_test"
+        test_file.touch()
+        test_file.unlink()
+    except OSError:
+        _IS_SERVERLESS = True
+
 _DATA_DIR = Path("/tmp/dots_data") if _IS_SERVERLESS else _BASE_DIR / "data"
-_DATA_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    _DATA_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    _DATA_DIR = Path("/tmp/dots_data")
+    try:
+        _DATA_DIR.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
 
 
 class Settings(BaseSettings):
@@ -90,7 +115,7 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-# Ensure required runtime directories exist
+# Ensure required runtime directories exist safely
 for path in [
     settings.DATA_DIR,
     settings.SANDBOX_BASE_DIR,
@@ -98,4 +123,8 @@ for path in [
     settings.SCREENSHOTS_DIR,
     settings.REPORTS_DIR,
 ]:
-    path.mkdir(parents=True, exist_ok=True)
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        pass
+

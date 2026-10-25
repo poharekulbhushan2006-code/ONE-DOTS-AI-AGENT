@@ -724,7 +724,9 @@
 
     <!-- =========================================================================
          VIEW 2: AGENT WORKSTATION (FULL INTERACTIVE PLATFORM)
-         ======================================        <!-- Senior Advanced Full-Stack Workstation Header -->
+         ========================================================================= -->
+    <section class="app-view" id="view-workstation">
+        <!-- Senior Advanced Full-Stack Workstation Header -->
         <div class="senior-workstation-header">
             <div class="sw-header-left">
                 <button class="btn btn-secondary btn-sm sw-back-btn" onclick="switchMainView('view-showcase')">
@@ -1260,29 +1262,62 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
                 <span class="search-kbd">ESC</span>
             </div>
             <div class="search-results-list" id="search-results-list">
-                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); closeSearchModal();">
-                    <span class="result-item-title">Agent Workstation</span>
-                    <span class="result-item-sub">Collaborate live with your active Dots fleet</span>
+                <!-- 5 Specialist Archetype Dots -->
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); selectAgentByDotKey('nova'); closeSearchModal();">
+                    <span class="result-item-title">💧 Blue Dot (NOVA) — Product Launch Lead</span>
+                    <span class="result-item-sub">Milestone roadmaps, launch checklists, scope impact, GTM strategy</span>
                 </a>
-                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-showcase'); closeSearchModal();">
-                    <span class="result-item-title">Platform Showcase</span>
-                    <span class="result-item-sub">Overview of always-on frontier intelligence</span>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); selectAgentByDotKey('sage'); closeSearchModal();">
+                    <span class="result-item-title">🌿 Emerald Dot (SAGE) — Lead Data Scientist</span>
+                    <span class="result-item-sub">Welch's t-test, ANOVA, hypothesis testing, telemetry &amp; research guides</span>
                 </a>
-                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-docs'); closeSearchModal();">
-                    <span class="result-item-title">Documentation &amp; Learn</span>
-                    <span class="result-item-sub">Developer guides, architecture, and API specs</span>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); selectAgentByDotKey('axis'); closeSearchModal();">
+                    <span class="result-item-title">⚡ Golden Dot (AXIS) — Enterprise Operations Lead</span>
+                    <span class="result-item-sub">4,000+ app connectors, Linear/GitHub webhook sync, SLA tracking</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); selectAgentByDotKey('muse'); closeSearchModal();">
+                    <span class="result-item-title">✨ Purple Dot (MUSE) — Creative &amp; Design Lead</span>
+                    <span class="result-item-sub">Obsidian UI design systems, typography scale, executive slide decks</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); selectAgentByDotKey('hex'); closeSearchModal();">
+                    <span class="result-item-title">🛡️ Dark Navy Dot (HEX) — Principal Security Architect</span>
+                    <span class="result-item-sub">AppSec audits, OWASP matrices, automated pytest fixes, code review</span>
+                </a>
+
+                <!-- Core Workstation Tools -->
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); setWorkstationMode('repl'); closeSearchModal();">
+                    <span class="result-item-title">💻 Cloud Computer REPL &amp; Sandbox</span>
+                    <span class="result-item-sub">Execute Python code in isolated container runtime with STDIN input</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); setWorkstationMode('audit'); closeSearchModal();">
+                    <span class="result-item-title">🔒 Security Matrix &amp; Tamper-Evident Audit</span>
+                    <span class="result-item-sub">Row-level security, SQLite WAL ledger, action auto-review gates</span>
                 </a>
                 <a href="javascript:void(0)" class="search-result-item" onclick="startVoiceCall(); closeSearchModal();">
-                    <span class="result-item-title">Real-Time Voice Call</span>
-                    <span class="result-item-sub">Hop on a voice call with your active Dot</span>
+                    <span class="result-item-title">📞 Real-Time Voice Call Engine</span>
+                    <span class="result-item-sub">Voice conversation with your active Dot specialist</span>
+                </a>
+
+                <!-- Navigation & Documentation -->
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); closeSearchModal();">
+                    <span class="result-item-title">◈ Agent Workstation</span>
+                    <span class="result-item-sub">Collaborate live with your active Dots fleet</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-docs'); closeSearchModal();">
+                    <span class="result-item-title">📖 Documentation &amp; Learn Hub</span>
+                    <span class="result-item-sub">Developer guides, architecture, sandbox STDIN, and API specs</span>
+                </a>
+                <a href="javascript:void(0)" class="search-result-item" onclick="scrollToShowcaseSection('introducing-dots-film'); closeSearchModal();">
+                    <span class="result-item-title">▶ Watch Film: Introducing ONE DOTS</span>
+                    <span class="result-item-sub">Cinematic showcase of the 5 specialist Dots</span>
                 </a>
                 <a href="javascript:void(0)" class="search-result-item" onclick="openIntegrationsModal(); closeSearchModal();">
-                    <span class="result-item-title">Connect Apps (4,000+)</span>
-                    <span class="result-item-sub">Slack, Microsoft Teams, GitHub, Webhooks</span>
+                    <span class="result-item-title">🔌 Connect 4,000+ Apps</span>
+                    <span class="result-item-sub">Slack, GitHub, Linear, Google Workspace, Webhooks</span>
                 </a>
                 <a href="javascript:void(0)" class="search-result-item" onclick="openBillingModal(); closeSearchModal();">
-                    <span class="result-item-title">Commercial SaaS Tiers &amp; Quotas</span>
-                    <span class="result-item-sub">Business Premium $50/mo, deep work cycle quotas</span>
+                    <span class="result-item-title">💳 Pricing &amp; Commercial SaaS Tiers</span>
+                    <span class="result-item-sub">Business Premium $50/mo, deep work cycles &amp; priority execution</span>
                 </a>
             </div>
         </div>

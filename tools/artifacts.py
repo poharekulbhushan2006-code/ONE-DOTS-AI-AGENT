@@ -15,7 +15,10 @@ from core.models import ArtifactRecord
 from memory.state_store import state_store
 
 ARTIFACTS_DIR = settings.DATA_DIR / "artifacts"
-ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    pass
 
 
 class ArtifactVault:
