@@ -24,6 +24,9 @@ from core.models import (
     ReportItem,
     ChatMessage,
     AuditLogEntry,
+    TaskRecord,
+    TaskStatus,
+    ArtifactRecord,
 )
 
 
@@ -165,6 +168,48 @@ class StateStore:
             )
             """)
 
+            # Tasks & Autonomous Plan Executions
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tasks (
+                id TEXT PRIMARY KEY,
+                user_id TEXT DEFAULT 'usr_owner_default',
+                assigned_agent_id TEXT,
+                title TEXT NOT NULL,
+                goal TEXT NOT NULL,
+                deadline TEXT,
+                constraints TEXT,
+                status TEXT NOT NULL,
+                plan_steps_json TEXT,
+                current_step_index INTEGER DEFAULT 0,
+                execution_log_json TEXT,
+                artifacts_json TEXT,
+                verification_result_json TEXT,
+                final_output TEXT,
+                error_message TEXT,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                completed_at TEXT
+            )
+            """)
+
+            # Persistent Artifacts & Deliverables Vault
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS artifacts (
+                id TEXT PRIMARY KEY,
+                task_id TEXT,
+                agent_id TEXT NOT NULL,
+                user_id TEXT DEFAULT 'usr_owner_default',
+                name TEXT NOT NULL,
+                file_type TEXT NOT NULL,
+                file_path TEXT NOT NULL,
+                relative_path TEXT NOT NULL,
+                size_bytes INTEGER DEFAULT 0,
+                mime_type TEXT NOT NULL,
+                metadata_json TEXT,
+                created_at TEXT NOT NULL
+            )
+            """)
+
             # Dynamic migrations: ensure user_id column exists if table was pre-existing
             for table in ["agents", "task_steps", "decisions", "reports", "checkpoints", "messages"]:
                 cursor.execute(f"PRAGMA table_info({table})")
@@ -178,6 +223,9 @@ class StateStore:
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_logs_timestamp ON audit_logs(timestamp DESC)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON audit_logs(user_id)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_agents_user ON agents(user_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_tasks_user ON tasks(user_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_artifacts_task ON artifacts(task_id)")
+            cursor.execute("CREATE INDEX IF NOT EXISTS idx_artifacts_agent ON artifacts(agent_id)")
 
             conn.commit()
 
@@ -611,6 +659,224 @@ class StateStore:
                     details=json.loads(r["details_json"]) if r["details_json"] else {},
                 ))
             return logs
+
+    # ------------------ Task Management & Execution Store ------------------
+
+    def save_task(self, task: TaskRecord) -> TaskRecord:
+        task.updated_at = datetime.now(timezone.utc)
+        user_id = task.user_id or "usr_owner_default"
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            INSERT INTO tasks (
+                id, user_id, assigned_agent_id, title, goal, deadline,
+                constraints, status, plan_steps_json, current_step_index,
+                execution_log_json, artifacts_json, verification_result_json,
+                final_output, error_message, created_at, updated_at, completed_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                user_id=excluded.user_id,
+                assigned_agent_id=excluded.assigned_agent_id,
+                title=excluded.title,
+                goal=excluded.goal,
+                deadline=excluded.deadline,
+                constraints=excluded.constraints,
+                status=excluded.status,
+                plan_steps_json=excluded.plan_steps_json,
+                current_step_index=excluded.current_step_index,
+                execution_log_json=excluded.execution_log_json,
+                artifacts_json=excluded.artifacts_json,
+                verification_result_json=excluded.verification_result_json,
+                final_output=excluded.final_output,
+                error_message=excluded.error_message,
+                updated_at=excluded.updated_at,
+                completed_at=excluded.completed_at
+            """, (
+                task.id,
+                user_id,
+                task.assigned_agent_id,
+                task.title,
+                task.goal,
+                task.deadline,
+                task.constraints,
+                task.status.value,
+                json.dumps(task.plan_steps),
+                task.current_step_index,
+                json.dumps(task.execution_log),
+                json.dumps(task.artifacts),
+                json.dumps(task.verification_result) if task.verification_result else None,
+                task.final_output,
+                task.error_message,
+                task.created_at.isoformat(),
+                task.updated_at.isoformat(),
+                task.completed_at.isoformat() if task.completed_at else None,
+            ))
+            conn.commit()
+        return task
+
+    def get_task(
+        self,
+        task_id: str,
+        user_id: Optional[str] = None,
+        is_admin: bool = False
+    ) -> Optional[TaskRecord]:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            if is_admin or not user_id:
+                cursor.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))
+            else:
+                cursor.execute("SELECT * FROM tasks WHERE id = ? AND user_id = ?", (task_id, user_id))
+            row = cursor.fetchone()
+            if not row:
+                return None
+            return self._row_to_task(row)
+
+    def list_tasks(
+        self,
+        user_id: Optional[str] = None,
+        is_admin: bool = False,
+        limit: int = 50
+    ) -> List[TaskRecord]:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            if is_admin or not user_id:
+                cursor.execute("SELECT * FROM tasks ORDER BY created_at DESC LIMIT ?", (limit,))
+            else:
+                cursor.execute("SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC LIMIT ?", (user_id, limit))
+            rows = cursor.fetchall()
+            return [self._row_to_task(r) for r in rows]
+
+    def delete_task(self, task_id: str, user_id: Optional[str] = None, is_admin: bool = False) -> bool:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            if is_admin or not user_id:
+                cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+            else:
+                cursor.execute("DELETE FROM tasks WHERE id = ? AND user_id = ?", (task_id, user_id))
+            conn.commit()
+            return cursor.rowcount > 0
+
+    def _row_to_task(self, row: sqlite3.Row) -> TaskRecord:
+        return TaskRecord(
+            id=row["id"],
+            user_id=row["user_id"] or "usr_owner_default",
+            assigned_agent_id=row["assigned_agent_id"],
+            title=row["title"],
+            goal=row["goal"],
+            deadline=row["deadline"],
+            constraints=row["constraints"],
+            status=TaskStatus(row["status"]),
+            plan_steps=json.loads(row["plan_steps_json"]) if row["plan_steps_json"] else [],
+            current_step_index=row["current_step_index"] or 0,
+            execution_log=json.loads(row["execution_log_json"]) if row["execution_log_json"] else [],
+            artifacts=json.loads(row["artifacts_json"]) if row["artifacts_json"] else [],
+            verification_result=json.loads(row["verification_result_json"]) if row["verification_result_json"] else None,
+            final_output=row["final_output"],
+            error_message=row["error_message"],
+            created_at=datetime.fromisoformat(row["created_at"]),
+            updated_at=datetime.fromisoformat(row["updated_at"]),
+            completed_at=datetime.fromisoformat(row["completed_at"]) if row["completed_at"] else None,
+        )
+
+    # ------------------ Artifacts Store ------------------
+
+    def save_artifact(self, artifact: ArtifactRecord) -> ArtifactRecord:
+        user_id = artifact.user_id or "usr_owner_default"
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+            INSERT INTO artifacts (
+                id, task_id, agent_id, user_id, name, file_type,
+                file_path, relative_path, size_bytes, mime_type,
+                metadata_json, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                task_id=excluded.task_id,
+                agent_id=excluded.agent_id,
+                user_id=excluded.user_id,
+                name=excluded.name,
+                file_type=excluded.file_type,
+                file_path=excluded.file_path,
+                relative_path=excluded.relative_path,
+                size_bytes=excluded.size_bytes,
+                mime_type=excluded.mime_type,
+                metadata_json=excluded.metadata_json
+            """, (
+                artifact.id,
+                artifact.task_id,
+                artifact.agent_id,
+                user_id,
+                artifact.name,
+                artifact.file_type,
+                str(artifact.file_path),
+                str(artifact.relative_path),
+                artifact.size_bytes,
+                artifact.mime_type,
+                json.dumps(artifact.metadata),
+                artifact.created_at.isoformat(),
+            ))
+            conn.commit()
+        return artifact
+
+    def get_artifact(
+        self,
+        artifact_id: str,
+        user_id: Optional[str] = None,
+        is_admin: bool = False
+    ) -> Optional[ArtifactRecord]:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            if is_admin or not user_id:
+                cursor.execute("SELECT * FROM artifacts WHERE id = ?", (artifact_id,))
+            else:
+                cursor.execute("SELECT * FROM artifacts WHERE id = ? AND user_id = ?", (artifact_id, user_id))
+            row = cursor.fetchone()
+            if not row:
+                return None
+            return self._row_to_artifact(row)
+
+    def list_artifacts(
+        self,
+        agent_id: Optional[str] = None,
+        task_id: Optional[str] = None,
+        user_id: Optional[str] = None,
+        is_admin: bool = False,
+        limit: int = 50
+    ) -> List[ArtifactRecord]:
+        with self._get_conn() as conn:
+            cursor = conn.cursor()
+            query = "SELECT * FROM artifacts WHERE 1=1"
+            params: List[Any] = []
+            if not is_admin and user_id:
+                query += " AND user_id = ?"
+                params.append(user_id)
+            if agent_id:
+                query += " AND agent_id = ?"
+                params.append(agent_id)
+            if task_id:
+                query += " AND task_id = ?"
+                params.append(task_id)
+            query += " ORDER BY created_at DESC LIMIT ?"
+            params.append(limit)
+            cursor.execute(query, tuple(params))
+            rows = cursor.fetchall()
+            return [self._row_to_artifact(r) for r in rows]
+
+    def _row_to_artifact(self, row: sqlite3.Row) -> ArtifactRecord:
+        return ArtifactRecord(
+            id=row["id"],
+            task_id=row["task_id"],
+            agent_id=row["agent_id"],
+            user_id=row["user_id"] or "usr_owner_default",
+            name=row["name"],
+            file_type=row["file_type"],
+            file_path=row["file_path"],
+            relative_path=row["relative_path"],
+            size_bytes=row["size_bytes"] or 0,
+            mime_type=row["mime_type"],
+            metadata=json.loads(row["metadata_json"]) if row["metadata_json"] else {},
+            created_at=datetime.fromisoformat(row["created_at"]),
+        )
 
 
 state_store = StateStore()

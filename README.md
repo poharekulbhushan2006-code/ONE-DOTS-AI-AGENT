@@ -23,11 +23,12 @@ Built directly into the CLI, REST API, and Conversational Workstation UI:
 
 | Dot | Archetype | Mission & Capabilities |
 |---|---|---|
-| 🔵 **Blue Dot** | **Felipe** (Launch Lead) | *Revise a launch as scope changes*: Learns audience, positioning, and creative standards. When product scope changes, revises the story, updates launch materials, and prepares drafts of email and social design options ready for review. |
-| 🟢 **Green Dot** | **Todd** (Research Scientist) | *Update analysis with new evidence*: Learns research questions and evidence evaluation criteria. As new data arrives, reruns analyses in sandbox, investigates unexpected results, and prepares updated comparison figures. |
-| 🟡 **Yellow Dot** | **Alfred** (Enterprise Sales) | *Update a proposal as requirements shift*: Checks customer requirements against product docs, identifies what needs testing, builds POC integrations in sandbox, and updates enterprise proposals and test plans. |
-| 🟣 **Purple Dot** | **Jojo** (Content Creator) | *Automate content production*: Learns creator voice and audience resonance. Extracts high-impact moments from interview transcripts, prepares show notes, and drafts social posts for approval. |
-| 🛡️ **Dev Dot** | **Sentry** (PR & Code Fixer) | *Turn feedback into tested fixes*: Watches customer feedback for recurring requests, scopes improvements and bug fixes, builds and tests them inside its cloud computer, and prepares verified PRs with logs. |
+| 🔵 **Blue Dot** | **NOVA** (Product Launch Lead) | *Strategy & Project Planning*: Turns ideas into milestones and dependencies, identifies positioning, conducts web research, tracks Linear/GitHub tasks, and performs change-impact analysis when requirements shift. |
+| 🟢 **Green Dot** | **SAGE** (Research Scientist) | *Research & Empirical Analysis*: Parses CSV/XLSX datasets, executes NumPy/pandas/SciPy statistical modeling (Welch's t-test, ANOVA), generates publication-grade Matplotlib charts, and formulates sourced research reports. |
+| 🟡 **Yellow Dot** | **AXIS** (Enterprise Specialist) | *Business & Technical Documentation*: Analyzes customer RFP and tender documents (PDF/DOCX), generates Requirement-to-Evidence compliance matrices, identifies gaps, and drafts commercial proposals. |
+| 🟣 **Purple Dot** | **MUSE** (Content & Media Studio) | *Deliverable Production Studio*: Generates genuine, downloadable PowerPoint presentation decks (`.pptx`), Word reports/study guides (`.docx`), summaries, and platform-specific content variants. |
+| 🛡️ **Dev Dot** | **HEX** (Autonomous Developer) | *Coding & Verified Execution*: Inspects repositories, maps dependencies, reproduces bugs, writes atomic patches in isolated sandboxes, executes pytest test suites, and generates verified code diffs. |
+
 
 ---
 

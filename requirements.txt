@@ -16,3 +16,11 @@ cryptography>=43.0.3
 python-multipart>=0.0.20
 pytest>=8.3.0
 sqlite-vec; platform_system != "Windows"  # Optional native vec
+pandas>=2.2.0
+numpy>=1.26.0
+scipy>=1.14.0
+matplotlib>=3.9.0
+python-pptx>=1.0.0
+python-docx>=1.1.0
+pypdf>=5.0.0
+

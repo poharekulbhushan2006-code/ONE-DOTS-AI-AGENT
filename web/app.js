@@ -249,8 +249,8 @@ const SEED_SPECIALISTS = [
         name: "Blue Dot (NOVA)",
         shortName: "NOVA",
         archetype: "nova",
-        role: "Full-Stack Orchestrator",
-        responsibility: "Lead product launch readiness: orchestrate full-stack code reviews, execute self-healing test suites in isolated sandbox, and sync deployment status.",
+        role: "Product Launch & Project Manager",
+        responsibility: "Turn ideas into milestone roadmaps, track Linear & GitHub tasks, manage GTM launch checklists, and execute change-impact analysis when scope shifts.",
         status: "running",
         color: "blue",
         avatar: "assets/dots/nova_avatar.png",
@@ -259,20 +259,20 @@ const SEED_SPECIALISTS = [
         model: "Gemini 2.5 Pro",
         context: { archetype: "nova", color: "blue" },
         starters: [
-            { icon: "🧪", title: "Run Self-Healing Tests", desc: "Execute automated pytest and fix regressions" },
-            { icon: "🛡️", title: "Audit Security Headers", desc: "Verify CSP, HSTS, CORS & RLS policies" },
-            { icon: "🚀", title: "Inspect Vercel Deployment", desc: "Check production aliases & container health" },
-            { icon: "⚡", title: "Optimize Bundle Size", desc: "Profile DOM speed & asset caching" }
+            { icon: "🚀", title: "Create Project Roadmap", desc: "Formulate milestones, dependencies, and deliverables" },
+            { icon: "🔄", title: "Analyze Scope Change Impact", desc: "Assess timeline and tasks when requirements shift" },
+            { icon: "📋", title: "Generate Launch Checklist", desc: "Prepare Linear and GTM release checklist" },
+            { icon: "🤝", title: "Team Dispatch Workflow", desc: "Coordinate NOVA, SAGE, MUSE, HEX, and AXIS" }
         ],
-        welcome: "Hello! I'm **NOVA**, your Full-Stack Lead & Product Architect. I'm connected to your Git repositories, isolated sandbox runners, and CI/CD pipelines. What would you like to build, verify, or ship today?"
+        welcome: "Hello! I'm **NOVA**, your Product Launch Lead & Project Manager. I formulate milestone roadmaps, track deliverables, and coordinate our five Dot specialists. What project shall we launch today?"
     },
     {
         id: "dot-sage-02",
         name: "Lime-Green Dot (SAGE)",
         shortName: "SAGE",
         archetype: "sage",
-        role: "Senior Research Scientist",
-        responsibility: "Scientific hypothesis verification: run statistical analyses, SciPy regression models, and anomaly detection in sandboxed Python REPL.",
+        role: "Research Scientist & Empirical Analyst",
+        responsibility: "Execute scientific data analysis: run Welch's t-test and ANOVA in sandboxed Python REPL, analyze CSV datasets, generate Matplotlib charts, and cite research findings.",
         status: "running",
         color: "green",
         avatar: "assets/dots/sage_avatar.png",
@@ -281,20 +281,20 @@ const SEED_SPECIALISTS = [
         model: "Gemini 2.5 Flash",
         context: { archetype: "sage", color: "green" },
         starters: [
-            { icon: "📊", title: "Run Welch's t-test", desc: "Compare experimental vs control cohorts" },
-            { icon: "📈", title: "Distribution Analysis", desc: "Plot latency percentiles with NumPy" },
-            { icon: "🔬", title: "Anomaly Detection", desc: "Flag unexpected variance spikes in telemetry" },
-            { icon: "📑", title: "Export Research Report", desc: "Generate Markdown findings report" }
+            { icon: "📊", title: "Descriptive Statistics", desc: "Compute mean, median, IQR, skewness, and outliers on CSV data" },
+            { icon: "🔬", title: "Welch's t-test Hypothesis", desc: "Perform statistical hypothesis testing across experimental cohorts" },
+            { icon: "📈", title: "Generate Distribution Chart", desc: "Plot publication-grade PNG visualization via Matplotlib" },
+            { icon: "📑", title: "Academic Research Report", desc: "Synthesize sourced findings with verified citations" }
         ],
-        welcome: "Greetings! I'm **SAGE**, your Senior Research Scientist. I specialize in data verification, statistical hypothesis testing with SciPy/Pandas, and autonomous mathematical modeling. How can I help analyze your datasets?"
+        welcome: "Greetings! I'm **SAGE**, your Research Scientist. I analyze CSV/Excel datasets, run statistical tests (t-test, ANOVA) in my sandboxed Python computer, and generate publication-quality charts. What dataset or hypothesis shall we examine?"
     },
     {
         id: "dot-axis-03",
         name: "Golden-Yellow Dot (AXIS)",
         shortName: "AXIS",
         archetype: "axis",
-        role: "Autonomous Operations Lead",
-        responsibility: "Enterprise operations lead: monitor stakeholder requirements, triage Linear issues, verify API integration contracts, and manage release milestones.",
+        role: "Enterprise & Requirements Specialist",
+        responsibility: "Analyze customer RFPs, tender PDFs, and contracts: extract structured requirements, compile Requirement-to-Evidence compliance matrices, and draft commercial proposals.",
         status: "running",
         color: "yellow",
         avatar: "assets/dots/axis_avatar.png",
@@ -303,20 +303,20 @@ const SEED_SPECIALISTS = [
         model: "Gemini 2.5 Pro",
         context: { archetype: "axis", color: "yellow" },
         starters: [
-            { icon: "📋", title: "Triage Linear Issues", desc: "Sync open sprint tickets with GitHub" },
-            { icon: "⚡", title: "Validate API Connectors", desc: "Verify webhook signatures and schema" },
-            { icon: "📊", title: "Milestone Summary", desc: "Compile enterprise progress brief" },
-            { icon: "🤝", title: "Demo Sandbox Workspace", desc: "Spin up isolated trial workspace" }
+            { icon: "📋", title: "Extract RFP Requirements", desc: "Parse PDFs and technical specifications into structured requirement items" },
+            { icon: "⚖️", title: "Build Compliance Matrix", desc: "Generate Requirement-to-Evidence table with gap analysis" },
+            { icon: "💼", title: "Draft Commercial Proposal", desc: "Prepare executive scope, architecture, and quotation" },
+            { icon: "🔍", title: "Gap & Risk Analysis", desc: "Identify missing, conflicting, or unverified enterprise terms" }
         ],
-        welcome: "Good day! I'm **AXIS**, your Autonomous Enterprise Operations Lead. I manage issue triage, partner API integrations, and SLA compliance across your stack. What operations task should we handle?"
+        welcome: "Good day! I'm **AXIS**, your Enterprise Sales & Documentation Specialist. I analyze tender documents, compile compliance matrices, and draft technical proposals. What contract or RFP shall we evaluate?"
     },
     {
         id: "dot-muse-04",
         name: "Purple Dot (MUSE)",
         shortName: "MUSE",
         archetype: "muse",
-        role: "Creative Technologist",
-        responsibility: "Design system & creative lead: craft sleek obsidian interfaces, optimize WebGL animations, maintain typography tokens, and generate interactive prototypes.",
+        role: "Content & Media Studio Lead",
+        responsibility: "Generate real deliverables: produce downloadable Microsoft PowerPoint presentations (.pptx), Word reports (.docx), college study guides, and multi-format publications.",
         status: "running",
         color: "purple",
         avatar: "assets/dots/muse_avatar.png",
@@ -325,20 +325,20 @@ const SEED_SPECIALISTS = [
         model: "Gemini 2.5 Flash",
         context: { archetype: "muse", color: "purple" },
         starters: [
-            { icon: "🎨", title: "Audit Spacing & Tokens", desc: "Review 8px grid and hairline borders" },
-            { icon: "✨", title: "Tune Micro-Animations", desc: "Optimize CSS keyframes and spring physics" },
-            { icon: "🔍", title: "WCAG AAA Review", desc: "Check obsidian background legibility" },
-            { icon: "📱", title: "Responsive Grid Test", desc: "Verify mobile viewport transitions" }
+            { icon: "📽️", title: "Generate PowerPoint Deck (.pptx)", desc: "Create real 5+ slide presentation with layout and speaker notes" },
+            { icon: "📄", title: "Generate Word Document (.docx)", desc: "Compile formatted report with headings, tables, and callouts" },
+            { icon: "🎓", title: "College Study Guide", desc: "Generate unit-wise revision notes and practice questions" },
+            { icon: "✍️", title: "Multi-Platform Content", desc: "Draft presentation scripts, executive summaries, and articles" }
         ],
-        welcome: "Hey there! I'm **MUSE**, your Creative Technologist & Interface Specialist. I craft high-performance obsidian aesthetic systems, micro-interactions, and visual design tokens. Let's make something exceptional."
+        welcome: "Hey! I'm **MUSE**, your Content & Media Studio. I don't just draft text—I generate real, downloadable PowerPoint decks (`.pptx`) and Word documents (`.docx`) ready for presentation or submission. What deliverable shall we create?"
     },
     {
         id: "dot-hex-05",
         name: "Dark Navy Dot (HEX)",
         shortName: "HEX",
         archetype: "hex",
-        role: "AppSec Engineer",
-        responsibility: "Security & compliance lead: enforce Row-Level Security, monitor SQLite WAL tamper-evident audit logs, audit OWASP Top 10 vulnerabilities, and isolate sandboxes.",
+        role: "Autonomous Software Developer",
+        responsibility: "Inspect repositories, map dependencies, reproduce bugs, write atomic patches in isolated sandboxes, execute automated pytest suites, and prepare verified code diffs.",
         status: "running",
         color: "cyan",
         avatar: "assets/dots/hex_avatar.png",
@@ -347,14 +347,15 @@ const SEED_SPECIALISTS = [
         model: "Gemini 2.5 Pro",
         context: { archetype: "hex", color: "cyan" },
         starters: [
-            { icon: "🛡️", title: "OWASP Vulnerability Scan", desc: "Audit SQL injection, IDOR, and XSS" },
-            { icon: "📜", title: "Verify Audit Vault", desc: "Check SHA-256 HMAC signature chain" },
-            { icon: "🔒", title: "Inspect Security Headers", desc: "Verify HSTS, CSP, and CORS policies" },
-            { icon: "🛑", title: "Test Row Level Security", desc: "Enforce multi-tenant data isolation" }
+            { icon: "🐛", title: "Reproduce & Fix Bug", desc: "Inspect failing test, edit code in sandbox, and verify 100% pass" },
+            { icon: "🔍", title: "Search Code Symbols", desc: "Search functions, classes, and regex patterns across project files" },
+            { icon: "🧪", title: "Execute Pytest Suite", desc: "Run sandbox test suite and inspect logs and exit codes" },
+            { icon: "🛡️", title: "Generate Verified Patch", desc: "Produce unified diff deliverable with test proof" }
         ],
-        welcome: "Systems nominal. I am **HEX**, your Application Security & Compliance Engineer. I continuously audit cryptographic signatures, enforce Row Level Security, and monitor isolated sandbox processes. What system shall we audit?"
+        welcome: "Systems ready. I am **HEX**, your Autonomous Software Developer. I inspect repositories, reproduce errors in my isolated sandbox, apply atomic patches, and verify test passes. What code shall we inspect or repair?"
     }
 ];
+
 
 let selectedAgentId = "dot-nova-01";
 let cachedAgents = [...SEED_SPECIALISTS];

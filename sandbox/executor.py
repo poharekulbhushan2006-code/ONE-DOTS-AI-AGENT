@@ -20,6 +20,7 @@ class SandboxEnvironment:
     def __init__(self, agent_id: str):
         self.agent_id = agent_id
         self.workspace_dir = settings.SANDBOX_BASE_DIR / agent_id
+        self.sandbox_dir = self.workspace_dir
         self.workspace_dir.mkdir(parents=True, exist_ok=True)
 
     def _resolve_safe_path(self, relative_path: str) -> Path:

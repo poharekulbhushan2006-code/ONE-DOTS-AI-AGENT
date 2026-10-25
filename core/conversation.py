@@ -14,6 +14,7 @@ from core.models import ChatMessage, OneAgent, TaskStep, LifecycleStage
 from memory.state_store import state_store
 from memory.semantic_memory import semantic_memory
 from tools.registry import ToolRegistry
+from core.task_engine import task_engine
 
 
 class AgentConversationEngine:
@@ -74,8 +75,25 @@ class AgentConversationEngine:
         )
         state_store.save_chat_message(user_msg)
 
-        # Prioritize Google Gemini as requested by the user
-        if (settings.LLM_PROVIDER == "gemini" or not settings.OPENAI_API_KEY) and settings.GEMINI_API_KEY and len(settings.GEMINI_API_KEY) > 15:
+        # Check if user prompt is an actionable execution task
+        actionable_keywords = [
+            "create presentation", "make ppt", "generate presentation", "generate slides", "slide deck",
+            "create docx", "generate document", "make report", "study guide", "assignment report",
+            "analyze data", "run hypothesis", "run t-test", "run anova", "generate chart", "plot chart",
+            "fix bug", "fix test", "apply patch", "reproduce bug", "run pytest",
+            "compliance matrix", "parse requirements", "rfp", "create roadmap", "project plan"
+        ]
+        lowered = user_text.lower()
+        if any(kw in lowered for kw in actionable_keywords):
+            task = task_engine.create_task(
+                title=user_text[:50].strip(),
+                goal=user_text,
+                assigned_agent_id=self.agent_id
+            )
+            executed = await task_engine.execute_task(task.id)
+            reply_text = executed.final_output or f"Task executed with status: `{executed.status.value}`."
+        # Prioritize Google Gemini for analytical / conversational queries
+        elif (settings.LLM_PROVIDER == "gemini" or not settings.OPENAI_API_KEY) and settings.GEMINI_API_KEY and len(settings.GEMINI_API_KEY) > 15:
             reply_text = await self._call_gemini_chat(user_text)
         elif settings.OPENAI_API_KEY and settings.OPENAI_API_KEY.startswith("sk-"):
             reply_text = await self._call_openai_chat(user_text)

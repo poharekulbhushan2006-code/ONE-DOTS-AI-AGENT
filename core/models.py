@@ -127,3 +127,50 @@ class AuditLogEntry(BaseModel):
     status: str = "SUCCESS"  # SUCCESS, FAILED, BLOCKED
     details: Dict[str, Any] = Field(default_factory=dict)
 
+
+class TaskStatus(str, Enum):
+    PENDING = "pending"
+    PLANNING = "planning"
+    EXECUTING = "executing"
+    VERIFYING = "verifying"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+class ArtifactRecord(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    task_id: Optional[str] = None
+    agent_id: str
+    user_id: str = "usr_owner_default"
+    name: str
+    file_type: str  # pptx, docx, pdf, png, py, json, md, diff
+    file_path: str
+    relative_path: str
+    size_bytes: int = 0
+    mime_type: str = "application/octet-stream"
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class TaskRecord(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    user_id: str = "usr_owner_default"
+    assigned_agent_id: Optional[str] = None
+    title: str
+    goal: str
+    deadline: Optional[str] = None
+    constraints: Optional[str] = None
+    status: TaskStatus = TaskStatus.PENDING
+    plan_steps: List[Dict[str, Any]] = Field(default_factory=list)
+    current_step_index: int = 0
+    execution_log: List[Dict[str, Any]] = Field(default_factory=list)
+    artifacts: List[Dict[str, Any]] = Field(default_factory=list)
+    verification_result: Optional[Dict[str, Any]] = None
+    final_output: Optional[str] = None
+    error_message: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    completed_at: Optional[datetime] = None
+
+
