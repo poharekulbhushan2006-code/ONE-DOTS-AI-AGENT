@@ -20,6 +20,54 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
+// Universal SVG Vector Fallbacks for all 5 Dots (Zero network dependency, instant render)
+const DOT_SVG_FALLBACKS = {
+    nova: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="nb" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="%2360a5fa"/><stop offset="55%" stop-color="%232563eb"/><stop offset="100%" stop-color="%231d4ed8"/></radialGradient><radialGradient id="ng" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2338bdf8" stop-opacity="0.4"/><stop offset="100%" stop-color="%2338bdf8" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="110" r="85" fill="url(%23ng)"/><path d="M 100 22 C 100 22 152 82 152 122 C 152 156 128 178 100 178 C 72 178 48 156 48 122 C 48 82 100 22 100 22 Z" fill="url(%23nb)"/><path d="M 94 36 C 94 36 62 85 62 118 C 62 130 68 140 76 146 C 70 138 68 126 70 114 C 72 92 94 48 94 36 Z" fill="%23ffffff" opacity="0.35"/><ellipse cx="84" cy="118" rx="5.5" ry="12" fill="%230b1329"/><circle cx="86" cy="112" r="3" fill="%23ffffff"/><ellipse cx="116" cy="118" rx="5.5" ry="12" fill="%230b1329"/><circle cx="118" cy="112" r="3" fill="%23ffffff"/><path d="M 94 130 Q 100 138 106 130" stroke="%230b1329" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="73" cy="128" rx="6" ry="3.5" fill="%23f472b6" opacity="0.45"/><ellipse cx="127" cy="128" rx="6" ry="3.5" fill="%23f472b6" opacity="0.45"/></svg>`,
+
+    sage: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="sb" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="%234ade80"/><stop offset="55%" stop-color="%2316a34a"/><stop offset="100%" stop-color="%2315803d"/></radialGradient><radialGradient id="sg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%234ade80" stop-opacity="0.4"/><stop offset="100%" stop-color="%234ade80" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="105" r="85" fill="url(%23sg)"/><path d="M 85 42 Q 100 20 125 32 Q 105 44 85 42 Z" fill="%2315803d"/><circle cx="100" cy="110" r="62" fill="url(%23sb)"/><ellipse cx="75" cy="78" rx="18" ry="10" transform="rotate(-30 75 78)" fill="%23ffffff" opacity="0.32"/><circle cx="82" cy="110" r="16" stroke="%23064e3b" stroke-width="4.5" fill="rgba(255,255,255,0.2)"/><circle cx="118" cy="110" r="16" stroke="%23064e3b" stroke-width="4.5" fill="rgba(255,255,255,0.2)"/><path d="M 98 108 Q 100 104 102 108" stroke="%23064e3b" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M 72 102 L 78 96" stroke="%23ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/><path d="M 108 102 L 114 96" stroke="%23ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/><ellipse cx="83" cy="110" rx="4" ry="7" fill="%23064e3b"/><circle cx="84" cy="107" r="1.8" fill="%23ffffff"/><ellipse cx="117" cy="110" rx="4" ry="7" fill="%23064e3b"/><circle cx="118" cy="107" r="1.8" fill="%23ffffff"/><path d="M 94 136 Q 100 143 106 136" stroke="%23064e3b" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="64" cy="124" rx="5" ry="3" fill="%2386efac" opacity="0.5"/><ellipse cx="136" cy="124" rx="5" ry="3" fill="%2386efac" opacity="0.5"/></svg>`,
+
+    axis: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="ab" cx="42%" cy="38%" r="65%"><stop offset="0%" stop-color="%23fef08a"/><stop offset="45%" stop-color="%23f59e0b"/><stop offset="100%" stop-color="%23d97706"/></radialGradient><radialGradient id="ag" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23fbbf24" stop-opacity="0.45"/><stop offset="100%" stop-color="%23fbbf24" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="105" r="90" fill="url(%23ag)"/><path d="M 100 38 C 112 38 116 56 128 60 C 140 64 156 54 164 65 C 172 76 160 92 163 105 C 166 118 181 130 176 143 C 171 156 153 158 143 167 C 133 176 128 194 115 193 C 102 192 98 174 86 170 C 74 166 58 176 50 165 C 42 154 54 138 51 125 C 48 112 33 100 38 87 C 43 74 61 72 71 63 C 81 54 88 38 100 38 Z" fill="url(%23ab)"/><ellipse cx="82" cy="72" rx="14" ry="7" transform="rotate(-25 82 72)" fill="%23ffffff" opacity="0.4"/><ellipse cx="85" cy="110" rx="5" ry="11" fill="%23451a03"/><circle cx="87" cy="105" r="2.5" fill="%23ffffff"/><ellipse cx="115" cy="110" rx="5" ry="11" fill="%23451a03"/><circle cx="117" cy="105" r="2.5" fill="%23ffffff"/><circle cx="140" cy="80" r="3" fill="%23ffffff"/><path d="M 94 126 Q 100 135 106 126" stroke="%23451a03" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="72" cy="122" rx="6" ry="3.5" fill="%23fb923c" opacity="0.5"/><ellipse cx="128" cy="122" rx="6" ry="3.5" fill="%23fb923c" opacity="0.5"/></svg>`,
+
+    muse: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="mb" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="%23d8b4fe"/><stop offset="50%" stop-color="%23a855f7"/><stop offset="100%" stop-color="%237e22ce"/></radialGradient><radialGradient id="mg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23c084fc" stop-opacity="0.45"/><stop offset="100%" stop-color="%23c084fc" stop-opacity="0"/></radialGradient><linearGradient id="mr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23f3e8ff"/><stop offset="50%" stop-color="%23c084fc"/><stop offset="100%" stop-color="%237e22ce"/></linearGradient></defs><circle cx="100" cy="105" r="90" fill="url(%23mg)"/><path d="M 32 122 C 28 104 55 86 100 82 C 145 78 175 90 178 104" stroke="url(%23mr)" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.75"/><circle cx="148" cy="58" r="10" fill="%23c084fc"/><circle cx="146" cy="55" r="3" fill="%23ffffff" opacity="0.6"/><circle cx="100" cy="108" r="58" fill="url(%23mb)"/><path d="M 28 124 C 32 142 68 154 114 148 C 152 143 174 124 172 110" stroke="url(%23mr)" stroke-width="11" stroke-linecap="round" fill="none"/><ellipse cx="78" cy="78" rx="16" ry="9" transform="rotate(-30 78 78)" fill="%23ffffff" opacity="0.35"/><ellipse cx="85" cy="104" rx="5" ry="11" fill="%233b0764"/><circle cx="87" cy="99" r="2.5" fill="%23ffffff"/><ellipse cx="115" cy="104" rx="5" ry="11" fill="%233b0764"/><circle cx="117" cy="99" r="2.5" fill="%23ffffff"/><path d="M 94 118 Q 100 126 106 118" stroke="%233b0764" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="70" cy="116" rx="6" ry="3.5" fill="%23f472b6" opacity="0.5"/><ellipse cx="130" cy="116" rx="6" ry="3.5" fill="%23f472b6" opacity="0.5"/></svg>`,
+
+    hex: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="hb" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="%231e293b"/><stop offset="60%" stop-color="%230f172a"/><stop offset="100%" stop-color="%23020617"/></radialGradient><radialGradient id="hg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2306b6d4" stop-opacity="0.45"/><stop offset="100%" stop-color="%2306b6d4" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="105" r="88" fill="url(%23hg)"/><rect x="138" y="52" width="16" height="16" rx="4" transform="rotate(25 146 60)" fill="%2306b6d4"/><path d="M 125 75 C 155 95 158 135 125 152" stroke="%2306b6d4" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"/><rect x="52" y="52" width="96" height="96" rx="28" transform="rotate(45 100 100)" fill="url(%23hb)" stroke="%2306b6d4" stroke-width="2.5"/><path d="M 100 42 L 142 84 L 126 90 L 100 60 Z" fill="%23ffffff" opacity="0.12"/><rect x="74" y="94" width="9" height="22" rx="4.5" fill="%2322d3ee"/><rect x="117" y="94" width="9" height="22" rx="4.5" fill="%2322d3ee"/><path d="M 91 120 Q 100 130 109 120" stroke="%2322d3ee" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg>`
+};
+
+function getDotKey(agentOrKey) {
+    if (!agentOrKey) return 'nova';
+    if (typeof agentOrKey === 'string') {
+        const k = agentOrKey.toLowerCase();
+        if (k.includes('sage') || k.includes('green') || k.includes('todd')) return 'sage';
+        if (k.includes('axis') || k.includes('yellow') || k.includes('gold') || k.includes('alfred')) return 'axis';
+        if (k.includes('muse') || k.includes('purple') || k.includes('jojo')) return 'muse';
+        if (k.includes('hex') || k.includes('cyan') || k.includes('navy') || k.includes('dev')) return 'hex';
+        return 'nova';
+    }
+    const arch = (agentOrKey.context?.archetype || '').toLowerCase();
+    const name = (agentOrKey.name || '').toLowerCase();
+    const resp = (agentOrKey.responsibility || '').toLowerCase();
+    if (arch.includes('sage') || arch.includes('todd') || name.includes('sage') || name.includes('green') || resp.includes('scientist') || resp.includes('research')) return 'sage';
+    if (arch.includes('axis') || arch.includes('alfred') || name.includes('axis') || name.includes('yellow') || resp.includes('sales') || resp.includes('enterprise')) return 'axis';
+    if (arch.includes('muse') || arch.includes('jojo') || name.includes('muse') || name.includes('purple') || resp.includes('content') || resp.includes('media')) return 'muse';
+    if (arch.includes('hex') || arch.includes('dev') || name.includes('hex') || name.includes('cyan') || name.includes('navy') || resp.includes('software') || resp.includes('bug')) return 'hex';
+    return 'nova';
+}
+
+function getDotSvgFallback(key) {
+    const k = getDotKey(key);
+    return DOT_SVG_FALLBACKS[k] || DOT_SVG_FALLBACKS.nova;
+}
+
+function handleDotImgError(imgEl, key) {
+    if (!imgEl) return;
+    imgEl.onerror = null;
+    imgEl.src = getDotSvgFallback(key);
+}
+
+window.getDotSvgFallback = getDotSvgFallback;
+window.handleDotImgError = handleDotImgError;
+window.getDotKey = getDotKey;
+
 function getAuthToken() {
     return sessionStorage.getItem('dots_auth_token') || localStorage.getItem('dots_auth_token') || 'dots-admin-sec-key-770021';
 }
@@ -253,7 +301,7 @@ const SEED_SPECIALISTS = [
         responsibility: "Turn ideas into milestone roadmaps, track Linear & GitHub tasks, manage GTM launch checklists, and execute change-impact analysis when scope shifts.",
         status: "running",
         color: "blue",
-        avatar: "assets/dots/nova_avatar.png",
+        avatar: "assets/dots/nova.png",
         total_ticks: 418,
         schedule_interval_seconds: 180,
         model: "Gemini 2.5 Pro",
@@ -275,7 +323,7 @@ const SEED_SPECIALISTS = [
         responsibility: "Execute scientific data analysis: run Welch's t-test and ANOVA in sandboxed Python REPL, analyze CSV datasets, generate Matplotlib charts, and cite research findings.",
         status: "running",
         color: "green",
-        avatar: "assets/dots/sage_avatar.png",
+        avatar: "assets/dots/sage.png",
         total_ticks: 326,
         schedule_interval_seconds: 180,
         model: "Gemini 2.5 Flash",
@@ -297,7 +345,7 @@ const SEED_SPECIALISTS = [
         responsibility: "Analyze customer RFPs, tender PDFs, and contracts: extract structured requirements, compile Requirement-to-Evidence compliance matrices, and draft commercial proposals.",
         status: "running",
         color: "yellow",
-        avatar: "assets/dots/axis_avatar.png",
+        avatar: "assets/dots/axis.png",
         total_ticks: 284,
         schedule_interval_seconds: 300,
         model: "Gemini 2.5 Pro",
@@ -319,7 +367,7 @@ const SEED_SPECIALISTS = [
         responsibility: "Generate real deliverables: produce downloadable Microsoft PowerPoint presentations (.pptx), Word reports (.docx), college study guides, and multi-format publications.",
         status: "running",
         color: "purple",
-        avatar: "assets/dots/muse_avatar.png",
+        avatar: "assets/dots/muse.png",
         total_ticks: 195,
         schedule_interval_seconds: 180,
         model: "Gemini 2.5 Flash",
@@ -341,7 +389,7 @@ const SEED_SPECIALISTS = [
         responsibility: "Inspect repositories, map dependencies, reproduce bugs, write atomic patches in isolated sandboxes, execute automated pytest suites, and prepare verified code diffs.",
         status: "running",
         color: "cyan",
-        avatar: "assets/dots/hex_avatar.png",
+        avatar: "assets/dots/hex.png",
         total_ticks: 541,
         schedule_interval_seconds: 120,
         model: "Gemini 2.5 Pro",
@@ -782,32 +830,8 @@ function getDotColor(agent) {
 }
 
 function getDotAvatarSrc(agent) {
-    if (!agent) return 'assets/dots/nova_avatar.png';
-    const archetype = (agent.context?.archetype || '').toLowerCase();
-    const name = (agent.name || '').toLowerCase();
-    const resp = (agent.responsibility || '').toLowerCase();
-
-    if (archetype === 'nova' || archetype === 'felipe' || name.includes('nova') || name.includes('felipe') || name.includes('blue') || resp.includes('launch')) {
-        return 'assets/dots/nova_avatar.png';
-    }
-    if (archetype === 'sage' || archetype === 'todd' || name.includes('sage') || name.includes('todd') || name.includes('green') || resp.includes('scientist') || resp.includes('research')) {
-        return 'assets/dots/sage_avatar.png';
-    }
-    if (archetype === 'axis' || archetype === 'alfred' || name.includes('axis') || name.includes('alfred') || name.includes('yellow') || resp.includes('sales') || resp.includes('enterprise') || resp.includes('poc')) {
-        return 'assets/dots/axis_avatar.png';
-    }
-    if (archetype === 'muse' || archetype === 'jojo' || name.includes('muse') || name.includes('jojo') || name.includes('purple') || resp.includes('content') || resp.includes('media') || resp.includes('viral')) {
-        return 'assets/dots/muse_avatar.png';
-    }
-    if (archetype === 'hex' || archetype === 'dev' || name.includes('hex') || name.includes('sentry') || name.includes('dev') || resp.includes('software') || resp.includes('bug') || name.includes('navy')) {
-        return 'assets/dots/hex_avatar.png';
-    }
-    const c = getDotColor(agent);
-    if (c === 'green') return 'assets/dots/sage_avatar.png';
-    if (c === 'yellow') return 'assets/dots/axis_avatar.png';
-    if (c === 'purple') return 'assets/dots/muse_avatar.png';
-    if (c === 'cyan') return 'assets/dots/hex_avatar.png';
-    return 'assets/dots/nova_avatar.png';
+    const k = getDotKey(agent);
+    return `assets/dots/${k}.png`;
 }
 
 function getDotColorHex(agent) {
@@ -984,7 +1008,7 @@ function renderFleetSidebar(agents) {
         <div class="agent-card ${agent.id === selectedAgentId ? 'active' : ''}" onclick="selectAgent('${agent.id}')">
             <div class="agent-card-header">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <img src="${avatarSrc}" class="agent-avatar-img cartoon-touchable" alt="${escapeHtml(agent.name)}" onclick="event.stopPropagation(); touchDotCartoon(null, this, event, '${escapeHtml(agent.name)}')" title="Touch ${escapeHtml(agent.name)}!" />
+                    <img src="${avatarSrc}" class="agent-avatar-img cartoon-touchable" alt="${escapeHtml(agent.name)}" onerror="handleDotImgError(this, '${getDotKey(agent)}')" onclick="event.stopPropagation(); touchDotCartoon(null, this, event, '${escapeHtml(agent.name)}')" title="Touch ${escapeHtml(agent.name)}!" />
                     <span class="agent-name">${escapeHtml(agent.name)}</span>
                 </div>
                 <span class="status-badge ${agent.status}">${agent.status}</span>
@@ -1054,7 +1078,7 @@ function renderDotHeader(agent) {
     const avatar = document.getElementById('active-dot-avatar');
     if (avatar) {
         avatar.className = `dot-avatar`;
-        avatar.innerHTML = `<img src="${avatarSrc}" class="active-dot-cartoon-img cartoon-touchable" alt="${escapeHtml(agent.name)}" onclick="touchDotCartoon(null, this, event, '${escapeHtml(agent.name)}')" title="Touch ${escapeHtml(agent.name)} to make it real!" />`;
+        avatar.innerHTML = `<img src="${avatarSrc}" class="active-dot-cartoon-img cartoon-touchable" alt="${escapeHtml(agent.name)}" onerror="handleDotImgError(this, '${getDotKey(agent)}')" onclick="touchDotCartoon(null, this, event, '${escapeHtml(agent.name)}')" title="Touch ${escapeHtml(agent.name)} to make it real!" />`;
     }
 
     const tagsEl = document.getElementById('dot-feature-tags');
@@ -1092,7 +1116,7 @@ function startVoiceCall(archetypeKey) {
     document.getElementById('voice-dot-name').innerText = `${agent.name} (Live Voice)`;
     const core = document.getElementById('voice-avatar-core');
     if (core) {
-        core.innerHTML = `<img src="${avatarSrc}" class="voice-cartoon-avatar-img cartoon-touchable" alt="${escapeHtml(agent.name)}" onclick="touchDotCartoon(null, this, event, '${escapeHtml(agent.name)}')" title="Touch ${escapeHtml(agent.name)}!" />`;
+        core.innerHTML = `<img src="${avatarSrc}" class="voice-cartoon-avatar-img cartoon-touchable" alt="${escapeHtml(agent.name)}" onerror="handleDotImgError(this, '${getDotKey(agent)}')" onclick="touchDotCartoon(null, this, event, '${escapeHtml(agent.name)}')" title="Touch ${escapeHtml(agent.name)}!" />`;
     }
 
     const greeting = `Hello! I am ${agent.name}, powered by Google Gemini 3.5. I am actively managing your mission: ${agent.responsibility.slice(0, 90)}. How can I help right now?`;
@@ -1311,7 +1335,7 @@ function renderChatMessages(messages) {
             return `
                 <div class="chat-welcome-card">
                     <div class="chat-welcome-header">
-                        <img src="${avatarSrc}" class="chat-welcome-avatar" alt="${agentName}">
+                        <img src="${avatarSrc}" class="chat-welcome-avatar" alt="${agentName}" onerror="handleDotImgError(this, '${getDotKey(currentAgent)}')">
                         <div>
                             <div class="chat-welcome-title">${agentName}</div>
                             <div class="chat-welcome-role">${escapeHtml(currentAgent?.role || 'Frontier Lead')} &bull; <span style="color:#10b981;">● Online Ready</span></div>
@@ -1336,7 +1360,7 @@ function renderChatMessages(messages) {
         return `
             <div class="chat-bubble ${m.sender}">
                 <div class="bubble-sender-row">
-                    ${m.sender === 'agent' ? `<img src="${avatarSrc}" class="chat-msg-avatar cartoon-touchable" alt="${agentName}" onclick="touchDotCartoon(null, this, event, '${agentName}')" title="Touch ${agentName}!" />` : ''}
+                    ${m.sender === 'agent' ? `<img src="${avatarSrc}" class="chat-msg-avatar cartoon-touchable" alt="${agentName}" onerror="handleDotImgError(this, '${getDotKey(currentAgent)}')" onclick="touchDotCartoon(null, this, event, '${agentName}')" title="Touch ${agentName}!" />` : ''}
                     <span class="bubble-sender">${m.sender === 'user' ? 'You' : agentName}</span>
                 </div>
                 <div class="bubble-content">${formatMessageContent(m.content)}</div>
@@ -2056,7 +2080,7 @@ const FILM_CHAPTERS = [
             <div class="film-dot-stage-row nova-theme felipe-theme">
                 <div class="film-character-spotlight" onclick="touchDotCartoon('nova', this, event)" title="Touch NOVA!">
                     <div class="spotlight-halo halo-blue"></div>
-                    <img src="assets/dots/nova.png" alt="NOVA" class="film-stage-character cartoon-float" />
+                    <img src="assets/dots/nova.png" alt="NOVA" class="film-stage-character cartoon-float" onerror="handleDotImgError(this, 'nova')" />
                     <div class="film-char-badge blue">Blue Dot (NOVA) • Launch Lead</div>
                 </div>
                 <div class="film-widget-box">
@@ -2113,7 +2137,7 @@ const FILM_CHAPTERS = [
             <div class="film-dot-stage-row sage-theme todd-theme">
                 <div class="film-character-spotlight" onclick="touchDotCartoon('sage', this, event)" title="Touch SAGE!">
                     <div class="spotlight-halo halo-green"></div>
-                    <img src="assets/dots/sage.png" alt="SAGE" class="film-stage-character cartoon-float" />
+                    <img src="assets/dots/sage.png" alt="SAGE" class="film-stage-character cartoon-float" onerror="handleDotImgError(this, 'sage')" />
                     <div class="film-char-badge green">Lime-Green Dot (SAGE) • Research Scientist</div>
                 </div>
                 <div class="film-widget-box">
@@ -2162,7 +2186,7 @@ const FILM_CHAPTERS = [
             <div class="film-dot-stage-row axis-theme alfred-theme">
                 <div class="film-character-spotlight" onclick="touchDotCartoon('axis', this, event)" title="Touch AXIS!">
                     <div class="spotlight-halo halo-yellow"></div>
-                    <img src="assets/dots/axis.png" alt="AXIS" class="film-stage-character cartoon-float" />
+                    <img src="assets/dots/axis.png" alt="AXIS" class="film-stage-character cartoon-float" onerror="handleDotImgError(this, 'axis')" />
                     <div class="film-char-badge yellow">Golden-Yellow Dot (AXIS) • Enterprise Sales</div>
                 </div>
                 <div class="film-widget-box">
@@ -2206,7 +2230,7 @@ const FILM_CHAPTERS = [
             <div class="film-dot-stage-row muse-theme jojo-theme">
                 <div class="film-character-spotlight" onclick="touchDotCartoon('muse', this, event)" title="Touch MUSE!">
                     <div class="spotlight-halo halo-purple"></div>
-                    <img src="assets/dots/muse.png" alt="MUSE" class="film-stage-character cartoon-float" />
+                    <img src="assets/dots/muse.png" alt="MUSE" class="film-stage-character cartoon-float" onerror="handleDotImgError(this, 'muse')" />
                     <div class="film-char-badge purple">Purple Dot (MUSE) • Content &amp; Media</div>
                 </div>
                 <div class="film-widget-box">
@@ -2253,7 +2277,7 @@ const FILM_CHAPTERS = [
             <div class="film-dot-stage-row hex-theme dev-theme">
                 <div class="film-character-spotlight" onclick="touchDotCartoon('hex', this, event)" title="Touch HEX!">
                     <div class="spotlight-halo halo-hex"></div>
-                    <img src="assets/dots/hex.png" alt="HEX" class="film-stage-character cartoon-float" />
+                    <img src="assets/dots/hex.png" alt="HEX" class="film-stage-character cartoon-float" onerror="handleDotImgError(this, 'hex')" />
                     <div class="film-char-badge cyan" style="background: rgba(6, 182, 212, 0.2); color: #00f5ff; border: 1px solid rgba(6, 182, 212, 0.4);">Dark Navy Dot (HEX) • Autonomous Engineer</div>
                 </div>
                 <div class="film-widget-box">
@@ -2802,7 +2826,7 @@ function switchDemoSpecialist(key, btnEl) {
             <div class="demo-dialogue-pane">
                 <div class="demo-pane-header">
                     <div class="demo-header-left">
-                        <img src="${spec.avatar}" alt="${spec.name}" class="demo-pane-avatar" />
+                        <img src="${spec.avatar}" alt="${spec.name}" class="demo-pane-avatar" onerror="handleDotImgError(this, '${spec.key}')" />
                         <div>
                             <div class="demo-pane-name">${spec.name}</div>
                             <div class="demo-pane-role">${spec.role}</div>
@@ -3074,7 +3098,7 @@ for (let i = 0; i < 70; i++) {
     });
 }
 
-// Preload Character Avatars
+// Preload Character Avatars with Resilient Offline Fallback
 function preloadDotAvatars() {
     const dotKeys = ['nova', 'sage', 'axis', 'muse', 'hex'];
     let loadedCount = 0;
@@ -3082,6 +3106,16 @@ function preloadDotAvatars() {
         const img = new Image();
         img.src = `assets/dots/${k}.png?v=20261024_theater`;
         img.onload = () => {
+            dotsAnimState.images[k] = img;
+            loadedCount++;
+            if (loadedCount === dotKeys.length) {
+                dotsAnimState.imagesLoaded = true;
+            }
+        };
+        img.onerror = () => {
+            // Instantly recover with vector SVG data-uri
+            img.onerror = null;
+            img.src = getDotSvgFallback(k);
             dotsAnimState.images[k] = img;
             loadedCount++;
             if (loadedCount === dotKeys.length) {
@@ -3203,26 +3237,309 @@ function renderDotsTheaterFrame(now) {
     requestAnimationFrame(renderDotsTheaterFrame);
 }
 
+// High-Fidelity Vector Canvas Face Drawing for all 5 Dots
+function drawVectorFaceOnCanvas(ctx, key, x, y, size) {
+    ctx.save();
+    const k = (key || 'nova').toLowerCase();
+    const r = size * 0.42;
+
+    if (k.includes('nova')) {
+        // --- NOVA: Cute Blue Droplet Face ---
+        const glow = ctx.createRadialGradient(x, y, 10, x, y, r * 1.5);
+        glow.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
+        glow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Droplet body
+        const grad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, r * 0.1, x, y, r);
+        grad.addColorStop(0, '#60a5fa');
+        grad.addColorStop(0.55, '#2563eb');
+        grad.addColorStop(1, '#1d4ed8');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(x, y - r * 1.25);
+        ctx.bezierCurveTo(x + r * 1.1, y - r * 0.3, x + r * 1.1, y + r * 0.9, x, y + r);
+        ctx.bezierCurveTo(x - r * 1.1, y + r * 0.9, x - r * 1.1, y - r * 0.3, x, y - r * 1.25);
+        ctx.fill();
+
+        // Top gloss highlight
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.35, y - r * 0.4, r * 0.3, r * 0.15, -Math.PI / 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eyes: vertical glossy black ovals with white highlights
+        ctx.fillStyle = '#0b1329';
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.3, y + r * 0.1, r * 0.12, r * 0.25, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + r * 0.3, y + r * 0.1, r * 0.12, r * 0.25, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x - r * 0.27, y - r * 0.02, r * 0.07, 0, Math.PI * 2);
+        ctx.arc(x + r * 0.33, y - r * 0.02, r * 0.07, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cheerful Smile
+        ctx.strokeStyle = '#0b1329';
+        ctx.lineWidth = Math.max(2.5, r * 0.08);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(x, y + r * 0.22, r * 0.2, 0.15 * Math.PI, 0.85 * Math.PI, false);
+        ctx.stroke();
+
+        // Soft Pink Blush
+        ctx.fillStyle = 'rgba(244, 114, 182, 0.45)';
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.55, y + r * 0.25, r * 0.16, r * 0.09, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + r * 0.55, y + r * 0.25, r * 0.16, r * 0.09, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+    } else if (k.includes('sage')) {
+        // --- SAGE: Lime-Green Scholar with Round Glasses ---
+        const glow = ctx.createRadialGradient(x, y, 10, x, y, r * 1.5);
+        glow.addColorStop(0, 'rgba(74, 222, 128, 0.45)');
+        glow.addColorStop(1, 'rgba(74, 222, 128, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Scholar Cap / Leaf on top
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath();
+        ctx.moveTo(x - r * 0.35, y - r * 0.85);
+        ctx.quadraticCurveTo(x, y - r * 1.35, x + r * 0.5, y - r * 1.05);
+        ctx.quadraticCurveTo(x + r * 0.1, y - r * 0.8, x - r * 0.35, y - r * 0.85);
+        ctx.fill();
+
+        // Round Body
+        const grad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, r * 0.1, x, y, r);
+        grad.addColorStop(0, '#4ade80');
+        grad.addColorStop(0.55, '#16a34a');
+        grad.addColorStop(1, '#15803d');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Glasses lenses & bridge
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = Math.max(3, r * 0.1);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath();
+        ctx.arc(x - r * 0.32, y - r * 0.02, r * 0.32, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x + r * 0.32, y - r * 0.02, r * 0.32, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x - r * 0.05, y - r * 0.05);
+        ctx.lineTo(x + r * 0.05, y - r * 0.05);
+        ctx.stroke();
+
+        // Eyes behind glasses
+        ctx.fillStyle = '#064e3b';
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.32, y - r * 0.02, r * 0.09, r * 0.18, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + r * 0.32, y - r * 0.02, r * 0.09, r * 0.18, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x - r * 0.3, y - r * 0.08, r * 0.05, 0, Math.PI * 2);
+        ctx.arc(x + r * 0.34, y - r * 0.08, r * 0.05, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Smile
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = Math.max(2, r * 0.07);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(x, y + r * 0.36, r * 0.18, 0.15 * Math.PI, 0.85 * Math.PI, false);
+        ctx.stroke();
+
+    } else if (k.includes('axis')) {
+        // --- AXIS: Golden-Yellow Star Face ---
+        const glow = ctx.createRadialGradient(x, y, 10, x, y, r * 1.5);
+        glow.addColorStop(0, 'rgba(251, 191, 36, 0.45)');
+        glow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 8-Lobe Star Body
+        const grad = ctx.createRadialGradient(x - r * 0.2, y - r * 0.2, r * 0.1, x, y, r);
+        grad.addColorStop(0, '#fef08a');
+        grad.addColorStop(0.45, '#f59e0b');
+        grad.addColorStop(1, '#d97706');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        const lobes = 8;
+        for (let i = 0; i < lobes * 2; i++) {
+            const angle = (i * Math.PI) / lobes - Math.PI / 2;
+            const dist = (i % 2 === 0) ? r * 1.05 : r * 0.82;
+            const px = x + Math.cos(angle) * dist;
+            const py = y + Math.sin(angle) * dist;
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.quadraticCurveTo(x, y, px, py);
+        }
+        ctx.closePath();
+        ctx.fill();
+
+        // Eyes
+        ctx.fillStyle = '#451a03';
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.3, y + r * 0.05, r * 0.11, r * 0.22, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + r * 0.3, y + r * 0.05, r * 0.11, r * 0.22, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x - r * 0.27, y - r * 0.03, r * 0.06, 0, Math.PI * 2);
+        ctx.arc(x + r * 0.33, y - r * 0.03, r * 0.06, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Confident Smile
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = Math.max(2, r * 0.08);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(x, y + r * 0.24, r * 0.18, 0.15 * Math.PI, 0.85 * Math.PI, false);
+        ctx.stroke();
+
+    } else if (k.includes('muse')) {
+        // --- MUSE: Purple Planet Face with Orbiting Saturn Ring ---
+        const glow = ctx.createRadialGradient(x, y, 10, x, y, r * 1.5);
+        glow.addColorStop(0, 'rgba(192, 132, 252, 0.45)');
+        glow.addColorStop(1, 'rgba(192, 132, 252, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Back half of planetary ring
+        ctx.strokeStyle = 'rgba(233, 213, 255, 0.75)';
+        ctx.lineWidth = Math.max(4, r * 0.16);
+        ctx.beginPath();
+        ctx.ellipse(x, y + r * 0.1, r * 1.35, r * 0.42, -Math.PI / 9, Math.PI, 0, false);
+        ctx.stroke();
+
+        // Planet Body
+        const grad = ctx.createRadialGradient(x - r * 0.25, y - r * 0.25, r * 0.1, x, y, r);
+        grad.addColorStop(0, '#d8b4fe');
+        grad.addColorStop(0.5, '#a855f7');
+        grad.addColorStop(1, '#7e22ce');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Floating Moonlet / Satellite
+        ctx.fillStyle = '#c084fc';
+        ctx.beginPath();
+        ctx.arc(x + r * 0.9, y - r * 0.85, r * 0.18, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Front half of planetary ring
+        ctx.strokeStyle = '#e9d5ff';
+        ctx.lineWidth = Math.max(5, r * 0.18);
+        ctx.beginPath();
+        ctx.ellipse(x, y + r * 0.1, r * 1.35, r * 0.42, -Math.PI / 9, 0, Math.PI, false);
+        ctx.stroke();
+
+        // Eyes
+        ctx.fillStyle = '#3b0764';
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.3, y - r * 0.05, r * 0.11, r * 0.22, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + r * 0.3, y - r * 0.05, r * 0.11, r * 0.22, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x - r * 0.27, y - r * 0.13, r * 0.06, 0, Math.PI * 2);
+        ctx.arc(x + r * 0.33, y - r * 0.13, r * 0.06, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Smile
+        ctx.strokeStyle = '#3b0764';
+        ctx.lineWidth = Math.max(2, r * 0.08);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(x, y + r * 0.15, r * 0.18, 0.15 * Math.PI, 0.85 * Math.PI, false);
+        ctx.stroke();
+
+    } else {
+        // --- HEX: Navy & Glowing Cyan Cyber Face ---
+        const glow = ctx.createRadialGradient(x, y, 10, x, y, r * 1.5);
+        glow.addColorStop(0, 'rgba(6, 182, 212, 0.45)');
+        glow.addColorStop(1, 'rgba(6, 182, 212, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, r * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cyber Antenna / Headset Loop
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = Math.max(3, r * 0.1);
+        ctx.beginPath();
+        ctx.arc(x + r * 0.4, y, r * 0.9, -0.3 * Math.PI, 0.45 * Math.PI, false);
+        ctx.stroke();
+
+        // Orbiting Cube Bit
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillRect(x + r * 0.85, y - r * 0.85, r * 0.24, r * 0.24);
+
+        // Rounded Cube / Diamond Body
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(Math.PI / 4);
+        const grad = ctx.createRadialGradient(0, 0, r * 0.1, 0, 0, r);
+        grad.addColorStop(0, '#1e293b');
+        grad.addColorStop(0.65, '#0f172a');
+        grad.addColorStop(1, '#020617');
+        ctx.fillStyle = grad;
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = Math.max(2, r * 0.06);
+        const boxSize = r * 1.45;
+        const boxR = r * 0.35;
+        roundRect(ctx, -boxSize / 2, -boxSize / 2, boxSize, boxSize, boxR, true, true);
+        ctx.restore();
+
+        // Glowing Cyan Visor Eyes
+        ctx.fillStyle = '#22d3ee';
+        ctx.shadowColor = '#06b6d4';
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.ellipse(x - r * 0.35, y, r * 0.1, r * 0.28, 0, 0, Math.PI * 2);
+        ctx.ellipse(x + r * 0.35, y, r * 0.1, r * 0.28, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Glowing Cyan Smile
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = Math.max(2, r * 0.08);
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.arc(x, y + r * 0.28, r * 0.18, 0.15 * Math.PI, 0.85 * Math.PI, false);
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
 function drawDotAvatarSafe(ctx, key, x, y, size) {
     const img = dotsAnimState.images[key];
     if (img && img.complete && img.naturalWidth > 0) {
         ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
     } else {
-        const colors = {
-            nova: '#38BDF8',
-            sage: '#10B981',
-            axis: '#F59E0B',
-            muse: '#A855F7',
-            hex: '#06B6D4'
-        };
-        ctx.fillStyle = colors[key] || '#D6B779';
-        ctx.beginPath();
-        ctx.arc(x, y, size * 0.42, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#171512';
-        ctx.font = '700 13px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(key.toUpperCase(), x, y + 5);
+        drawVectorFaceOnCanvas(ctx, key, x, y, size);
     }
 }
 

@@ -1147,7 +1147,10 @@ def health_check():
 # ------------------ STATIC MOUNTS & LEARN DOCS ------------------
 
 web_dir = settings.BASE_DIR / "web"
-web_dir.mkdir(parents=True, exist_ok=True)
+try:
+    web_dir.mkdir(parents=True, exist_ok=True)
+except OSError:
+    pass
 
 @app.get("/learn", include_in_schema=False)
 @app.get("/docs-portal", include_in_schema=False)

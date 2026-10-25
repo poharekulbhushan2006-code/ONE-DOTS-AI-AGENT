@@ -10,6 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="docs.css">
     <link rel="stylesheet" href="style.css">
+    <script>
+    // Universal instantaneous vector face fallback for all 5 Dots
+    function handleDotImgError(imgEl, key) {
+        if (!imgEl) return;
+        imgEl.onerror = null;
+        if (window.getDotSvgFallback) {
+            imgEl.src = window.getDotSvgFallback(key);
+        } else {
+            const colors = { nova: '%2338bdf8', sage: '%2310b981', axis: '%23f59e0b', muse: '%23a855f7', hex: '%2306b6d4' };
+            const c = colors[key] || '%2338bdf8';
+            imgEl.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${c}"/><circle cx="36" cy="45" r="5" fill="%230b1329"/><circle cx="64" cy="45" r="5" fill="%230b1329"/><circle cx="38" cy="43" r="1.5" fill="%23ffffff"/><circle cx="66" cy="43" r="1.5" fill="%23ffffff"/><path d="M 40 62 Q 50 72 60 62" stroke="%230b1329" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>`;
+        }
+    }
+    </script>
 </head>
 <body>
 
@@ -169,7 +183,7 @@
                     <div class="theater-dots-lineup">
                         <div class="theater-dot-item" onclick="switchDemoSpecialist('nova'); scrollToShowcaseSection('hero-demo-window');">
                             <div class="theater-dot-avatar-box halo-nova">
-                                <img src="assets/dots/nova.png?v=20261024_theater" alt="NOVA" class="theater-dot-img dot-anim-breathe" />
+                                <img src="assets/dots/nova.png?v=20261024_theater" alt="NOVA" class="theater-dot-img dot-anim-breathe" onerror="handleDotImgError(this, 'nova')" />
                             </div>
                             <div class="theater-dot-info">
                                 <div class="theater-dot-name">NOVA</div>
@@ -178,7 +192,7 @@
                         </div>
                         <div class="theater-dot-item" onclick="switchDemoSpecialist('sage'); scrollToShowcaseSection('hero-demo-window');">
                             <div class="theater-dot-avatar-box halo-sage">
-                                <img src="assets/dots/sage.png?v=20261024_theater" alt="SAGE" class="theater-dot-img dot-anim-breathe" style="animation-delay: 0.4s;" />
+                                <img src="assets/dots/sage.png?v=20261024_theater" alt="SAGE" class="theater-dot-img dot-anim-breathe" style="animation-delay: 0.4s;" onerror="handleDotImgError(this, 'sage')" />
                             </div>
                             <div class="theater-dot-info">
                                 <div class="theater-dot-name">SAGE</div>
@@ -187,7 +201,7 @@
                         </div>
                         <div class="theater-dot-item" onclick="switchDemoSpecialist('axis'); scrollToShowcaseSection('hero-demo-window');">
                             <div class="theater-dot-avatar-box halo-axis">
-                                <img src="assets/dots/axis.png?v=20261024_theater" alt="AXIS" class="theater-dot-img dot-anim-breathe" style="animation-delay: 0.8s;" />
+                                <img src="assets/dots/axis.png?v=20261024_theater" alt="AXIS" class="theater-dot-img dot-anim-breathe" style="animation-delay: 0.8s;" onerror="handleDotImgError(this, 'axis')" />
                             </div>
                             <div class="theater-dot-info">
                                 <div class="theater-dot-name">AXIS</div>
@@ -196,7 +210,7 @@
                         </div>
                         <div class="theater-dot-item" onclick="switchDemoSpecialist('muse'); scrollToShowcaseSection('hero-demo-window');">
                             <div class="theater-dot-avatar-box halo-muse">
-                                <img src="assets/dots/muse.png?v=20261024_theater" alt="MUSE" class="theater-dot-img dot-anim-breathe" style="animation-delay: 1.2s;" />
+                                <img src="assets/dots/muse.png?v=20261024_theater" alt="MUSE" class="theater-dot-img dot-anim-breathe" style="animation-delay: 1.2s;" onerror="handleDotImgError(this, 'muse')" />
                             </div>
                             <div class="theater-dot-info">
                                 <div class="theater-dot-name">MUSE</div>
@@ -205,7 +219,7 @@
                         </div>
                         <div class="theater-dot-item" onclick="switchDemoSpecialist('hex'); scrollToShowcaseSection('hero-demo-window');">
                             <div class="theater-dot-avatar-box halo-hex">
-                                <img src="assets/dots/hex.png?v=20261024_theater" alt="HEX" class="theater-dot-img dot-anim-breathe" style="animation-delay: 1.6s;" />
+                                <img src="assets/dots/hex.png?v=20261024_theater" alt="HEX" class="theater-dot-img dot-anim-breathe" style="animation-delay: 1.6s;" onerror="handleDotImgError(this, 'hex')" />
                             </div>
                             <div class="theater-dot-info">
                                 <div class="theater-dot-name">HEX</div>
@@ -291,7 +305,7 @@
                 <div class="bento-specialist-card bento-nova">
                     <div class="bento-card-top">
                         <div class="bento-avatar-wrap halo-nova">
-                            <img src="assets/dots/nova.png" alt="NOVA - Blue Face Product Launch Lead" class="bento-avatar-img" />
+                            <img src="assets/dots/nova.png" alt="NOVA - Blue Face Product Launch Lead" class="bento-avatar-img" onerror="handleDotImgError(this, 'nova')" />
                         </div>
                         <div class="bento-status-pill pill-nova">
                             <span class="pip-pulse"></span> GTM ACTIVE
@@ -324,7 +338,7 @@
                 <div class="bento-specialist-card bento-sage">
                     <div class="bento-card-top">
                         <div class="bento-avatar-wrap halo-sage">
-                            <img src="assets/dots/sage.png" alt="SAGE - Lime-Green Face with Round Glasses" class="bento-avatar-img" />
+                            <img src="assets/dots/sage.png" alt="SAGE - Lime-Green Face with Round Glasses" class="bento-avatar-img" onerror="handleDotImgError(this, 'sage')" />
                         </div>
                         <div class="bento-status-pill pill-sage">
                             <span class="pip-pulse"></span> ANALYSIS RUNNING
@@ -357,7 +371,7 @@
                 <div class="bento-specialist-card bento-axis">
                     <div class="bento-card-top">
                         <div class="bento-avatar-wrap halo-axis">
-                            <img src="assets/dots/axis.png" alt="AXIS - Golden-Yellow Face" class="bento-avatar-img" />
+                            <img src="assets/dots/axis.png" alt="AXIS - Golden-Yellow Face" class="bento-avatar-img" onerror="handleDotImgError(this, 'axis')" />
                         </div>
                         <div class="bento-status-pill pill-axis">
                             <span class="pip-pulse"></span> PIPELINE SYNC
@@ -390,7 +404,7 @@
                 <div class="bento-specialist-card bento-muse">
                     <div class="bento-card-top">
                         <div class="bento-avatar-wrap halo-muse">
-                            <img src="assets/dots/muse.png" alt="MUSE - Purple Face Content & Media" class="bento-avatar-img" />
+                            <img src="assets/dots/muse.png" alt="MUSE - Purple Face Content & Media" class="bento-avatar-img" onerror="handleDotImgError(this, 'muse')" />
                         </div>
                         <div class="bento-status-pill pill-muse">
                             <span class="pip-pulse"></span> STUDIO READY
@@ -423,7 +437,7 @@
                 <div class="bento-specialist-card bento-hex">
                     <div class="bento-card-top">
                         <div class="bento-avatar-wrap halo-hex">
-                            <img src="assets/dots/hex.png" alt="HEX - Dark Navy Face with Glowing Cyan Features" class="bento-avatar-img" />
+                            <img src="assets/dots/hex.png" alt="HEX - Dark Navy Face with Glowing Cyan Features" class="bento-avatar-img" onerror="handleDotImgError(this, 'hex')" />
                         </div>
                         <div class="bento-status-pill pill-hex">
                             <span class="pip-pulse"></span> CI/CD VERIFIED

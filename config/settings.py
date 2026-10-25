@@ -15,6 +15,10 @@ _ENV_FILE = _BASE_DIR / ".env"
 if _ENV_FILE.exists():
     load_dotenv(dotenv_path=str(_ENV_FILE), override=True)
 
+_IS_SERVERLESS = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"))
+_DATA_DIR = Path("/tmp/dots_data") if _IS_SERVERLESS else _BASE_DIR / "data"
+_DATA_DIR.mkdir(parents=True, exist_ok=True)
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -29,13 +33,13 @@ class Settings(BaseSettings):
     TAGLINE: str = "Always-On Autonomous AI Agents Powered by Google Gemini & Dedicated Cloud Computers"
 
     # Base Paths
-    BASE_DIR: Path = Path(__file__).resolve().parent.parent
-    DATA_DIR: Path = BASE_DIR / "data"
-    DB_PATH: Path = DATA_DIR / "one_state.db"
-    SANDBOX_BASE_DIR: Path = DATA_DIR / "sandboxes"
-    BROWSER_SESSIONS_DIR: Path = DATA_DIR / "browser_sessions"
-    SCREENSHOTS_DIR: Path = DATA_DIR / "screenshots"
-    REPORTS_DIR: Path = DATA_DIR / "reports"
+    BASE_DIR: Path = _BASE_DIR
+    DATA_DIR: Path = _DATA_DIR
+    DB_PATH: Path = _DATA_DIR / "one_state.db"
+    SANDBOX_BASE_DIR: Path = _DATA_DIR / "sandboxes"
+    BROWSER_SESSIONS_DIR: Path = _DATA_DIR / "browser_sessions"
+    SCREENSHOTS_DIR: Path = _DATA_DIR / "screenshots"
+    REPORTS_DIR: Path = _DATA_DIR / "reports"
 
     # API Keys & LLM Routing
     OPENAI_API_KEY: str = Field(default="")

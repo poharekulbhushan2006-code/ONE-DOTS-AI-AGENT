@@ -7,6 +7,7 @@ import asyncio
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Dict, Any, Optional, List
 try:
     from playwright.async_api import async_playwright, Browser, BrowserContext, Page
     PLAYWRIGHT_AVAILABLE = True

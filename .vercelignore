@@ -5,7 +5,6 @@ __pycache__/
 *.pyc
 .git/
 .gitignore
-data/
 .pytest_cache/
 tests/
 scripts/
@@ -13,7 +12,5 @@ run.bat
 *.db
 *.sqlite
 *.sqlite3
-*.mp4
-*.png
-*.pptx
-*.docx
+data/
+sandbox_storage/
