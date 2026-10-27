@@ -31,28 +31,29 @@ const DOT_SVG_FALLBACKS = {
     muse: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="mb" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="%23d8b4fe"/><stop offset="50%" stop-color="%23a855f7"/><stop offset="100%" stop-color="%237e22ce"/></radialGradient><radialGradient id="mg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23c084fc" stop-opacity="0.45"/><stop offset="100%" stop-color="%23c084fc" stop-opacity="0"/></radialGradient><linearGradient id="mr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23f3e8ff"/><stop offset="50%" stop-color="%23c084fc"/><stop offset="100%" stop-color="%237e22ce"/></linearGradient></defs><circle cx="100" cy="105" r="90" fill="url(%23mg)"/><path d="M 32 122 C 28 104 55 86 100 82 C 145 78 175 90 178 104" stroke="url(%23mr)" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.75"/><circle cx="148" cy="58" r="10" fill="%23c084fc"/><circle cx="146" cy="55" r="3" fill="%23ffffff" opacity="0.6"/><circle cx="100" cy="108" r="58" fill="url(%23mb)"/><path d="M 28 124 C 32 142 68 154 114 148 C 152 143 174 124 172 110" stroke="url(%23mr)" stroke-width="11" stroke-linecap="round" fill="none"/><ellipse cx="78" cy="78" rx="16" ry="9" transform="rotate(-30 78 78)" fill="%23ffffff" opacity="0.35"/><ellipse cx="85" cy="104" rx="5" ry="11" fill="%233b0764"/><circle cx="87" cy="99" r="2.5" fill="%23ffffff"/><ellipse cx="115" cy="104" rx="5" ry="11" fill="%233b0764"/><circle cx="117" cy="99" r="2.5" fill="%23ffffff"/><path d="M 94 118 Q 100 126 106 118" stroke="%233b0764" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="70" cy="116" rx="6" ry="3.5" fill="%23f472b6" opacity="0.5"/><ellipse cx="130" cy="116" rx="6" ry="3.5" fill="%23f472b6" opacity="0.5"/></svg>`,
 
     hex: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="hb" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="%231e293b"/><stop offset="60%" stop-color="%230f172a"/><stop offset="100%" stop-color="%23020617"/></radialGradient><radialGradient id="hg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%2306b6d4" stop-opacity="0.45"/><stop offset="100%" stop-color="%2306b6d4" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="105" r="88" fill="url(%23hg)"/><rect x="138" y="52" width="16" height="16" rx="4" transform="rotate(25 146 60)" fill="%2306b6d4"/><path d="M 125 75 C 155 95 158 135 125 152" stroke="%2306b6d4" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8"/><rect x="52" y="52" width="96" height="96" rx="28" transform="rotate(45 100 100)" fill="url(%23hb)" stroke="%2306b6d4" stroke-width="2.5"/><path d="M 100 42 L 142 84 L 126 90 L 100 60 Z" fill="%23ffffff" opacity="0.12"/><rect x="74" y="94" width="9" height="22" rx="4.5" fill="%2322d3ee"/><rect x="117" y="94" width="9" height="22" rx="4.5" fill="%2322d3ee"/><path d="M 91 120 Q 100 130 109 120" stroke="%2322d3ee" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg>`,
-    silver: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="sb" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="%23fb7185"/><stop offset="50%" stop-color="%23e11d48"/><stop offset="100%" stop-color="%239f1239"/></radialGradient><radialGradient id="sg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23f43f5e" stop-opacity="0.45"/><stop offset="100%" stop-color="%23f43f5e" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="105" r="90" fill="url(%23sg)"/><circle cx="100" cy="105" r="58" fill="url(%23sb)"/><circle cx="85" cy="100" r="6" fill="%23ffffff"/><circle cx="115" cy="100" r="6" fill="%23ffffff"/><path d="M 90 120 Q 100 130 110 120" stroke="%23ffffff" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg>`
+
+    silver: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="rb" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="%23fb7185"/><stop offset="55%" stop-color="%23f43f5e"/><stop offset="100%" stop-color="%23be123c"/></radialGradient><radialGradient id="rg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23f43f5e" stop-opacity="0.45"/><stop offset="100%" stop-color="%23f43f5e" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="105" r="88" fill="url(%23rg)"/><circle cx="100" cy="108" r="62" fill="url(%23rb)"/><ellipse cx="78" cy="78" rx="16" ry="9" transform="rotate(-30 78 78)" fill="%23ffffff" opacity="0.32"/><ellipse cx="85" cy="110" rx="5" ry="11" fill="%234c0519"/><circle cx="87" cy="105" r="2.5" fill="%23ffffff"/><ellipse cx="115" cy="110" rx="5" ry="11" fill="%234c0519"/><circle cx="117" cy="105" r="2.5" fill="%23ffffff"/><path d="M 94 128 Q 100 137 106 128" stroke="%234c0519" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="70" cy="126" rx="6" ry="3.5" fill="%23fda4af" opacity="0.5"/><ellipse cx="130" cy="126" rx="6" ry="3.5" fill="%23fda4af" opacity="0.5"/></svg>`
 };
 
 function getDotKey(agentOrKey) {
     if (!agentOrKey) return 'nova';
     if (typeof agentOrKey === 'string') {
         const k = agentOrKey.toLowerCase();
-        if (k.includes('silver') || k.includes('red') || k.includes('discovery') || k.includes('ineffable') || k.includes('aura')) return 'silver';
         if (k.includes('sage') || k.includes('green') || k.includes('todd')) return 'sage';
         if (k.includes('axis') || k.includes('yellow') || k.includes('gold') || k.includes('alfred')) return 'axis';
         if (k.includes('muse') || k.includes('purple') || k.includes('jojo')) return 'muse';
         if (k.includes('hex') || k.includes('cyan') || k.includes('navy') || k.includes('dev')) return 'hex';
+        if (k.includes('silver') || k.includes('red') || k.includes('crimson') || k.includes('discovery') || k.includes('aura')) return 'silver';
         return 'nova';
     }
     const arch = (agentOrKey.context?.archetype || '').toLowerCase();
     const name = (agentOrKey.name || '').toLowerCase();
     const resp = (agentOrKey.responsibility || '').toLowerCase();
-    if (arch.includes('silver') || name.includes('silver') || resp.includes('discovery') || resp.includes('ineffable') || resp.includes('heuristic') || name.includes('aura')) return 'silver';
     if (arch.includes('sage') || arch.includes('todd') || name.includes('sage') || name.includes('green') || resp.includes('scientist') || resp.includes('research')) return 'sage';
     if (arch.includes('axis') || arch.includes('alfred') || name.includes('axis') || name.includes('yellow') || resp.includes('sales') || resp.includes('enterprise')) return 'axis';
     if (arch.includes('muse') || arch.includes('jojo') || name.includes('muse') || name.includes('purple') || resp.includes('content') || resp.includes('media')) return 'muse';
     if (arch.includes('hex') || arch.includes('dev') || name.includes('hex') || name.includes('cyan') || name.includes('navy') || resp.includes('software') || resp.includes('bug')) return 'hex';
+    if (arch.includes('silver') || arch.includes('aura') || arch.includes('discovery') || name.includes('silver') || name.includes('red') || resp.includes('ineffable') || resp.includes('heuristic') || resp.includes('conjecture')) return 'silver';
     return 'nova';
 }
 
@@ -774,10 +775,22 @@ const DOT_PRESETS = {
     silver: {
         name: "Red Dot (SILVER)",
         color: "silver",
-        mission: "Ineffable Discovery Scientist: discover algorithmic heuristics, mathematical invariants, and optimizations via pure trial-and-error RL in isolated sandboxes.",
+        mission: "Ineffable Discovery Scientist: discover novel heuristics, combinatorial optimization bounds, and mathematical invariants via pure trial-and-error RL & FunSearch with sandbox code verification.",
         interval: 180
     },
     // Backward-compatibility aliases
+    aura: {
+        name: "Red Dot (SILVER)",
+        color: "silver",
+        mission: "Ineffable Discovery Scientist: discover novel heuristics, combinatorial optimization bounds, and mathematical invariants via pure trial-and-error RL & FunSearch with sandbox code verification.",
+        interval: 180
+    },
+    discovery: {
+        name: "Red Dot (SILVER)",
+        color: "silver",
+        mission: "Ineffable Discovery Scientist: discover novel heuristics, combinatorial optimization bounds, and mathematical invariants via pure trial-and-error RL & FunSearch with sandbox code verification.",
+        interval: 180
+    },
     felipe: {
         name: "Blue Dot (NOVA)",
         color: "blue",
@@ -830,12 +843,12 @@ function applyPreset(type) {
 function getDotColor(agent) {
     if (agent.context && agent.context.color) return agent.context.color;
     const lower = (agent.name + " " + agent.responsibility).toLowerCase();
-    if (lower.includes("silver") || lower.includes("red") || lower.includes("aura") || lower.includes("discovery")) return "silver";
     if (lower.includes("blue") || lower.includes("nova") || lower.includes("felipe") || lower.includes("launch")) return "blue";
     if (lower.includes("green") || lower.includes("lime") || lower.includes("sage") || lower.includes("todd") || lower.includes("scientist") || lower.includes("science")) return "green";
     if (lower.includes("yellow") || lower.includes("gold") || lower.includes("axis") || lower.includes("alfred") || lower.includes("sales") || lower.includes("enterprise") || lower.includes("deal")) return "yellow";
     if (lower.includes("purple") || lower.includes("muse") || lower.includes("jojo") || lower.includes("content") || lower.includes("creator")) return "purple";
     if (lower.includes("hex") || lower.includes("cyan") || lower.includes("navy") || lower.includes("sentry") || lower.includes("dev")) return "cyan";
+    if (lower.includes("silver") || lower.includes("red") || lower.includes("crimson") || lower.includes("discovery") || lower.includes("aura")) return "silver";
     return "cyan";
 }
 
@@ -918,12 +931,6 @@ const CARTOON_QUIPS = {
         "All 42 sandbox unit tests passing with cyan telemetry! 🛡️",
         "Commit signed and verified in cloud computer! ◈",
         "Zero regressions detected! Code is rock-solid!"
-    ],
-    silver: [
-        "Aha! SILVER discovered a verified algorithmic heuristic! 🔬",
-        "Trial-and-error pure RL converged to new SOTA reward! ⚡",
-        "Discovered mathematical invariant verified in sandbox! ◈",
-        "Zero human hallucinations: verified by empirical execution!"
     ]
 };
 // Aliases for backwards compatibility
@@ -933,7 +940,6 @@ CARTOON_QUIPS.alfred = CARTOON_QUIPS.axis;
 CARTOON_QUIPS.jojo = CARTOON_QUIPS.muse;
 CARTOON_QUIPS.dev = CARTOON_QUIPS.hex;
 CARTOON_QUIPS.sentry = CARTOON_QUIPS.hex;
-CARTOON_QUIPS.aura = CARTOON_QUIPS.silver;
 
 function touchDotCartoon(dotType, element, event, dotName) {
     if (event) event.stopPropagation();
@@ -942,8 +948,7 @@ function touchDotCartoon(dotType, element, event, dotName) {
     let key = dotType;
     if (!key && dotName) {
         const lower = dotName.toLowerCase();
-        if (lower.includes('silver') || lower.includes('red') || lower.includes('discovery') || lower.includes('ineffable') || lower.includes('aura')) key = 'silver';
-        else if (lower.includes('nova') || lower.includes('felipe') || lower.includes('blue')) key = 'nova';
+        if (lower.includes('nova') || lower.includes('felipe') || lower.includes('blue')) key = 'nova';
         else if (lower.includes('sage') || lower.includes('todd') || lower.includes('green') || lower.includes('scientist')) key = 'sage';
         else if (lower.includes('axis') || lower.includes('alfred') || lower.includes('yellow') || lower.includes('sales')) key = 'axis';
         else if (lower.includes('muse') || lower.includes('jojo') || lower.includes('purple') || lower.includes('content')) key = 'muse';
@@ -955,10 +960,9 @@ function touchDotCartoon(dotType, element, event, dotName) {
     if (key === 'alfred') key = 'axis';
     if (key === 'jojo') key = 'muse';
     if (key === 'dev' || key === 'sentry') key = 'hex';
-    if (key === 'aura') key = 'silver';
 
     // Play rubbery cartoon pop sound
-    const pitchMap = { nova: 1.1, sage: 1.25, axis: 0.9, muse: 1.35, hex: 0.85, silver: 1.45, felipe: 1.1, todd: 1.25, alfred: 0.9, jojo: 1.35, dev: 0.85 };
+    const pitchMap = { nova: 1.1, sage: 1.25, axis: 0.9, muse: 1.35, hex: 0.85, felipe: 1.1, todd: 1.25, alfred: 0.9, jojo: 1.35, dev: 0.85 };
     playCartoonPopSound(pitchMap[key] || 1.0);
 
     // Find the image element to squish
@@ -2174,8 +2178,11 @@ function exportExecutiveDigest() {
 function switchMainView(viewId) {
     document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.nav-links .nav-link-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.nav-seg-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+
+    // Clear active class from the Explore agents button so it never gets stuck
+    const exploreBtn = document.getElementById('btn-view-workstation');
+    if (exploreBtn) exploreBtn.classList.remove('active');
 
     const targetView = document.getElementById(viewId);
     if (targetView) targetView.classList.add('active');
@@ -2184,9 +2191,10 @@ function switchMainView(viewId) {
     if (targetBtn) targetBtn.classList.add('active');
 
     if (viewId === 'view-workstation') {
+        if (exploreBtn) exploreBtn.classList.add('active');
         const layout = document.querySelector('.dot-layout');
         if (layout && !layout.classList.contains('inspector-hidden')) {
-            // Default to clean 2-column workstation
+            // Default to simplified, clean, premium 2-column workstation
             layout.classList.add('inspector-hidden');
             const btnText = document.getElementById('inspector-btn-text');
             if (btnText) btnText.innerText = 'Inspector';
@@ -2202,13 +2210,8 @@ function switchMainView(viewId) {
         if (typeof initDiscoveryStudio === 'function') {
             initDiscoveryStudio();
         }
-    } else if (viewId === 'view-governance') {
-        if (typeof fetchAdminAuditLogs === 'function') {
-            fetchAdminAuditLogs();
-        }
-        if (typeof checkPendingApprovals === 'function') {
-            checkPendingApprovals();
-        }
+    } else {
+        if (exploreBtn) exploreBtn.classList.remove('active');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -5426,135 +5429,6 @@ async function fetchDiscoverySessions() {
         // Silently ignore
     }
 }
-
-// =========================================================================
-// GOVERNANCE & AUDIT CONTROLLERS
-// =========================================================================
-let cachedAuditLogs = [];
-
-async function fetchAdminAuditLogs() {
-    try {
-        const resp = await fetch('/api/admin/audit-logs');
-        if (!resp.ok) return;
-        const logs = await resp.json();
-        cachedAuditLogs = Array.isArray(logs) ? logs : [];
-        
-        const metricEl = document.getElementById('gov-metric-actions');
-        if (metricEl) metricEl.innerText = cachedAuditLogs.length;
-
-        const filterEl = document.getElementById('gov-audit-filter');
-        const activeFilter = filterEl ? filterEl.value : 'ALL';
-        filterAuditLogs(activeFilter);
-    } catch (e) {
-        console.error("Failed to fetch audit logs", e);
-    }
-}
-window.fetchAdminAuditLogs = fetchAdminAuditLogs;
-
-function filterAuditLogs(actionType) {
-    if (!cachedAuditLogs || cachedAuditLogs.length === 0) {
-        renderAuditLogs([]);
-        return;
-    }
-    if (!actionType || actionType === 'ALL') {
-        renderAuditLogs(cachedAuditLogs);
-    } else {
-        const filtered = cachedAuditLogs.filter(l => l.action === actionType);
-        renderAuditLogs(filtered);
-    }
-}
-window.filterAuditLogs = filterAuditLogs;
-
-function renderAuditLogs(logs) {
-    const tbody = document.getElementById('gov-audit-tbody');
-    if (!tbody) return;
-
-    if (!logs || logs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: var(--text-muted);">No matching audit log entries found.</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = logs.map(l => {
-        const timeStr = l.timestamp ? new Date(l.timestamp).toISOString().replace('T', ' ').slice(0, 19) : '—';
-        const isSuccess = (l.status || '').toUpperCase() === 'SUCCESS' || (l.status || '').toUpperCase() === 'APPROVED';
-        const badgeClass = isSuccess ? 'success' : (l.status === 'DENIED' || l.status === 'REJECTED' ? 'error' : 'warning');
-        return `
-            <tr>
-                <td style="color: var(--text-secondary);">${timeStr}</td>
-                <td><code style="color: #a78bfa;">${escapeHtml(l.user_id || 'system')}</code></td>
-                <td><strong>${escapeHtml(l.action || 'ACTION')}</strong></td>
-                <td><span style="color: #94a3b8;">${escapeHtml(l.resource_type || '—')}: ${escapeHtml(l.resource_id || '')}</span></td>
-                <td><span class="audit-badge ${badgeClass}">${escapeHtml(l.status || 'OK')}</span></td>
-                <td style="color: var(--text-muted);">${escapeHtml(l.ip_address || '127.0.0.1')}</td>
-            </tr>
-        `;
-    }).join('');
-}
-window.renderAuditLogs = renderAuditLogs;
-
-async function checkPendingApprovals() {
-    try {
-        const resp = await fetch('/api/decisions/pending');
-        if (!resp.ok) return;
-        const decisions = await resp.json();
-        const listEl = document.getElementById('gov-pending-decisions-list');
-        const metricEl = document.getElementById('gov-metric-pending');
-
-        if (metricEl) metricEl.innerText = Array.isArray(decisions) ? decisions.length : 0;
-
-        if (!listEl) return;
-
-        if (!decisions || decisions.length === 0) {
-            listEl.innerHTML = `<div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px;">No pending operator sign-offs. All agent operations are running within verified bounds.</div>`;
-            return;
-        }
-
-        listEl.innerHTML = decisions.map(d => `
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 14px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="font-size: 11px; font-weight: 700; color: #fbbf24; text-transform: uppercase;">${escapeHtml(d.action_type || 'PROTECTED_ACTION')}</span>
-                    <span style="font-size: 10px; background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 2px 6px; border-radius: 4px; font-weight: 700;">${escapeHtml(d.risk_level || 'HIGH')} RISK</span>
-                </div>
-                <p style="font-size: 13px; color: #fff; margin: 0 0 10px 0;">${escapeHtml(d.description || 'Protected operation requires human sign-off')}</p>
-                <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                    <button class="btn btn-danger btn-xs" onclick="handleDecisionReject('${d.id}')">Reject</button>
-                    <button class="btn btn-success btn-xs" onclick="handleDecisionApprove('${d.id}')">Approve Operation</button>
-                </div>
-            </div>
-        `).join('');
-    } catch (e) {
-        console.error("Failed to check pending approvals", e);
-    }
-}
-window.checkPendingApprovals = checkPendingApprovals;
-
-async function handleDecisionApprove(decisionId) {
-    try {
-        const resp = await fetch(`/api/decisions/${decisionId}/approve`, { method: 'POST' });
-        if (resp.ok) {
-            showGlobalToast("Decision approved successfully! ✓");
-            checkPendingApprovals();
-            fetchAdminAuditLogs();
-        }
-    } catch (e) {
-        showGlobalToast("Failed to approve decision.");
-    }
-}
-window.handleDecisionApprove = handleDecisionApprove;
-
-async function handleDecisionReject(decisionId) {
-    try {
-        const resp = await fetch(`/api/decisions/${decisionId}/reject`, { method: 'POST' });
-        if (resp.ok) {
-            showGlobalToast("Decision rejected.");
-            checkPendingApprovals();
-            fetchAdminAuditLogs();
-        }
-    } catch (e) {
-        showGlobalToast("Failed to reject decision.");
-    }
-}
-window.handleDecisionReject = handleDecisionReject;
 
 
 
