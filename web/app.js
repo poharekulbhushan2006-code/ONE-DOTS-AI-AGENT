@@ -1435,27 +1435,78 @@ function formatMessageContent(raw) {
 }
 
 function getTechnicalConceptExplanation(p, userPrompt, agentName) {
-    if (p.includes('dbms') || p.includes('database') || p.includes('sql') || p.includes('rdbms') || p.includes('nosql') || p.includes('acid')) {
-        return `A **Database Management System (DBMS)** is specialized software that enables users and applications to create, protect, read, update, and manage structured collections of data.\n\n` +
-               `### 🏛️ Core Concepts & Architecture\n` +
+    // 1. DBMS & Database Systems
+    if (p.includes('dbms') || p.includes('database') || p.includes('sql') || p.includes('rdbms') || p.includes('nosql') || p.includes('acid') || p.includes('transaction')) {
+        return `A **Database Management System (DBMS)** is specialized software that provides an organized, secure, and transactional layer between applications and non-volatile physical storage.\n\n` +
+               `### 🏛️ Technical Architecture & Core Principles\n` +
                `1. **Primary Functions**:\n` +
                `   - **Data Definition (DDL)**: Formulate schemas, tables, relationships, constraints, and indexes.\n` +
                `   - **Data Manipulation (DML)**: Insert, query, update, and filter records efficiently using SQL or query APIs.\n` +
-               `   - **Concurrency Control & Locking**: Ensure multiple concurrent transactions read and write without data corruption.\n\n` +
-               `2. **Major Categories of DBMS**:\n` +
-               `   - **Relational (RDBMS)**: Structured tabular data with foreign keys and strict schema adherence (*PostgreSQL, MySQL, SQLite, Oracle*).\n` +
+               `   - **Concurrency Control & Locking**: Ensure multiple concurrent transactions read and write without data corruption via MVCC or Two-Phase Locking (2PL).\n\n` +
+               `2. **The ACID Invariants**:\n` +
+               `   - **Atomicity**: An operation succeeds completely or rolls back with zero partial changes.\n` +
+               `   - **Consistency**: Transactions always transition the database from one valid state to another, preserving foreign keys and validation constraints.\n` +
+               `   - **Isolation**: Concurrent transactions execute safely without dirty reads (\`READ UNCOMMITTED\`) or non-repeatable reads (\`READ COMMITTED\`).\n` +
+               `   - **Durability**: Committed data is permanently written to non-volatile disk via Write-Ahead Logging (WAL) and \`fsync()\`.\n\n` +
+               `3. **Major Categories of DBMS**:\n` +
+               `   - **Relational (RDBMS)**: Structured tabular data with foreign keys and strict schemas (*PostgreSQL, MySQL, SQLite, Oracle*).\n` +
                `   - **NoSQL / Document Stores**: Schema-flexible JSON documents optimized for horizontal scaling (*MongoDB, CouchDB, DynamoDB*).\n` +
                `   - **In-Memory & Caching**: Ultra-low-latency key-value stores (*Redis, Memcached*).\n` +
-               `   - **Vector Databases**: High-dimensional vector indexers for AI episodic memory & semantic search (*sqlite-vec, ChromaDB, Pinecone*).\n\n` +
-               `3. **The ACID Guarantee**:\n` +
-               `   - **Atomicity**: An operation succeeds completely or rolls back with zero partial changes.\n` +
-               `   - **Consistency**: Transactions always transition the database from one valid state to another.\n` +
-               `   - **Isolation**: Concurrent transactions execute safely without dirty reads or race conditions.\n` +
-               `   - **Durability**: Committed data is permanently written to non-volatile disk via Write-Ahead Logging (WAL).\n\n` +
+               `   - **Vector Databases**: High-dimensional vector indexers for AI episodic memory & semantic search (*sqlite-vec, pgvector, Pinecone*).\n\n` +
                `*Inside ONE DOTS, our autonomous agents utilize SQLite WAL for tamper-evident state storage and sqlite-vec for episodic memory recall.*`;
     }
 
-    if (p.includes('api') || p.includes('rest api') || p.includes('endpoint') || p.includes('webhook')) {
+    // 2. Ineffable Empirical Discovery Engine & Pure RL
+    if (p.includes('discovery') || p.includes('ineffable') || p.includes('silver') || p.includes('funsearch') || p.includes('bin packing') || p.includes('heuristic') || p.includes('conjecture') || p.includes('pure rl') || p.includes('reinforcement learning')) {
+        return `### 🔬 Ineffable Empirical Discovery Engine // Pure RL Architecture\n\n` +
+               `Grounded in **David Silver's pure trial-and-error reinforcement learning paradigm**, the Ineffable Discovery Engine synthesizes and discovers net-new algorithmic programs and scientific heuristics without human demonstration data.\n\n` +
+               `1. **The 4-Phase Discovery Loop**:\n` +
+               `   - **AST Mutation**: Candidate heuristics are evolved at the Abstract Syntax Tree (AST) level.\n` +
+               `   - **Static Safety Auditing**: Rejects dangerous system calls (\`os.system\`, network, disk traversal) before execution.\n` +
+               `   - **Deterministic Sandbox Verification**: Runs candidate code in an isolated container against ground-truth mathematical problem instances.\n` +
+               `   - **Pareto Island Migration**: Independent populations (Alpha, Beta, Gamma) maintain genetic diversity and exchange breakthroughs.\n\n` +
+               `2. **Benchmark Simulators**:\n` +
+               `   - **Online 1D Bin Packing**: Discovers adaptive item-to-bin scoring functions beating Best-Fit.\n` +
+               `   - **Range Minimum Query (RMQ)**: Synthesizes O(1) query time algorithms.\n` +
+               `   - **Prime Invariants**: Evolves algebraic polynomials maximizing continuous prime sequences.\n\n` +
+               `*Zero Hallucination Guarantee: Code is accepted only when passing deterministic unit tests with reward > 0.90.*`;
+    }
+
+    // 3. AXIS Tender Intelligence & Indian Government Procurement
+    if (p.includes('tender') || p.includes('rfp') || p.includes('bid') || p.includes('nit') || p.includes('pwd') || p.includes('cpwd') || p.includes('nhai') || p.includes('turnover') || p.includes('solvency') || p.includes('bid capacity') || p.includes('dossier')) {
+        return `### 📑 AXIS Tender Intelligence // Government Procurement Engine\n\n` +
+               `The **AXIS Tender Intelligence Engine** automates the ingestion, auditing, eligibility evaluation, and compliance dossier generation for complex 100+ page Indian government procurement documents.\n\n` +
+               `1. **Automated NIT Parsing**:\n` +
+               `   - Ingests Notice Inviting Tender (NIT) documents across **Maharashtra PWD**, **CPWD**, and **NHAI**.\n` +
+               `   - Extracts critical parameters: NIT Number, Tender ID, Authority Division, Estimated Cost (INR Crores), EMD (1-2%), and Defect Liability Period (DLP 36-60 Months).\n\n` +
+               `2. **Statutory Indian Bid Capacity Formula**:\n` +
+               `   - Assessed Available Bid Capacity = (A * N * 2) - B\n` +
+               `   - **A**: Maximum annual turnover in civil works during last 5 years (indexed at 10% per annum compound interest).\n` +
+               `   - **N**: Project duration in years.\n` +
+               `   - **B**: Value of existing commitments and on-going works during completion window.\n` +
+               `   - Available Bid Capacity must strictly exceed Estimated Tender Cost.\n\n` +
+               `3. **Client-Ready Deliverables**:\n` +
+               `   - Instant **Microsoft Word (.docx) Bid Readiness Dossier** deliverable with executive summary, financial check, and technical evaluation.\n` +
+               `   - Full Markdown compliance matrix referencing page numbers and clauses.`;
+    }
+
+    // 4. System Design & Architecture
+    if (p.includes('system design') || p.includes('microservices') || p.includes('monolith') || p.includes('caching') || p.includes('redis') || p.includes('rate limit') || p.includes('load balancer') || p.includes('cap theorem')) {
+        return `### 📐 System Design & Scalability // Architecture Reference\n\n` +
+               `Designing robust distributed architectures requires balancing latency, throughput, consistency, and operational complexity.\n\n` +
+               `1. **Core Architectural Patterns**:\n` +
+               `   - **Modular Monolith vs Microservices**: Start modular; decouple to microservices only when independent team deployability or specialized scaling requires it.\n` +
+               `   - **Caching Strategies**: Cache-aside for general reads; write-through for write consistency; Redis clusters for in-memory sub-millisecond retrieval.\n` +
+               `   - **Load Balancing**: Layer 4 (Transport/TCP) for raw packet throughput; Layer 7 (Application/HTTP) for path routing and SSL termination.\n\n` +
+               `2. **The CAP & PACELC Theorem**:\n` +
+               `   - In network partitions, choose between **Consistency** (linearizability) or **Availability** (uptime).\n` +
+               `   - Else, trade off **Latency** vs **Consistency**.\n\n` +
+               `3. **Rate Limiting**:\n` +
+               `   - Token Bucket and Sliding Window Log algorithms prevent API exhaustion and defend against DDoS attacks.`;
+    }
+
+    // 5. REST APIs, Webhooks & Networking
+    if (p.includes('api') || p.includes('rest api') || p.includes('endpoint') || p.includes('webhook') || p.includes('http')) {
         return `An **Application Programming Interface (API)** is a formal protocol that allows distinct software applications to communicate and exchange data securely:\n\n` +
                `- **REST APIs**: Stateless, resource-oriented HTTP endpoints utilizing standard verbs (\`GET\`, \`POST\`, \`PUT\`, \`DELETE\`) with standardized HTTP status codes.\n` +
                `- **Webhooks**: Event-driven push notifications triggered immediately when external events occur (e.g. GitHub commits, Stripe payments).\n` +
@@ -1463,7 +1514,8 @@ function getTechnicalConceptExplanation(p, userPrompt, agentName) {
                `*ONE DOTS exposes secure REST endpoints with Row-Level Security (RLS) and HMAC SHA-256 webhook signatures.*`;
     }
 
-    if (p.includes('python') || p.includes('asyncio') || p.includes('fastapi')) {
+    // 6. Python & AsyncIO
+    if (p.includes('python') || p.includes('asyncio') || p.includes('fastapi') || p.includes('pydantic')) {
         return `**Python** is a versatile high-level programming language renowned for its expressive syntax, rich ecosystem, and dominance in AI and backend engineering:\n\n` +
                `- **AsyncIO**: Concurrent asynchronous execution with event loops, \`async\`/\`await\` coroutines, and non-blocking I/O.\n` +
                `- **Type Hinting & Pydantic**: Robust runtime data validation and schema enforcement.\n` +
@@ -1471,6 +1523,7 @@ function getTechnicalConceptExplanation(p, userPrompt, agentName) {
                `*ONE DOTS executes sandboxed Python code in isolated cloud runtimes with interactive STDIN safety.*`;
     }
 
+    // 7. Autonomous AI Agents & Archetypes
     if (p.includes('machine learning') || p.includes('artificial intelligence') || p.includes('agent') || p.includes('llm') || p.includes('transformer')) {
         return `**Autonomous AI Agents** are cognitive systems designed to perceive their environment, reason over multi-step goals, plan actions, and execute tools without constant manual intervention:\n\n` +
                `### The 5-Stage Agent Lifecycle in ONE DOTS\n` +
@@ -1481,26 +1534,33 @@ function getTechnicalConceptExplanation(p, userPrompt, agentName) {
                `5. **Learn**: Record outcomes, feedback, and execution traces into vector memory.`;
     }
 
-    if (p.includes('security') || p.includes('owasp') || p.includes('rls') || p.includes('cryptography')) {
+    // 8. Cyber Security & AppSec
+    if (p.includes('security') || p.includes('owasp') || p.includes('rls') || p.includes('cryptography') || p.includes('xss') || p.includes('sql injection')) {
         return `**Enterprise Application Security** enforces multi-layered defense to safeguard sensitive data:\n\n` +
                `- **Row-Level Security (RLS)**: Enforces tenant isolation at the database layer to eliminate Insecure Direct Object References (IDOR).\n` +
                `- **Content Security Policy (CSP)**: Restricts executable script sources to defend against Cross-Site Scripting (XSS).\n` +
                `- **Immutable Audit Vault**: SHA-256 HMAC hashed ledgers guaranteeing non-repudiation for all automated agent actions.`;
     }
 
-    if (p.startsWith('can you tell me') || p.startsWith('tell me about') || p.startsWith('what is') || p.startsWith('explain') || p.startsWith('how do') || p.startsWith('how does') || p.startsWith('describe')) {
+    // 9. General Question Parser
+    if (p.startsWith('can you tell me') || p.startsWith('tell me about') || p.startsWith('what is') || p.startsWith('what are') || p.startsWith('explain') || p.startsWith('how do') || p.startsWith('how does') || p.startsWith('how to') || p.startsWith('describe')) {
         let cleanTopic = userPrompt;
-        for (const prefix of ["can you tell me about", "can you tell me", "tell me about", "what is", "explain", "how does", "how do", "describe"]) {
+        for (const prefix of ["can you tell me about", "can you tell me", "tell me about", "what is", "what are", "explain", "how does", "how do", "how to", "describe"]) {
             if (p.startsWith(prefix)) {
                 cleanTopic = userPrompt.slice(prefix.length).replace(/^[ ?.:]+|[ ?.:]+$/g, '');
                 break;
             }
         }
-        return `Here is a structured explanation of **${escapeHtml(cleanTopic || userPrompt)}**:\n\n` +
-               `- **Core Definition**: ${escapeHtml(cleanTopic || userPrompt)} represents an essential concept in software engineering and modern technology workflows.\n` +
-               `- **System Integration**: Within enterprise architectures, systems connect using clear interface contracts, automated test validation, and resilient error recovery.\n` +
-               `- **Implementation Best Practice**: Enforce schema constraints, validate inputs, maintain non-repudiation logging, and monitor runtime telemetry.\n\n` +
-               `As **${escapeHtml(agentName)}**, I can assist in modeling this further, executing simulations in my cloud sandbox, or compiling a formal deliverable.`;
+        return `### ◈ Architectural Analysis // ${escapeHtml(agentName)}\n\n` +
+               `**Regarding**: **"${escapeHtml(cleanTopic || userPrompt)}"**\n\n` +
+               `#### 1. Core Definition & Technical Context\n` +
+               `In modern software engineering, **${escapeHtml(cleanTopic || userPrompt)}** represents an essential concept. ` +
+               `Engineering it effectively requires clear interfaces, deterministic verification, and automated safety controls.\n\n` +
+               `#### 2. Key Architecture Standards\n` +
+               `- **Strong Contract Isolation**: Enforce explicit data schemas, typed validation, and boundary contracts.\n` +
+               `- **Sandboxed Execution**: Run computational logic within dedicated process environments with interactive STDIN safety.\n` +
+               `- **Audit & Telemetry**: Maintain structured audit ledgers and telemetry to ensure end-to-end observability.\n\n` +
+               `As **${escapeHtml(agentName)}**, I can execute code in my dedicated sandbox computer, inspect live data, or draft a full deliverable on this topic.`;
     }
 
     return null;
