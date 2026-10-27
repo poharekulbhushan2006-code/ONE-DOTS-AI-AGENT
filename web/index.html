@@ -33,11 +33,11 @@
         <div class="grid-overlay"></div>
     </div>
 
-    <!-- Sleek OpenAI-Style Global Navigation Bar -->
+    <!-- Senior Developer Unified Platform Header Bar -->
     <header class="navbar">
         <div class="nav-container">
             <div class="navbar-left">
-                <div class="logo-box" onclick="replayEntryAnimation()" style="cursor: pointer;" title="ONE DOTS Platform — Click to replay entry animation">
+                <div class="logo-box" onclick="switchMainView('view-workstation')" style="cursor: pointer;" title="ONE DOTS Platform — Click to return to Workstation">
                     <div class="navbar-logo-symbol-wrap">
                         <span class="logo-symbol-halo"></span>
                         <span class="logo-symbol">◈</span>
@@ -45,19 +45,53 @@
                     <div class="navbar-logo-text-wrap">
                         <span class="logo-text">ONE DOTS</span>
                         <div class="logo-five-dots-pips">
-                            <span class="pip blue" title="NOVA (Blue Face)"></span>
-                            <span class="pip green" title="SAGE (Lime-Green Face with Glasses)"></span>
-                            <span class="pip yellow" title="AXIS (Golden-Yellow Face)"></span>
-                            <span class="pip purple" title="MUSE (Purple Face)"></span>
-                            <span class="pip orange" title="HEX (Dark Navy Face with Glowing Cyan)"></span>
+                            <span class="pip blue" title="NOVA • Blue Dot (Launch Lead)"></span>
+                            <span class="pip green" title="SAGE • Green Dot (Research Scientist)"></span>
+                            <span class="pip yellow" title="AXIS • Golden Dot (Tender Specialist)"></span>
+                            <span class="pip purple" title="MUSE • Purple Dot (Content Studio)"></span>
+                            <span class="pip orange" title="HEX • Dev Dot (Autonomous Dev)"></span>
+                            <span class="pip silver" title="SILVER • Red Dot (Ineffable Discovery)"></span>
                         </div>
                     </div>
                 </div>
-                
-                <nav class="nav-links"></nav>
+                <div class="system-status-pill">
+                    <span class="live-pulse-green"></span>
+                    <span>FLEET ONLINE • GEMINI 3.8</span>
+                </div>
             </div>
 
-            <div class="navbar-right"></div>
+            <!-- Senior Web Developer Segmented Mode Switcher -->
+            <nav class="nav-segmented-control" role="tablist">
+                <button class="nav-seg-btn active" id="btn-view-workstation" onclick="switchMainView('view-workstation')" role="tab">
+                    <span>🤖</span>
+                    <span>Fleet Workstation</span>
+                </button>
+                <button class="nav-seg-btn" id="btn-view-discovery" onclick="switchMainView('view-discovery')" role="tab">
+                    <span>🔬</span>
+                    <span>Discovery Studio</span>
+                    <span class="nav-seg-badge">INEFFABLE</span>
+                </button>
+                <button class="nav-seg-btn" id="btn-view-tenders" onclick="switchMainView('view-tenders')" role="tab">
+                    <span>📑</span>
+                    <span>Tender Intelligence</span>
+                </button>
+                <button class="nav-seg-btn" id="btn-view-governance" onclick="switchMainView('view-governance')" role="tab">
+                    <span>🛡️</span>
+                    <span>Audit &amp; Governance</span>
+                </button>
+            </nav>
+
+            <div class="navbar-right" style="display: flex; align-items: center; gap: 10px;">
+                <button class="btn-voice-pill" onclick="startVoiceCall()" title="Start hands-free Conversational Voice Call">
+                    <span class="voice-wave-anim">
+                        <span></span><span></span><span></span>
+                    </span>
+                    <span>Voice Call</span>
+                </button>
+                <button class="btn-new-agent-pill" onclick="openCreateModal()" title="Deploy new autonomous Dot">
+                    <span>+ Deploy Dot</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -65,7 +99,7 @@
          VIEW 1: FLAGSHIP OFFICIAL PRODUCT SHOWCASE & INFORMATION WEBSITE
          OBSIDIAN + CHAMPAGNE GOLD PROFESSIONAL SPECIFICATION
          ========================================================================= -->
-    <section class="app-view active" id="view-showcase">
+    <section class="app-view" id="view-showcase" style="display: none;">
         <div class="showcase-container">
             
             <!-- Obsidian + Champagne Gold Hero Section -->
@@ -705,15 +739,10 @@
     <!-- =========================================================================
          VIEW 2: AGENT WORKSTATION (FULL INTERACTIVE PLATFORM)
          ========================================================================= -->
-    <section class="app-view" id="view-workstation">
+    <section class="app-view active" id="view-workstation">
         <!-- Senior Advanced Full-Stack Workstation Header -->
         <div class="senior-workstation-header">
             <div class="sw-header-left">
-                <button class="btn btn-secondary btn-sm sw-back-btn" onclick="switchMainView('view-showcase')">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                    <span>Overview</span>
-                </button>
-                <span class="sw-divider"></span>
                 <div class="sw-active-dot-pill" id="sw-active-dot-pill">
                     <span class="sw-status-dot blue" id="sw-active-dot-indicator"></span>
                     <span class="sw-active-dot-name" id="sw-active-dot-name">NOVA</span>
@@ -1629,7 +1658,131 @@
     </section>
 
     <!-- =========================================================================
-         VIEW 3: COMPLETE DOCUMENTATION & LEARN HUB (CHATGPT LEARN STYLE)
+         VIEW 4: FLEET GOVERNANCE & SECURITY AUDIT VAULT
+         ========================================================================= -->
+    <section class="app-view" id="view-governance">
+        <div class="governance-container">
+            
+            <!-- Governance Hero Banner -->
+            <div class="gov-hero-banner glass-card">
+                <div>
+                    <h1 class="gov-hero-title">🛡️ Fleet Governance &amp; Security Vault</h1>
+                    <p class="gov-hero-sub">
+                        Tamper-evident SQLite WAL audit trail, Human-in-the-Loop decision review, and zero-exposure sandboxes.
+                    </p>
+                </div>
+                <div class="gov-stats-strip">
+                    <div class="gov-stat-chip">
+                        <div class="gov-stat-val" id="gov-metric-actions">0</div>
+                        <div class="gov-stat-lbl">Actions Logged</div>
+                    </div>
+                    <div class="gov-stat-chip">
+                        <div class="gov-stat-val" id="gov-metric-pending" style="color: #f59e0b;">0</div>
+                        <div class="gov-stat-lbl">Pending Reviews</div>
+                    </div>
+                    <div class="gov-stat-chip">
+                        <div class="gov-stat-val" style="color: #10b981;">ACTIVE</div>
+                        <div class="gov-stat-lbl">RLS Protection</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dual-Deck: Pending Approvals & Audit Vault -->
+            <div class="gov-dual-grid">
+                
+                <!-- Left Deck: Human Approval Gate -->
+                <div class="gov-card glass-card">
+                    <div class="gov-card-header">
+                        <div class="gov-card-title">
+                            <span>⚠️</span> Human Approval Gate
+                        </div>
+                        <button class="btn btn-ghost btn-xs" onclick="checkPendingApprovals()">↻ Refresh</button>
+                    </div>
+                    
+                    <div id="gov-pending-decisions-list" style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="padding: 24px; text-align: center; color: var(--text-muted); font-size: 13px;">
+                            No pending operator sign-offs. All agent operations are running within verified bounds.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Deck: Tamper-Evident Security Audit Vault -->
+                <div class="gov-card glass-card">
+                    <div class="gov-card-header">
+                        <div class="gov-card-title">
+                            <span>⚙️</span> Tamper-Evident Audit Log
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <select id="gov-audit-filter" onchange="filterAuditLogs(this.value)" style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-default); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 12px;">
+                                <option value="ALL">All Actions</option>
+                                <option value="AGENT_CREATE">Agent Deployments</option>
+                                <option value="AGENT_DELETE">Agent Terminations</option>
+                                <option value="SANDBOX_CODE_EXECUTION">Sandbox Executions</option>
+                                <option value="FILE_WRITE">File Operations</option>
+                                <option value="DECISION_APPROVE">Human Approvals</option>
+                                <option value="AUTH_LOGIN_SUCCESS">Auth Events</option>
+                            </select>
+                            <button class="btn btn-outline btn-xs" onclick="fetchAdminAuditLogs()">↻ Refresh</button>
+                        </div>
+                    </div>
+
+                    <div class="audit-table-wrapper">
+                        <table class="audit-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp (UTC)</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Resource</th>
+                                    <th>Status</th>
+                                    <th>Client IP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gov-audit-tbody">
+                                <tr>
+                                    <td colspan="6" style="padding: 24px; text-align: center; color: var(--text-muted);">
+                                        Click 'Refresh' to load live tamper-evident audit logs.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 14 Active Defensive Hardening Layers Strip -->
+            <div class="glass-card" style="padding: 20px;">
+                <div style="font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+                    14 Active Defense &amp; Governance Layers (Enterprise Hardened)
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 12px;">
+                    <div style="background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Row Level Security (RLS)
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Tamper-Evident WAL Audit
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Zero-Exposure Sandboxes
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> 100% Parameterized SQL
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Strict Content Security Policy
+                    </div>
+                    <div style="background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); color: #cbd5e1;">
+                        <span style="color: #10b981; font-weight: bold; margin-right: 6px;">✓</span> Human-in-the-Loop Review
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW 5: COMPLETE DOCUMENTATION & LEARN HUB (CHATGPT LEARN STYLE)
          ========================================================================= -->
     <section class="app-view" id="view-docs">
         <div class="docs-layout" style="margin-top: 0;">
@@ -1956,6 +2109,13 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
                             <div class="preset-desc">Autonomous PRs &amp; Bugfixes</div>
                         </div>
                     </div>
+                    <div class="preset-btn" onclick="applyPreset('silver')">
+                        <span class="preset-badge" style="background:#f43f5e; box-shadow: 0 0 8px #f43f5e;"></span>
+                        <div>
+                            <div class="preset-name">Red Dot (SILVER)</div>
+                            <div class="preset-desc">Ineffable Discovery Scientist</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1965,7 +2125,7 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
 
                 <div class="form-group">
                     <label>Dot Name &amp; Identity</label>
-                    <input type="text" id="agent-name-input" placeholder="e.g. Blue Dot (NOVA), Dark Navy (HEX), MarketRadar, DevOpsSentry" required>
+                    <input type="text" id="agent-name-input" placeholder="e.g. Blue Dot (NOVA), Dark Navy (HEX), SILVER (Discovery)" required>
                 </div>
                 <div class="form-group">
                     <label>Enduring Responsibility (Not just a one-off prompt)</label>
@@ -1989,6 +2149,7 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
                             <option value="yellow">Golden-Yellow (AXIS • Enterprise Deals)</option>
                             <option value="purple">Purple (MUSE • Content &amp; Creative)</option>
                             <option value="cyan" selected>Dark Navy / Cyan (HEX • Autonomous Dev)</option>
+                            <option value="silver">Crimson / Red (SILVER • Ineffable Discovery)</option>
                         </select>
                     </div>
                 </div>

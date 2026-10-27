@@ -96,6 +96,12 @@ ARCHETYPES = {
         "interval": 120,
         "color": "cyan",
     },
+    "silver": {
+        "name": "Red Dot (SILVER)",
+        "mission": "Ineffable Discovery Scientist (Crimson/Red Face): autonomous trial-and-error pure RL discovery of algorithmic heuristics, optimizations, and mathematical invariants verified in isolated sandboxes.",
+        "interval": 180,
+        "color": "silver",
+    },
 }
 # Backward compatibility aliases
 ARCHETYPES["felipe"] = ARCHETYPES["nova"]
@@ -104,6 +110,8 @@ ARCHETYPES["alfred"] = ARCHETYPES["axis"]
 ARCHETYPES["jojo"] = ARCHETYPES["muse"]
 ARCHETYPES["dev"] = ARCHETYPES["hex"]
 ARCHETYPES["sentry"] = ARCHETYPES["hex"]
+ARCHETYPES["aura"] = ARCHETYPES["silver"]
+ARCHETYPES["discovery"] = ARCHETYPES["silver"]
 
 
 def cmd_deploy(name: str = None, mission: str = None, interval: int = 180, template: str = None):

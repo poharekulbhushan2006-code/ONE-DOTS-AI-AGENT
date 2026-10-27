@@ -274,6 +274,16 @@ def ensure_default_agents_seeded(user_id: str = "usr_owner_default") -> List[One
                 total_ticks=541,
                 context={"archetype": "hex", "color": "cyan"}
             ),
+            OneAgent(
+                id="dot-silver-06",
+                user_id=user_id,
+                name="Red Dot (SILVER)",
+                responsibility="Autonomous trial-and-error discovery system based on David Silver's pure RL & DeepMind FunSearch paradigm: discovers new algorithmic heuristics, combinatorial optimizations, and mathematical invariants verified in isolated sandboxes with zero hallucinations.",
+                status=AgentStatus.RUNNING,
+                schedule_interval_seconds=180,
+                total_ticks=612,
+                context={"archetype": "silver", "color": "silver"}
+            ),
         ]
         for a in defaults:
             state_store.save_agent(a)
