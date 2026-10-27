@@ -6,36 +6,36 @@
 :root {
   color-scheme: dark;
 
-  /* Brand */
-  --brand-gold: #D6B779;
-  --brand-gold-hover: #E5C98D;
-  --brand-gold-active: #B99B61;
-  --brand-gold-soft: #29251C;
+  /* Brand: Senior Full Stack Developer Palette (Precision Electric Sapphire & Obsidian Slate) */
+  --brand-gold: #3b82f6;
+  --brand-gold-hover: #60a5fa;
+  --brand-gold-active: #2563eb;
+  --brand-gold-soft: rgba(59, 130, 246, 0.12);
 
   /* Backgrounds */
-  --bg-app: #0D0E10;
-  --bg-sidebar: #111215;
-  --bg-panel: #151619;
-  --bg-elevated: #1C1D21;
-  --bg-hover: #222328;
-  --bg-input: #111215;
+  --bg-app: #08090d;
+  --bg-sidebar: #0d1017;
+  --bg-panel: #11141f;
+  --bg-elevated: #161b29;
+  --bg-hover: #1c2234;
+  --bg-input: #0d1017;
 
   /* Borders */
-  --border-subtle: #222328;
-  --border-default: #2B2C31;
-  --border-strong: #414248;
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-default: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
 
   /* Typography */
-  --text-primary: #F4F0E8;
-  --text-secondary: #A3A4AA;
-  --text-muted: #777981;
-  --text-on-accent: #171512;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-on-accent: #ffffff;
 
   /* Status */
-  --status-success: #6FC49A;
-  --status-warning: #E6BD75;
-  --status-error: #E58B88;
-  --status-info: #91B7D9;
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-error: #ef4444;
+  --status-info: #38bdf8;
 
   /* Geometry */
   --radius-sm: 6px;
@@ -69,7 +69,7 @@
   --border-focus: var(--brand-gold);
   --primary: var(--brand-gold);
   --primary-hover: var(--brand-gold-hover);
-  --primary-glow: rgba(214, 183, 121, 0.15);
+  --primary-glow: rgba(59, 130, 246, 0.15);
   --text-main: var(--text-primary);
   --text-body: var(--text-secondary);
   --text-dim: var(--text-muted);
@@ -177,7 +177,7 @@ input:focus-visible {
     transform var(--duration-fast) var(--ease-standard);
   text-decoration: none;
   white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(214, 183, 121, 0.2);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
 .button-primary:hover,
@@ -410,7 +410,7 @@ textarea:focus {
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(214, 183, 121, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
     opacity: 0.6;
     filter: blur(4px);
     transition: all 0.3s ease;
@@ -559,24 +559,24 @@ textarea:focus {
     font-family: var(--font-mono);
 }
 
-/* Gold Primary Launch Button */
+/* Senior Enterprise Primary Launch Button */
 .btn-openai-launch {
-    background: var(--brand-gold);
-    color: var(--text-on-accent);
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
-    padding: 8px 18px;
-    font-size: 13.5px;
-    font-weight: 600;
+    background: #2563eb;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-sm);
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition:
-        background var(--duration-fast) var(--ease-standard),
-        transform var(--duration-fast) var(--ease-standard);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: all var(--duration-fast) var(--ease-standard);
     letter-spacing: -0.1px;
 }
 
 .btn-openai-launch:hover {
-    background: var(--brand-gold-hover);
+    background: #1d4ed8;
+    border-color: rgba(255, 255, 255, 0.25);
     transform: translateY(-1px);
 }
 
@@ -5051,7 +5051,7 @@ textarea:focus {
     height: 7px;
     border-radius: 50%;
     background: var(--brand-gold);
-    box-shadow: 0 0 8px rgba(214, 183, 121, 0.4);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
 }
 
 .eyebrow-text {
@@ -5173,8 +5173,8 @@ textarea:focus {
     align-items: center;
     gap: 7px;
     padding: 4px 10px;
-    background: rgba(214, 183, 121, 0.12);
-    border: 1px solid rgba(214, 183, 121, 0.3);
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.3);
     border-radius: var(--radius-sm);
     color: var(--brand-gold);
     font-size: 11px;
@@ -5740,8 +5740,8 @@ textarea:focus {
     font-size: 9px;
     font-weight: 600;
     color: var(--brand-gold);
-    background: rgba(214, 183, 121, 0.12);
-    border: 1px solid rgba(214, 183, 121, 0.25);
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.25);
     padding: 2px 6px;
     border-radius: var(--radius-sm);
 }
@@ -6080,7 +6080,7 @@ textarea:focus {
 /* Header & Command Strip */
 .tenders-hero-header {
     background: linear-gradient(180deg, rgba(30, 27, 20, 0.7) 0%, rgba(17, 18, 21, 0.8) 100%);
-    border: 1px solid rgba(214, 183, 121, 0.25);
+    border: 1px solid rgba(59, 130, 246, 0.25);
     border-radius: var(--radius-card);
     padding: 22px 28px;
     backdrop-filter: blur(16px);
@@ -6098,8 +6098,8 @@ textarea:focus {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(214, 183, 121, 0.12);
-    border: 1px solid rgba(214, 183, 121, 0.3);
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.3);
     color: var(--brand-gold);
     font-size: 11px;
     font-weight: 700;
@@ -6254,14 +6254,14 @@ textarea:focus {
 }
 
 .tb-btn:hover {
-    background: rgba(214, 183, 121, 0.12);
-    border-color: rgba(214, 183, 121, 0.35);
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.35);
     color: var(--brand-gold);
     transform: translateY(-1px);
 }
 
 .tb-btn.active {
-    background: rgba(214, 183, 121, 0.2);
+    background: rgba(59, 130, 246, 0.2);
     border-color: var(--brand-gold);
     color: var(--text-primary);
     font-weight: 600;
@@ -6346,19 +6346,19 @@ textarea:focus {
     font-size: 10px;
     font-weight: 700;
     color: var(--brand-gold);
-    background: rgba(214, 183, 121, 0.12);
+    background: rgba(59, 130, 246, 0.12);
     padding: 3px 8px;
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(214, 183, 121, 0.25);
+    border: 1px solid rgba(59, 130, 246, 0.25);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 /* Drag & Drop Zone */
 .tender-dropzone {
-    border: 2px dashed rgba(214, 183, 121, 0.35);
+    border: 2px dashed rgba(59, 130, 246, 0.35);
     border-radius: var(--radius-md);
-    background: rgba(214, 183, 121, 0.03);
+    background: rgba(59, 130, 246, 0.03);
     padding: 28px 16px;
     text-align: center;
     cursor: pointer;
@@ -6367,7 +6367,7 @@ textarea:focus {
 
 .tender-dropzone:hover, .tender-dropzone.drag-active {
     border-color: var(--brand-gold);
-    background: rgba(214, 183, 121, 0.09);
+    background: rgba(59, 130, 246, 0.09);
     transform: scale(1.01);
 }
 
@@ -6382,7 +6382,7 @@ textarea:focus {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: rgba(214, 183, 121, 0.12);
+    background: rgba(59, 130, 246, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6411,7 +6411,7 @@ textarea:focus {
     align-items: center;
     gap: 12px;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(214, 183, 121, 0.3);
+    border: 1px solid rgba(59, 130, 246, 0.3);
     padding: 10px 14px;
     border-radius: var(--radius-sm);
     margin-top: 12px;
@@ -6762,7 +6762,7 @@ textarea:focus {
 }
 
 .nit-param-card:hover {
-    border-color: rgba(214, 183, 121, 0.3);
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 .np-top {
@@ -6782,7 +6782,7 @@ textarea:focus {
     font-family: var(--font-mono);
     font-size: 9px;
     color: var(--brand-gold);
-    background: rgba(214, 183, 121, 0.12);
+    background: rgba(59, 130, 246, 0.12);
     padding: 1px 6px;
     border-radius: 4px;
 }
@@ -6817,7 +6817,7 @@ textarea:focus {
 }
 
 .matrix-filter-buttons .filter-btn.active {
-    background: rgba(214, 183, 121, 0.15);
+    background: rgba(59, 130, 246, 0.15);
     border-color: var(--brand-gold);
     color: var(--brand-gold);
 }
@@ -6883,20 +6883,20 @@ textarea:focus {
 
 /* Deliverables Column & One-Click Button */
 .btn-dossier-download {
-    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-    border: 1px solid rgba(245, 158, 11, 0.6);
+    background: #2563eb;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #ffffff;
-    padding: 14px 18px;
-    border-radius: var(--radius-md);
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(217, 119, 6, 0.3);
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
     transition: all var(--duration-normal) var(--ease-standard);
 }
 
 .btn-dossier-download:hover {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45);
-    transform: translateY(-2px);
+    background: #1d4ed8;
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
 }
 
 .dossier-btn-content {
@@ -7012,11 +7012,11 @@ textarea:focus {
 }
 
 .demo-step:hover {
-    background: rgba(214, 183, 121, 0.1);
+    background: rgba(59, 130, 246, 0.1);
 }
 
 .demo-step.active {
-    background: rgba(214, 183, 121, 0.2);
+    background: rgba(59, 130, 246, 0.2);
     border-color: var(--brand-gold);
 }
 
@@ -7111,8 +7111,8 @@ textarea:focus {
 }
 
 .bm-card-item:hover {
-    background: rgba(214, 183, 121, 0.08);
-    border-color: rgba(214, 183, 121, 0.4);
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.4);
     transform: translateY(-2px);
 }
 
@@ -7168,10 +7168,10 @@ textarea:focus {
 
 .discovery-hero-banner {
     padding: 24px 28px;
-    background: linear-gradient(135deg, rgba(20, 24, 33, 0.85) 0%, rgba(30, 15, 20, 0.6) 100%);
-    border: 1px solid rgba(239, 68, 68, 0.25);
-    border-radius: var(--radius-lg, 12px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(239, 68, 68, 0.08);
+    background: linear-gradient(135deg, rgba(17, 20, 31, 0.95) 0%, rgba(13, 16, 23, 0.95) 100%);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-card);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .discovery-hero-badge {
@@ -7180,12 +7180,12 @@ textarea:focus {
     gap: 8px;
     padding: 4px 12px;
     border-radius: 9999px;
-    background: rgba(239, 68, 68, 0.12);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    font-size: 10.5px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
-    color: #f87171;
+    color: #60a5fa;
     margin-bottom: 12px;
 }
 
@@ -7193,8 +7193,8 @@ textarea:focus {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #ef4444;
-    box-shadow: 0 0 10px #ef4444;
+    background: #3b82f6;
+    box-shadow: 0 0 10px #3b82f6;
     animation: pulse-ruby 1.8s infinite;
 }
 
@@ -7246,7 +7246,7 @@ textarea:focus {
     font-family: var(--font-mono, monospace);
     font-size: 20px;
     font-weight: 700;
-    color: #fca5a5;
+    color: #60a5fa;
 }
 
 .hero-stat-box .stat-label {
@@ -7257,7 +7257,7 @@ textarea:focus {
 
 .discovery-config-deck {
     padding: 20px 24px;
-    border-radius: var(--radius-lg, 12px);
+    border-radius: var(--radius-card);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -7278,12 +7278,12 @@ textarea:focus {
 }
 
 .deck-step-num {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: rgba(239, 68, 68, 0.2);
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    color: #f87171;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: #60a5fa;
     font-weight: 700;
     font-size: 12px;
     display: flex;
@@ -7298,9 +7298,9 @@ textarea:focus {
 }
 
 .btn-discovery-launch {
-    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
-    border: 1px solid rgba(248, 113, 113, 0.4) !important;
-    box-shadow: 0 0 16px rgba(239, 68, 68, 0.3) !important;
+    background: #2563eb !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25) !important;
     color: #fff !important;
     padding: 8px 18px;
     font-weight: 600;
@@ -7309,13 +7309,14 @@ textarea:focus {
     border-radius: 6px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     transition: all 0.2s ease;
 }
 
 .btn-discovery-launch:hover {
+    background: #1d4ed8 !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
     transform: translateY(-1px);
-    box-shadow: 0 0 24px rgba(239, 68, 68, 0.5) !important;
 }
 
 .discovery-benchmarks-grid {
@@ -7338,14 +7339,14 @@ textarea:focus {
 
 .discovery-domain-card:hover {
     background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(239, 68, 68, 0.3);
+    border-color: rgba(59, 130, 246, 0.35);
     transform: translateY(-2px);
 }
 
 .discovery-domain-card.active {
-    background: rgba(239, 68, 68, 0.08);
-    border-color: rgba(239, 68, 68, 0.6);
-    box-shadow: 0 0 16px rgba(239, 68, 68, 0.15);
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.12);
 }
 
 .domain-card-header {
@@ -7355,7 +7356,9 @@ textarea:focus {
 }
 
 .domain-icon {
-    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .domain-difficulty-tag {
@@ -7363,8 +7366,8 @@ textarea:focus {
     font-weight: 700;
     padding: 2px 7px;
     border-radius: 4px;
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
+    background: rgba(59, 130, 246, 0.12);
+    color: #93c5fd;
 }
 
 .domain-name {
@@ -7392,7 +7395,7 @@ textarea:focus {
 }
 
 .domain-meta-row b {
-    color: #fca5a5;
+    color: #93c5fd;
 }
 
 .discovery-params-row {

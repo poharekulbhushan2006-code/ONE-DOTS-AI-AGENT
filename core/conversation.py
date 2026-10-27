@@ -240,32 +240,43 @@ class AgentConversationEngine:
                 "5. **Learn**: Record outcomes, feedback, and execution traces into vector memory."
             )
 
-        # 7. General Educational / Question responder
-        if any(lowered.startswith(prefix) for prefix in ["can you tell me", "tell me about", "what is", "how do", "how does", "explain"]):
-            clean_topic = user_text
-            for prefix in ["can you tell me about", "can you tell me", "tell me about", "what is", "explain", "how does", "how do"]:
-                if lowered.startswith(prefix):
-                    clean_topic = user_text[len(prefix):].strip(" ?:.")
-                    break
+        # 7. Ineffable Discovery & Pure RL Queries
+        if any(w in lowered for w in ["discovery", "ineffable", "silver", "funsearch", "bin packing", "heuristic", "conjecture", "reinforcement learning", "rl"]):
             return (
-                f"Here is a comprehensive breakdown of **{clean_topic or 'your inquiry'}**:\n\n"
-                f"- **Core Definition**: {clean_topic.capitalize()} represents a foundational concept in computer science and software systems.\n"
-                f"- **Architecture & Integration**: In modern production platforms, components interact via clear interface contracts, automated testing, and secure data pipelines.\n"
-                f"- **Best Practices**: Ensure strict schema validation, enforce tamper-evident logging, and maintain continuous automated test coverage.\n\n"
-                f"As **{self.agent.name}**, I can assist you in researching this further, running Python simulations in my sandbox, or compiling a formal deliverable."
+                f"### 🔬 Ineffable Empirical Discovery Engine Analysis\n\n"
+                f"**Domain Focus**: Autonomous trial-and-error discovery grounded in David Silver's pure RL paradigm.\n\n"
+                f"1. **Trial-and-Error Loop**: The engine explores candidate algorithmic solutions and mathematical heuristics without relying on human demonstration data.\n"
+                f"2. **Sandbox Verifiers**: Every candidate program is executed inside an isolated Python container with zero external network access, evaluated against deterministic mathematical ground truth (e.g. Bin Packing ratio, Range Query throughput, or Prime generating invariants).\n"
+                f"3. **Island Evolutionary Pool**: Multiple independent populations maintain genetic diversity, mutating top-performing scoring functions and migrating Pareto-optimal breakthroughs across islands.\n"
+                f"4. **Verified Performance**: Eliminates AI hallucination by enforcing objective reward thresholds (>0.90) verified by actual execution exit codes and metric outputs."
             )
 
-        # 8. Default conversational response
+        # 8. Tender Intelligence & Government Procurement Queries
+        if any(w in lowered for w in ["tender", "rfp", "bid", "nit", "pwd", "cpwd", "nhai", "turnover", "solvency"]):
+            return (
+                f"### 📑 AXIS Tender Intelligence & RFP Auditing\n\n"
+                f"**Specialist Focus**: High-stakes tender evaluation and compliance verification.\n\n"
+                f"1. **Automated NIT Parsing**: Ingests complex 100+ page government procurement documents (NHAI, CPWD, Maharashtra PWD) in seconds, extracting NIT numbers, authority details, estimated cost, EMD, and submission deadlines.\n"
+                f"2. **Eligibility Criteria Matrix**: Automatically identifies mandatory thresholds for annual financial turnover, single-work similar experience, and banker solvency certificates with page citations.\n"
+                f"3. **Automated Qualification Verdict**: Cross-evaluates contractor profiles against tender clauses to calculate readiness scores and highlight critical disqualification risks.\n"
+                f"4. **Executive Bid Dossier**: Generates complete, client-ready Microsoft Word (.docx) compliance dossiers and requirement-to-evidence matrices ready for executive submission."
+            )
+
+        # 9. General Technical & Question responder
+        clean_topic = user_text.strip(" ?:.")
+        for prefix in ["can you tell me about", "can you tell me", "tell me about", "what is", "how do", "how does", "explain", "describe", "what are"]:
+            if lowered.startswith(prefix):
+                clean_topic = user_text[len(prefix):].strip(" ?:.")
+                break
+
         return (
-            f"Understood. As your always-on agent for **{self.agent.name}**, I'm tracking: *'{self.agent.responsibility}'*.\n\n"
-            "You can ask me to:\n"
-            "- *'Can you tell me about [topic]?'* (explain technical and domain concepts)\n"
-            "- *'What did you find today?'* (inspect my latest memory)\n"
-            "- *'Search online for [query]'* (trigger my browser & research tools)\n"
-            "- *'Run python: [code]'* (execute scripts in my cloud computer)\n"
-            "- *'Show files'* (explore my sandbox files)\n"
-            "- *'Focus on [new topic]'* (steer my responsibility)\n"
-            "Or let me know how you'd like to adjust my continuous loop!"
+            f"### ◈ Response from {self.agent.name}\n\n"
+            f"**Regarding**: *\"{clean_topic}\"*\n\n"
+            f"Within the DOTS AI ecosystem, I operate as an always-on autonomous agent specializing in: **{self.agent.responsibility}**.\n\n"
+            f"- **Technical Analysis**: Addressing \"{clean_topic}\" requires precise execution standards, deterministic verification, and automated safety guardrails.\n"
+            f"- **Actionable Execution**: I can run sandboxed Python simulations, query our episodic memory store, or dispatch automated tasks across our fleet of specialist Dots.\n"
+            f"- **Current Fleet Status**: Currently in stage `{self.agent.current_stage.value.upper()}` with {self.agent.total_ticks} autonomous cycles completed.\n\n"
+            f"Would you like me to execute code in my sandbox computer, inspect live data, or draft a formal deliverable on this topic?"
         )
 
     async def _call_openai_chat(self, user_text: str) -> str:
@@ -323,11 +334,11 @@ class AgentConversationEngine:
                 f"Autonomous Execution Cycles Completed: {self.agent.total_ticks}.\n"
                 f"Historical Memory Knowledge: {memories}\n"
                 "You communicate directly with human operators and system engineers. "
-                "Provide sharp, analytical, intelligent answers reflecting your mission, progress, discoveries, and tools. "
+                "Provide sharp, analytical, intelligent answers directly addressing the user's inquiry reflecting your mission, progress, discoveries, and tools. "
                 "Format responses cleanly with Markdown."
             )
 
-            models = ["gemini-3.5-flash-lite", "gemini-3.8-flash", "gemini-flash-latest", "gemini-3.5-flash"]
+            models = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest", "gemini-3.5-flash-lite"]
             for model_name in models:
                 try:
                     res = client.models.generate_content(

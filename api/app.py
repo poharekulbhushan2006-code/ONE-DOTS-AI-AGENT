@@ -220,75 +220,74 @@ async def global_exception_handler(request: Request, exc: Exception):
 # ------------------ HELPER: IDOR & ROW-LEVEL OWNERSHIP ------------------
 
 def ensure_default_agents_seeded(user_id: str = "usr_owner_default") -> List[OneAgent]:
-    """Ensures that the 5 flagship specialist Dots exist in the database."""
-    agents = state_store.list_agents(is_admin=True)
-    if not agents:
-        defaults = [
-            OneAgent(
-                id="dot-nova-01",
-                user_id=user_id,
-                name="Blue Dot (NOVA)",
-                responsibility="Turn ideas into milestone roadmaps, track Linear & GitHub tasks, manage GTM launch checklists, and execute change-impact analysis when scope shifts.",
-                status=AgentStatus.RUNNING,
-                schedule_interval_seconds=180,
-                total_ticks=418,
-                context={"archetype": "nova", "color": "blue"}
-            ),
-            OneAgent(
-                id="dot-sage-02",
-                user_id=user_id,
-                name="Lime-Green Dot (SAGE)",
-                responsibility="Execute scientific data analysis: run Welch's t-test and ANOVA in sandboxed Python REPL, analyze CSV datasets, generate Matplotlib charts, and cite research findings.",
-                status=AgentStatus.RUNNING,
-                schedule_interval_seconds=180,
-                total_ticks=326,
-                context={"archetype": "sage", "color": "green"}
-            ),
-            OneAgent(
-                id="dot-axis-03",
-                user_id=user_id,
-                name="Golden-Yellow Dot (AXIS)",
-                responsibility="Analyze customer RFPs, tender PDFs, and contracts: extract structured requirements, compile Requirement-to-Evidence compliance matrices, and draft commercial proposals.",
-                status=AgentStatus.RUNNING,
-                schedule_interval_seconds=300,
-                total_ticks=284,
-                context={"archetype": "axis", "color": "yellow"}
-            ),
-            OneAgent(
-                id="dot-muse-04",
-                user_id=user_id,
-                name="Purple Dot (MUSE)",
-                responsibility="Generate real deliverables: produce downloadable Microsoft PowerPoint presentations (.pptx), Word reports (.docx), college study guides, and multi-format publications.",
-                status=AgentStatus.RUNNING,
-                schedule_interval_seconds=180,
-                total_ticks=195,
-                context={"archetype": "muse", "color": "purple"}
-            ),
-            OneAgent(
-                id="dot-hex-05",
-                user_id=user_id,
-                name="Dark Navy Dot (HEX)",
-                responsibility="Inspect repositories, map dependencies, reproduce bugs, write atomic patches in isolated sandboxes, execute automated pytest suites, and prepare verified code diffs.",
-                status=AgentStatus.RUNNING,
-                schedule_interval_seconds=120,
-                total_ticks=541,
-                context={"archetype": "hex", "color": "cyan"}
-            ),
-            OneAgent(
-                id="dot-silver-06",
-                user_id=user_id,
-                name="Red Dot (SILVER)",
-                responsibility="Autonomous trial-and-error discovery system based on David Silver's pure RL & DeepMind FunSearch paradigm: discovers new algorithmic heuristics, combinatorial optimizations, and mathematical invariants verified in isolated sandboxes with zero hallucinations.",
-                status=AgentStatus.RUNNING,
-                schedule_interval_seconds=180,
-                total_ticks=612,
-                context={"archetype": "silver", "color": "silver"}
-            ),
-        ]
-        for a in defaults:
+    """Ensures that the 6 flagship specialist Dots exist in the database."""
+    defaults = [
+        OneAgent(
+            id="dot-nova-01",
+            user_id=user_id,
+            name="Blue Dot (NOVA)",
+            responsibility="Turn ideas into milestone roadmaps, track Linear & GitHub tasks, manage GTM launch checklists, and execute change-impact analysis when scope shifts.",
+            status=AgentStatus.RUNNING,
+            schedule_interval_seconds=180,
+            total_ticks=418,
+            context={"archetype": "nova", "color": "blue"}
+        ),
+        OneAgent(
+            id="dot-sage-02",
+            user_id=user_id,
+            name="Lime-Green Dot (SAGE)",
+            responsibility="Execute scientific data analysis: run Welch's t-test and ANOVA in sandboxed Python REPL, analyze CSV datasets, generate Matplotlib charts, and cite research findings.",
+            status=AgentStatus.RUNNING,
+            schedule_interval_seconds=180,
+            total_ticks=326,
+            context={"archetype": "sage", "color": "green"}
+        ),
+        OneAgent(
+            id="dot-axis-03",
+            user_id=user_id,
+            name="Golden-Yellow Dot (AXIS)",
+            responsibility="Analyze customer RFPs, tender PDFs, and contracts: extract structured requirements, compile Requirement-to-Evidence compliance matrices, and draft commercial proposals.",
+            status=AgentStatus.RUNNING,
+            schedule_interval_seconds=300,
+            total_ticks=284,
+            context={"archetype": "axis", "color": "yellow"}
+        ),
+        OneAgent(
+            id="dot-muse-04",
+            user_id=user_id,
+            name="Purple Dot (MUSE)",
+            responsibility="Generate real deliverables: produce downloadable Microsoft PowerPoint presentations (.pptx), Word reports (.docx), college study guides, and multi-format publications.",
+            status=AgentStatus.RUNNING,
+            schedule_interval_seconds=180,
+            total_ticks=195,
+            context={"archetype": "muse", "color": "purple"}
+        ),
+        OneAgent(
+            id="dot-hex-05",
+            user_id=user_id,
+            name="Dark Navy Dot (HEX)",
+            responsibility="Inspect repositories, map dependencies, reproduce bugs, write atomic patches in isolated sandboxes, execute automated pytest suites, and prepare verified code diffs.",
+            status=AgentStatus.RUNNING,
+            schedule_interval_seconds=120,
+            total_ticks=541,
+            context={"archetype": "hex", "color": "cyan"}
+        ),
+        OneAgent(
+            id="dot-silver-06",
+            user_id=user_id,
+            name="Red Dot (SILVER)",
+            responsibility="Autonomous trial-and-error discovery system based on David Silver's pure RL & DeepMind FunSearch paradigm: discovers new algorithmic heuristics, combinatorial optimizations, and mathematical invariants verified in isolated sandboxes with zero hallucinations.",
+            status=AgentStatus.RUNNING,
+            schedule_interval_seconds=180,
+            total_ticks=612,
+            context={"archetype": "silver", "color": "silver"}
+        ),
+    ]
+    existing = {a.id: a for a in state_store.list_agents(is_admin=True)}
+    for a in defaults:
+        if a.id not in existing:
             state_store.save_agent(a)
-        return defaults
-    return agents
+    return state_store.list_agents(is_admin=True)
 
 
 def verify_agent_ownership(agent_id: str, user: AuthenticatedUser) -> OneAgent:

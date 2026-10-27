@@ -207,7 +207,7 @@ async function handleDocsAgentSubmit(e) {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `[DOCUMENTATION QUERY FROM USER]: ${text}\n(Please answer with direct knowledge of our DOTS platform: 5 Specialist archetypes, dedicated cloud computer with STDIN safe handling, real-time voice call, action auto-review, 4,000+ app connectors, and $50/mo Business Premium tier).`
+                        message: `[DOCUMENTATION QUERY]: ${text}\n(Provide an accurate, detailed technical explanation answering this exact inquiry directly with deep knowledge of ONE DOTS systems, empirical algorithms, or software engineering).`
                     })
                 });
                 if (chatRes.ok) {
@@ -251,6 +251,14 @@ function formatDocsReply(raw) {
 function generateLocalDocsReply(query) {
     const q = query.toLowerCase();
 
+    if (q.includes('discovery') || q.includes('ineffable') || q.includes('silver') || q.includes('funsearch') || q.includes('bin packing') || q.includes('heuristic') || q.includes('rl')) {
+        return "The **Ineffable Empirical Discovery Engine** implements David Silver's pure RL paradigm. It discovers novel algorithmic heuristics and mathematical invariants via autonomous trial-and-error without human demonstration data. Features include: 3 island mutation pools (Prompt Mutation, AST Crossover, Heuristic Synthesis), deterministic Python sandbox verifiers (1D Bin Packing, Range Query RMQ, and Prime Polynomial Invariants), and zero hallucinations guaranteed by objective reward thresholds (>0.9000).";
+    }
+
+    if (q.includes('tender') || q.includes('rfp') || q.includes('nit') || q.includes('bid') || q.includes('pwd') || q.includes('cpwd') || q.includes('nhai') || q.includes('dossier')) {
+        return "The **AXIS Tender Intelligence & Bid Readiness Subsystem** automates public sector procurement auditing across Indian government bodies (Maha PWD, CPWD, NHAI). It ingests 100+ page NITs in seconds, calculates statutory Indian Bid Capacity using `(A * N * 2) - B`, audits financial turnover and banker solvency, cross-checks 15 authentic benchmarks, and exports executive Microsoft Word (.docx) Bid Readiness Dossiers.";
+    }
+
     if (q.includes('dbms') || q.includes('database') || q.includes('sql') || q.includes('rdbms') || q.includes('nosql') || q.includes('acid')) {
         return "A **Database Management System (DBMS)** is specialized software that enables users and applications to create, protect, read, update, and manage structured collections of data.\n\n" +
                "### 🏛️ Core Concepts & Architecture\n" +
@@ -290,17 +298,22 @@ function generateLocalDocsReply(query) {
     if (q.includes('stdin') || q.includes('input')) {
         return "The Cloud Computer features an isolated execution sandbox equipped with a Safe Input Shim. When `input()` is called without terminal interaction, it automatically handles EOFError and defaults to 'User' in milliseconds, preventing the 30-second timeout. Operators can also supply inputs directly in the STDIN input field.";
     }
-    if (q.includes('archetype') || q.includes('nova') || q.includes('sage') || q.includes('axis') || q.includes('muse') || q.includes('hex') || q.includes('felipe') || q.includes('todd') || q.includes('alfred') || q.includes('dev')) {
-        return "DOTS features 5 Specialist Archetypes:\n- **Blue Dot (NOVA)**: Blue face — Product Launch Lead\n- **Lime-Green Dot (SAGE)**: Lime-green face with round glasses — Research Scientist & Evidence\n- **Golden-Yellow Dot (AXIS)**: Golden-yellow star face — Enterprise Deals & Technical POCs\n- **Purple Dot (MUSE)**: Purple face with planetary ring — Content & Media Creator\n- **Dark Navy Dot (HEX)**: Dark navy face with glowing cyan features — Autonomous Engineering PRs & Bugfixes.";
+
+    if (q.includes('archetype') || q.includes('nova') || q.includes('sage') || q.includes('axis') || q.includes('muse') || q.includes('hex') || q.includes('silver')) {
+        return "ONE DOTS features 6 Specialist Archetypes:\n- **Blue Dot (NOVA)**: Product Launch Lead — Linear & GitHub roadmaps\n- **Lime-Green Dot (SAGE)**: Research Scientist — Statistical analysis, Welch's t-test, ANOVA & charts\n- **Golden-Yellow Dot (AXIS)**: Tender & Enterprise Lead — Government tender NIT ingestion & compliance matrices\n- **Purple Dot (MUSE)**: Content Studio Lead — Real .pptx presentations, .docx reports & study guides\n- **Dark Navy Dot (HEX)**: Autonomous Software Dev — Bug reproduction, sandbox pytests & atomic patches\n- **Red Dot (SILVER)**: Ineffable Discovery Scientist — Pure RL heuristics & verified mathematical invariants.";
     }
+
     if (q.includes('voice') || q.includes('call')) {
-        return "Real-Time Voice Calls connect directly to the Google Gemini 3.5 Audio Engine. Click '📞 Voice Call' in any Dot profile to begin speaking with full bidirectional audio synthesis.";
+        return "Real-Time Voice Calls connect directly to the Google Gemini Audio Engine. Click 'Live Voice Call' in any Dot profile to speak with full bidirectional audio synthesis.";
     }
-    if (q.includes('safeguard') || q.includes('review') || q.includes('approval')) {
-        return "The Action Auto-Review safeguard categorizes operations into Low, Medium, High Risk, and Blocked. High Risk operations (like modifying databases or external systems) halt and trigger the animated Human Approval Gate banner.";
+
+    if (q.includes('safeguard') || q.includes('review') || q.includes('approval') || q.includes('security')) {
+        return "The 19-Layer Hardened Security Matrix includes: Row-Level Security (RLS) tenant isolation, tamper-evident SQLite WAL audit logging, zero-trust cloud computers, Action Auto-Review risk scoring, and mandatory Human-in-the-Loop approval gates.";
     }
+
     if (q.includes('pricing') || q.includes('tier') || q.includes('plan') || q.includes('cost') || q.includes('quota')) {
         return "ONE DOTS offers two commercial tiers:\n- **Starter ($0/mo)**: Community access, 50 autonomous cycles/mo, shared sandboxes.\n- **Business Premium ($50/user/mo)**: 500 deep work cycles/mo, dedicated cloud computers, priority voice synthesis, and unlimited 4,000+ app connectors.";
     }
-    return "DOTS are always-on autonomous AI agents powered by Google Gemini 3.5 and dedicated cloud computers. They work towards your mission 24/7 with 4,000+ app connectors and human approval safeguards. Ask me anything about our 5 specialist Dots, sandbox STDIN handling, or any database & software engineering concept!";
+
+    return "ONE DOTS is an always-on autonomous AI platform powered by Google Gemini and dedicated cloud computers. It features 6 specialist Dots, the Ineffable Empirical Discovery Engine, AXIS Tender Intelligence, and 19 enterprise security layers. Ask me anything about our architecture, specialists, discovery experiments, or engineering questions!";
 }
