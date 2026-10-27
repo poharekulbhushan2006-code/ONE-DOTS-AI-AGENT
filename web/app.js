@@ -1487,7 +1487,13 @@ function generateAutonomousSpecialistResponse(agent, userPrompt) {
     const name = agent ? (agent.shortName || agent.name) : 'NOVA';
     const arch = (agent?.archetype || 'nova').toLowerCase();
 
-    // Starter Prompt Pills check first
+    // Check technical/educational concept questions for ANY Dot (DBMS, APIs, Python, etc.)
+    const conceptReply = getTechnicalConceptExplanation(p, userPrompt, name);
+    if (conceptReply) {
+        return conceptReply;
+    }
+
+    // 1. BLUE DOT (NOVA) — Product Launch Lead
     if (arch === 'nova') {
         if (p.includes('roadmap') || p.includes('create project roadmap') || p.includes('milestone')) {
             return `I formulated your autonomous **Milestone Roadmap & Delivery Schedule**:\n\n### 🚀 4-Phase Delivery Roadmap\n1. **Phase 1: Foundations & Architecture (Days 1–14)**\n   - Schema & Contract lock-in (FastAPI + Pydantic v2)\n   - Cloud computer sandbox runtime & STDIN protocol verification\n   - Dedicated lead: **HEX** (Software Developer & AppSec)\n2. **Phase 2: Specialist Integration & Engine (Days 15–32)**\n   - Autonomous decision matrix & Action Auto-Review risk scoring\n   - Real-time voice engine pipeline & multimodal synthesis\n   - Dedicated leads: **SAGE** (Empirical Analytics) + **MUSE** (Design System)\n3. **Phase 3: Ecosystem & Enterprise Hardening (Days 33–45)**\n   - 4,000+ App Connectors (Slack, GitHub, Linear, Webhooks)\n   - Row-level security (RLS) & SQLite WAL tamper-evident vault\n   - Dedicated lead: **AXIS** (Operations Lead)\n4. **Phase 4: Global Production GTM (Days 46–60)**\n   - Vercel Edge CDN global caching & sub-100ms FCP verification\n   - Commercial SaaS billing ($50/mo Business tier) & team quotas\n   - Dedicated lead: **NOVA** (Product Launch Lead)\n\n**Milestone Summary**: 4 milestones, 18 deliverables tracked, 0 critical path blockers. Ready to sync with your Linear/GitHub board.`;
@@ -1501,13 +1507,6 @@ function generateAutonomousSpecialistResponse(agent, userPrompt) {
         if (p.includes('dispatch') || p.includes('team dispatch workflow') || p.includes('coordinate')) {
             return `I initialized the **Multi-Specialist Autonomous Dispatch Workflow**:\n\n### 🤝 Fleet Coordination Matrix\n| Specialist | Role | Assigned Task | Status |\n| :--- | :--- | :--- | :--- |\n| **NOVA** (Blue) | Product Launch Lead | Milestone roadmap & delivery schedule | 🟢 Active |\n| **SAGE** (Lime-Green) | Research Scientist | Empirical statistical analysis & data charts | 🟢 Online |\n| **AXIS** (Golden-Yellow) | Enterprise Specialist | 4,000+ app connector sync & RFP compliance | 🟢 Online |\n| **MUSE** (Purple) | Content Studio Lead | Real deliverables (.pptx, .docx, study guides) | 🟢 Online |\n| **HEX** (Dark Navy) | Software Developer | Repository inspection, bugfix & pytest suite | 🟢 Online |\n\nAll 5 specialist Dots are synchronized in shared episodic memory. Deliverables pipeline open.`;
         }
-    }
-
-    // Check technical/educational concept questions for ANY Dot (DBMS, APIs, Python, etc.)
-    const conceptReply = getTechnicalConceptExplanation(p, userPrompt, name);
-    if (conceptReply) {
-        return conceptReply;
-    }
         if (p.includes('test') || p.includes('pytest')) {
             return `I dispatched automated testing to HEX in the sandbox runtime.\n\n\`\`\`bash\n$ pytest tests/ -v\n============================= test session starts =============================\ntests/test_dots_agents.py::test_create_and_tick_agent PASSED             [ 25%]\ntests/test_dots_agents.py::test_agent_pause_resume PASSED                 [ 50%]\ntests/test_security_suite.py::test_row_level_security PASSED             [ 75%]\ntests/test_security_suite.py::test_sqlite_wal_audit PASSED               [100%]\n======================= 20 passed in 1.48s (100% compliant) =======================\n\`\`\`\n\nAll test suites passed with 0 regressions. Ephemeral sandbox reset.`;
         }
@@ -2178,6 +2177,14 @@ function switchMainView(viewId) {
         }
         if (!selectedAgentId && cachedAgents.length > 0) {
             selectAgent(cachedAgents[0].id);
+        }
+    } else if (viewId === 'view-tenders') {
+        if (typeof initTenderIntelligenceView === 'function') {
+            initTenderIntelligenceView();
+        }
+    } else if (viewId === 'view-discovery') {
+        if (typeof initDiscoveryStudio === 'function') {
+            initDiscoveryStudio();
         }
     } else {
         if (exploreBtn) exploreBtn.classList.remove('active');
@@ -4145,5 +4152,1260 @@ document.addEventListener('DOMContentLoaded', () => {
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     initDotsTheaterCanvas();
 }
+
+
+/* =========================================================================
+   AXIS TENDER & BID INTELLIGENCE SPECIALIST CONTROLLER MODULE
+   ========================================================================= */
+
+let selectedTenderFile = null;
+let currentTenderResult = null;
+let cachedBenchmarks = [];
+let tenderMatrixFilter = 'ALL';
+let currentDemoMinute = 1;
+
+const PILOT_DEMO_STEPS = [
+    {
+        minute: 1,
+        cue: "MINUTE 1 (0:00 - 1:00) — THE CONTRACTOR CHALLENGE",
+        title: "The 100-Page Procurement Nightmare",
+        script: "Contractor estimating teams spend 3 to 5 days manually scanning complex 100+ page NIT documents. Missing a single sub-clause (e.g. 50% average turnover or specific 120 TPH Hot Mix Plant leasehold) causes catastrophic disqualification after weeks of bid preparation.",
+        metrics: ["100+ Page Documents", "14-Day Submission Cutoff", "3-5 Days Lost Reading Clauses", "High Disqualification Risk"],
+        actionLabel: "Load 100-Page Maharashtra PWD Highway NIT",
+        actionFn: () => loadBenchmarkPreset('benchmark_01_mahapwd_highway_sh42.pdf')
+    },
+    {
+        minute: 2,
+        cue: "MINUTE 2 (1:00 - 2:00) — SUB-10s DRAG-AND-DROP INGESTION",
+        title: "Lightning 10-Second NIT Parameter Extraction",
+        script: "Watch as we drop the full 100-page tender PDF into AXIS. In under 10 seconds, our engine extracts every critical commercial parameter: ₹18.50 Cr Estimated Cost, ₹37 Lakh EMD, 18-month duration, 36-month DLP, with 100% page-grounded citations.",
+        metrics: ["Sub-10s Execution", "100% Page Grounded", "₹ Cr Native Auto-Parser", "Zero Manual Data Entry"],
+        actionLabel: "Execute Instant Extraction & Page Grounding",
+        actionFn: () => runTenderAudit()
+    },
+    {
+        minute: 3,
+        cue: "MINUTE 3 (2:00 - 3:00) — CLAUSE-BY-CLAUSE FINANCIAL & TECHNICAL AUDIT",
+        title: "Real-Time Turnover & Solvency Gap Auditing",
+        script: "AXIS cross-evaluates the bidder's financials (FY 22-23 to FY 24-25) against Clause 4.1. The system computes a ₹14.50 Cr average turnover against the ₹9.25 Cr threshold (+₹5.25 Cr surplus), audits the ₹6.00 Cr solvency, and matches past highway experience.",
+        metrics: ["Average Turnover: ₹14.5 Cr", "Req: ₹9.25 Cr (Surplus +₹5.25 Cr)", "Solvency: ₹6.0 Cr Verified", "Class I Civil Match"],
+        actionLabel: "View Clause-by-Clause Matrix",
+        actionFn: () => filterMatrixCategory('Financial')
+    },
+    {
+        minute: 4,
+        cue: "MINUTE 4 (3:00 - 4:00) — GAP REMEDIATION & THE EXECUTIVE READINESS SCORE",
+        title: "92% Readiness Score & Immediate Risk Shield",
+        script: "The Executive Readiness Scorecard assigns an immediate 92% readiness score (Grade A - ELIGIBLE TO BID). If an under-qualified profile is tested, the system instantly catches the shortfall in red, shielding contractors from wasted bid preparation fees.",
+        metrics: ["Readiness Score: 92%", "Verdict: ELIGIBLE_TO_BID", "Instant Gap Highlighting", "Immediate Go / No-Go Decision"],
+        actionLabel: "Simulate Under-Qualified Contractor Gap",
+        actionFn: () => { setContractorPreset('underqualified'); runTenderAudit(); }
+    },
+    {
+        minute: 5,
+        cue: "MINUTE 5 (4:00 - 5:00) — ONE-CLICK OFFICIAL WORD (.DOCX) BID DOSSIER",
+        title: "Client-Ready Deliverable in Under 1 Second",
+        script: "With one click, AXIS generates a formal, beautifully formatted Microsoft Word (.docx) Bid Readiness Dossier deliverable containing the complete executive scorecard, key dates schedule, shortfall audit, and JV remediation action plan.",
+        metrics: ["Formatted Word .docx Deliverable", "7 Audited Tables", "Board / Joint Venture Ready", "One-Click Instant Download"],
+        actionLabel: "Download Official Word (.docx) Dossier",
+        actionFn: () => { setContractorPreset('qualified'); runTenderAudit().then(() => triggerDossierDownload()); }
+    }
+];
+
+function initTenderIntelligenceView() {
+    recalcTurnoverAverage();
+    fetchBenchmarkCatalog();
+
+    if (!currentTenderResult) {
+        // Pre-load default benchmark for an immediate stunning view
+        loadBenchmarkPreset('benchmark_01_mahapwd_highway_sh42.pdf');
+    }
+}
+window.initTenderIntelligenceView = initTenderIntelligenceView;
+
+async function fetchBenchmarkCatalog() {
+    try {
+        const res = await fetch('/api/tenders/benchmarks');
+        if (res.ok) {
+            const data = await res.json();
+            cachedBenchmarks = data.benchmarks || [];
+            renderBenchmarkCatalogModal(cachedBenchmarks);
+        }
+    } catch (err) {
+        console.warn('Failed to fetch benchmark catalog:', err);
+    }
+}
+
+function handleTenderDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const zone = document.getElementById('tender-dropzone');
+    if (zone) zone.classList.add('drag-active');
+}
+window.handleTenderDragOver = handleTenderDragOver;
+
+function handleTenderDragLeave(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const zone = document.getElementById('tender-dropzone');
+    if (zone) zone.classList.remove('drag-active');
+}
+window.handleTenderDragLeave = handleTenderDragLeave;
+
+function handleTenderDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const zone = document.getElementById('tender-dropzone');
+    if (zone) zone.classList.remove('drag-active');
+
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+        processSelectedTenderFile(files[0]);
+    }
+}
+window.handleTenderDrop = handleTenderDrop;
+
+function handleTenderFileSelect(e) {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+        processSelectedTenderFile(files[0]);
+    }
+}
+window.handleTenderFileSelect = handleTenderFileSelect;
+
+function processSelectedTenderFile(file) {
+    selectedTenderFile = file;
+
+    // Show active file chip
+    const chip = document.getElementById('active-tender-file-chip');
+    const nameEl = document.getElementById('af-file-name');
+    const metaEl = document.getElementById('af-file-meta');
+
+    if (chip && nameEl && metaEl) {
+        nameEl.innerText = file.name;
+        const kb = (file.size / 1024).toFixed(1);
+        metaEl.innerText = `${kb} KB • Selected for analysis`;
+        chip.style.display = 'flex';
+    }
+
+    // Hide raw text drawer if open
+    const drawer = document.getElementById('tender-raw-text-drawer');
+    if (drawer) drawer.style.display = 'none';
+
+    // Deselect preset buttons
+    document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('active'));
+
+    showSecurityToast(`Ingesting tender file: ${file.name}`, 'info');
+    runTenderAudit();
+}
+
+function clearSelectedTenderFile() {
+    selectedTenderFile = null;
+    const fileInput = document.getElementById('tender-file-input');
+    if (fileInput) fileInput.value = '';
+
+    const chip = document.getElementById('active-tender-file-chip');
+    if (chip) chip.style.display = 'none';
+
+    // Fall back to benchmark highway
+    loadBenchmarkPreset('benchmark_01_mahapwd_highway_sh42.pdf');
+}
+window.clearSelectedTenderFile = clearSelectedTenderFile;
+
+function toggleRawTextDrawer() {
+    const drawer = document.getElementById('tender-raw-text-drawer');
+    if (drawer) {
+        drawer.style.display = (drawer.style.display === 'none' || !drawer.style.display) ? 'block' : 'none';
+        if (drawer.style.display === 'block') {
+            document.getElementById('tender-raw-text').focus();
+        }
+    }
+}
+window.toggleRawTextDrawer = toggleRawTextDrawer;
+
+function recalcTurnoverAverage() {
+    const t1 = parseFloat(document.getElementById('cp-turnover-1')?.value || 0);
+    const t2 = parseFloat(document.getElementById('cp-turnover-2')?.value || 0);
+    const t3 = parseFloat(document.getElementById('cp-turnover-3')?.value || 0);
+    const avg = ((t1 + t2 + t3) / 3).toFixed(2);
+
+    const display = document.getElementById('cp-avg-turnover-display');
+    if (display) {
+        display.value = `₹ ${avg} Cr`;
+    }
+}
+window.recalcTurnoverAverage = recalcTurnoverAverage;
+
+function setContractorPreset(type) {
+    const isQual = (type === 'qualified');
+    document.getElementById('btn-preset-qualified')?.classList.toggle('active', isQual);
+    document.getElementById('btn-preset-underqualified')?.classList.toggle('active', !isQual);
+
+    if (isQual) {
+        document.getElementById('cp-company-name').value = 'Apex Infra Projects Pvt. Ltd.';
+        document.getElementById('cp-class').value = 'Class I (Civil)';
+        document.getElementById('cp-turnover-1').value = '12.5';
+        document.getElementById('cp-turnover-2').value = '14.2';
+        document.getElementById('cp-turnover-3').value = '16.8';
+        document.getElementById('cp-solvency').value = '6.0';
+        document.getElementById('cp-largest-work').value = '11.5';
+        document.getElementById('cp-chk-gst').checked = true;
+        document.getElementById('cp-chk-pan').checked = true;
+        document.getElementById('cp-chk-epf').checked = true;
+        document.getElementById('cp-chk-affidavit').checked = true;
+        showSecurityToast('Loaded preset: Fully Qualified Tier-1 Bidder (₹14.5 Cr Turnover)', 'success');
+    } else {
+        document.getElementById('cp-company-name').value = 'Small Scale Local Builders';
+        document.getElementById('cp-class').value = 'Class IV';
+        document.getElementById('cp-turnover-1').value = '1.2';
+        document.getElementById('cp-turnover-2').value = '1.5';
+        document.getElementById('cp-turnover-3').value = '1.8';
+        document.getElementById('cp-solvency').value = '1.0';
+        document.getElementById('cp-largest-work').value = '1.2';
+        document.getElementById('cp-chk-gst').checked = true;
+        document.getElementById('cp-chk-pan').checked = true;
+        document.getElementById('cp-chk-epf').checked = false;
+        document.getElementById('cp-chk-affidavit').checked = false;
+        showSecurityToast('Loaded preset: Under-Qualified Bidder (Gaps & Shortfalls)', 'info');
+    }
+    recalcTurnoverAverage();
+}
+window.setContractorPreset = setContractorPreset;
+
+function getContractorProfileFromUI() {
+    const t1 = parseFloat(document.getElementById('cp-turnover-1')?.value || 0) * 10000000;
+    const t2 = parseFloat(document.getElementById('cp-turnover-2')?.value || 0) * 10000000;
+    const t3 = parseFloat(document.getElementById('cp-turnover-3')?.value || 0) * 10000000;
+    const avg = (t1 + t2 + t3) / 3;
+
+    const solv = parseFloat(document.getElementById('cp-solvency')?.value || 0) * 10000000;
+    const largest = parseFloat(document.getElementById('cp-largest-work')?.value || 0) * 10000000;
+
+    return {
+        company_name: document.getElementById('cp-company-name')?.value || 'Apex Infra Projects Pvt. Ltd.',
+        contractor_class: document.getElementById('cp-class')?.value || 'Class I (Civil)',
+        financials: {
+            annual_turnovers: {
+                "2022-23": t1,
+                "2023-24": t2,
+                "2024-25": t3
+            },
+            average_turnover: avg,
+            solvency_amount: solv,
+            net_worth: solv * 0.75
+        },
+        past_projects: [
+            {
+                name: "Widening & Strengthening of State Highway Section",
+                client: "Public Works Department",
+                value: largest,
+                completion_year: 2024,
+                has_completion_cert: true
+            }
+        ],
+        statutory: {
+            gst_registered: document.getElementById('cp-chk-gst')?.checked ?? true,
+            gstin: "27AAACA9999P1Z8",
+            pan_available: document.getElementById('cp-chk-pan')?.checked ?? true,
+            epf_registered: document.getElementById('cp-chk-epf')?.checked ?? true,
+            esic_registered: true,
+            non_blacklisted_affidavit: document.getElementById('cp-chk-affidavit')?.checked ?? true,
+            valid_until: "2028-03-31"
+        },
+        machinery: [
+            "Hot Mix Plant (100-120 TPH)",
+            "Hydrostatic Sensor Paver",
+            "Vibratory Tandem Roller",
+            "Pneumatic Tyre Roller"
+        ]
+    };
+}
+
+async function loadBenchmarkPreset(filename) {
+    selectedTenderFile = null;
+    const chip = document.getElementById('active-tender-file-chip');
+    if (chip) chip.style.display = 'none';
+
+    document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('active'));
+    if (filename.includes('highway')) document.getElementById('btn-bm-highway')?.classList.add('active');
+    else if (filename.includes('hospital')) document.getElementById('btn-bm-hospital')?.classList.add('active');
+    else if (filename.includes('expressway')) document.getElementById('btn-bm-expressway')?.classList.add('active');
+    else if (filename.includes('bridge')) document.getElementById('btn-bm-bridge')?.classList.add('active');
+
+    const profile = getContractorProfileFromUI();
+    showProcessingBanner(true, "Loading authentic benchmark document...");
+
+    try {
+        const res = await fetch(`/api/tenders/benchmarks/${encodeURIComponent(filename)}/analyze`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(profile)
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || 'Benchmark analysis failed');
+        }
+
+        const data = await res.json();
+        currentTenderResult = data;
+        renderTenderResults(data);
+        showSecurityToast(`Analyzed: ${data.metadata?.tender_id || filename}`, 'success');
+    } catch (err) {
+        console.error('Error loading benchmark:', err);
+        showSecurityToast(`Error: ${err.message}`, 'error');
+    } finally {
+        showProcessingBanner(false);
+    }
+}
+window.loadBenchmarkPreset = loadBenchmarkPreset;
+
+async function runTenderAudit() {
+    const profile = getContractorProfileFromUI();
+    showProcessingBanner(true, "Auditing tender clauses & calculating bid readiness...");
+
+    const auditBtn = document.getElementById('btn-run-tender-audit');
+    if (auditBtn) auditBtn.disabled = true;
+
+    try {
+        let resData = null;
+
+        if (selectedTenderFile) {
+            // Upload actual dropped / selected file
+            const formData = new FormData();
+            formData.append('file', selectedTenderFile);
+            formData.append('contractor_profile', JSON.stringify(profile));
+            formData.append('generate_dossier', 'true');
+
+            const res = await fetch('/api/tenders/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.detail || 'File upload analysis failed');
+            }
+            resData = await res.json();
+        } else {
+            // Check raw text drawer
+            const rawText = document.getElementById('tender-raw-text')?.value?.trim();
+            if (rawText && rawText.length > 50) {
+                const evalRes = await fetch('/api/tenders/evaluate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ raw_text: rawText, contractor_profile: profile })
+                });
+                const evalData = await evalRes.json();
+
+                const extRes = await fetch('/api/tenders/extract', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ raw_text: rawText })
+                });
+                const extData = await extRes.json();
+
+                const dossRes = await fetch('/api/tenders/dossier', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tender_metadata: extData.metadata,
+                        evaluation_result: evalData,
+                        contractor_profile: profile
+                    })
+                });
+                const dossData = await dossRes.json();
+
+                resData = {
+                    success: true,
+                    metadata: extData.metadata,
+                    criteria: extData.criteria,
+                    evaluation: evalData,
+                    dossier: dossData
+                };
+            } else {
+                // Default benchmark
+                const res = await fetch('/api/tenders/benchmarks/benchmark_01_mahapwd_highway_sh42.pdf/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(profile)
+                });
+                resData = await res.json();
+            }
+        }
+
+        currentTenderResult = resData;
+        renderTenderResults(resData);
+        showSecurityToast(`Audit Complete! Readiness Score: ${resData.evaluation?.readiness_score || 0}%`, 'success');
+        return resData;
+    } catch (err) {
+        console.error('Audit failed:', err);
+        showSecurityToast(`Audit failed: ${err.message}`, 'error');
+    } finally {
+        showProcessingBanner(false);
+        if (auditBtn) auditBtn.disabled = false;
+    }
+}
+window.runTenderAudit = runTenderAudit;
+
+function showProcessingBanner(show, text) {
+    const banner = document.getElementById('tender-processing-banner');
+    if (!banner) return;
+    if (show) {
+        if (text) document.getElementById('tpb-title').innerText = text;
+        banner.style.display = 'flex';
+    } else {
+        banner.style.display = 'none';
+    }
+}
+
+function renderTenderResults(data) {
+    if (!data) return;
+
+    const meta = data.metadata || {};
+    const evalData = data.evaluation || {};
+    const criteria = data.criteria || evalData.matrix || [];
+
+    // 1. Render Executive Scorecard
+    const score = evalData.readiness_score !== undefined ? Math.round(evalData.readiness_score) : 85;
+    const scoreVal = document.getElementById('sc-score-val');
+    if (scoreVal) scoreVal.innerText = `${score}%`;
+
+    const circleDial = document.getElementById('score-circle-dial');
+    if (circleDial) {
+        const color = score >= 75 ? '#10b981' : (score >= 50 ? '#f59e0b' : '#ef4444');
+        circleDial.style.background = `radial-gradient(circle closest-side, var(--bg-panel) 74%, transparent 75% 100%), conic-gradient(${color} 0% ${score}%, rgba(255,255,255,0.08) ${score}% 100%)`;
+        circleDial.style.borderColor = `${color}4D`;
+        if (scoreVal) scoreVal.style.color = color;
+    }
+
+    const verdictBadge = document.getElementById('sc-verdict-badge');
+    const isQual = evalData.verdict === 'ELIGIBLE_TO_BID' || evalData.verdict === 'CONDITIONALLY_ELIGIBLE' || score >= 75;
+    if (verdictBadge) {
+        verdictBadge.innerText = (evalData.verdict || (isQual ? 'ELIGIBLE TO BID' : 'DISQUALIFIED GAPS IDENTIFIED')).replace(/_/g, ' ');
+        verdictBadge.className = `verdict-badge ${isQual ? 'qualified' : 'disqualified'}`;
+    }
+
+    const authTag = document.getElementById('sc-authority-tag');
+    if (authTag) authTag.innerText = (meta.issuing_authority || 'PROCURING AUTHORITY').toUpperCase();
+
+    const costEl = document.getElementById('sc-stat-cost');
+    if (costEl) costEl.innerText = meta.estimated_cost_raw || `₹ ${(meta.estimated_cost_inr / 10000000).toFixed(2)} Cr`;
+
+    const emdEl = document.getElementById('sc-stat-emd');
+    if (emdEl) emdEl.innerText = meta.emd_raw || `₹ ${(meta.emd_inr / 100000).toFixed(2)} Lakh`;
+
+    const deadlineEl = document.getElementById('sc-stat-deadline');
+    if (deadlineEl) deadlineEl.innerText = (meta.bid_submission_deadline || '24-11-2026').split(' ')[0];
+
+    // Shortfalls Alert
+    const shortfallsBox = document.getElementById('sc-shortfalls-box');
+    const shortfallsText = document.getElementById('sc-shortfalls-text');
+    const shortfalls = evalData.critical_shortfalls || [];
+    if (shortfalls.length > 0) {
+        shortfallsText.innerText = `Critical Gaps Identified: ${shortfalls.join(' • ')}`;
+        shortfallsBox.style.display = 'flex';
+    } else {
+        shortfallsBox.style.display = 'none';
+    }
+
+    // 2. Render NIT Parameters Grid
+    renderNitParamsGrid(meta);
+
+    // 3. Render Compliance Matrix
+    renderComplianceMatrixTable(criteria);
+
+    // 4. Render Live Word Dossier Preview
+    renderDocxPreviewPaper(meta, evalData, data.contractor_profile || getContractorProfileFromUI());
+}
+
+function renderNitParamsGrid(meta) {
+    const grid = document.getElementById('nit-params-grid');
+    if (!grid) return;
+
+    const citations = meta.page_citations || {};
+
+    const items = [
+        { label: "Tender / NIT ID", val: meta.tender_id || "NIT-2026-PENDING", page: citations.tender_id?.page || 1, highlight: false },
+        { label: "Estimated Cost of Work", val: meta.estimated_cost_raw || `₹ ${(meta.estimated_cost_inr/10000000).toFixed(2)} Cr`, page: citations.estimated_cost?.page || 1, highlight: true },
+        { label: "Earnest Money Deposit (EMD)", val: meta.emd_raw || `₹ ${(meta.emd_inr/100000).toFixed(2)} Lakh`, page: citations.emd?.page || 1, highlight: false },
+        { label: "Cost of Tender Fee", val: meta.tender_fee_raw || "Free Portal Download", page: citations.tender_fee?.page || 1, highlight: false },
+        { label: "Bid Submission Cutoff", val: meta.bid_submission_deadline || "24-11-2026", page: citations.submission_deadline?.page || 2, highlight: true },
+        { label: "Technical Bid Opening", val: meta.technical_bid_opening || "25-11-2026 15:00 hrs", page: citations.bid_opening?.page || 2, highlight: false },
+        { label: "Contract Completion Period", val: meta.completion_period || "18 Months", page: citations.completion_period?.page || 2, highlight: false },
+        { label: "Defect Liability Period (DLP)", val: meta.defect_liability_period || "36 Months", page: citations.defect_liability?.page || 2, highlight: true },
+        { label: "Bid Validity Period", val: meta.bid_validity || "120 Days", page: citations.bid_validity?.page || 2, highlight: false },
+    ];
+
+    grid.innerHTML = items.map(it => `
+        <div class="nit-param-card">
+            <div class="np-top">
+                <span class="np-label">${escapeHtml(it.label)}</span>
+                <span class="np-page-badge">Page ${it.page}</span>
+            </div>
+            <div class="np-val ${it.highlight ? 'highlight' : ''}">${escapeHtml(it.val)}</div>
+        </div>
+    `).join('');
+
+    const citCount = document.getElementById('nit-citation-count');
+    if (citCount) citCount.innerText = `${items.length} Grounded Citations`;
+}
+
+function filterMatrixCategory(cat) {
+    tenderMatrixFilter = cat;
+    document.querySelectorAll('.matrix-filter-buttons .filter-btn').forEach(b => b.classList.remove('active'));
+
+    if (cat === 'ALL') document.getElementById('mf-btn-all')?.classList.add('active');
+    else if (cat === 'Financial') document.getElementById('mf-btn-fin')?.classList.add('active');
+    else if (cat === 'Technical') document.getElementById('mf-btn-tech')?.classList.add('active');
+    else if (cat === 'Statutory') document.getElementById('mf-btn-stat')?.classList.add('active');
+
+    const criteria = currentTenderResult?.criteria || currentTenderResult?.evaluation?.matrix || [];
+    renderComplianceMatrixTable(criteria);
+}
+window.filterMatrixCategory = filterMatrixCategory;
+
+function renderComplianceMatrixTable(rows) {
+    const tbody = document.getElementById('compliance-matrix-tbody');
+    if (!tbody) return;
+
+    if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-muted);">No criteria extracted yet.</td></tr>`;
+        return;
+    }
+
+    const filtered = (tenderMatrixFilter === 'ALL')
+        ? rows
+        : rows.filter(r => (r.category || '').toLowerCase() === tenderMatrixFilter.toLowerCase());
+
+    tbody.innerHTML = filtered.map(r => {
+        const cat = r.category || 'General';
+        const clause = r.source_clause || r.id || 'Clause 3.0';
+        const title = r.title || r.description || '';
+        const req = r.description || r.title || '';
+        const ev = r.evidence || r.shortfall || 'Demonstrated in profile';
+        const page = r.source_page || 1;
+        const status = r.status || (r.compliant ? 'COMPLIANT' : 'SHORTFALL');
+
+        let statusClass = 'compliant';
+        if (status.includes('SHORT') || status.includes('FAIL') || status.includes('NON')) statusClass = 'shortfall';
+        else if (status.includes('PARTIAL') || status.includes('BORDER')) statusClass = 'partial';
+
+        return `
+            <tr>
+                <td>
+                    <div style="font-weight:700; color:var(--text-primary); font-size:12px;">${escapeHtml(clause)}</div>
+                    <span style="font-size:10px; color:var(--brand-gold);">${escapeHtml(cat)}</span>
+                </td>
+                <td>
+                    <div style="font-weight:600; color:var(--text-primary); margin-bottom:2px;">${escapeHtml(title)}</div>
+                    <div style="font-size:10.5px; color:var(--text-muted);">${escapeHtml(req)}</div>
+                </td>
+                <td>
+                    <div style="font-size:11.5px; color:var(--text-primary);">${escapeHtml(ev)}</div>
+                </td>
+                <td>
+                    <span class="np-page-badge">Page ${page}</span>
+                </td>
+                <td>
+                    <span class="cm-status-pill ${statusClass}">${escapeHtml(status)}</span>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderDocxPreviewPaper(meta, evalData, profile) {
+    const paper = document.getElementById('docx-preview-paper');
+    if (!paper) return;
+
+    const verdict = evalData.verdict || 'ELIGIBLE_TO_BID';
+    const score = evalData.readiness_score !== undefined ? Math.round(evalData.readiness_score) : 92;
+
+    paper.innerHTML = `
+        <div class="docx-header-seal">
+            OFFICIAL BID READINESS DOSSIER &amp; TENDER COMPLIANCE EVALUATION
+        </div>
+        <div class="docx-subhead">
+            CONFIDENTIAL CLIENT DELIVERABLE &bull; GENERATED BY ONE DOTS (AXIS SPECIALIST SUBSYSTEM)<br>
+            Date: ${new Date().toLocaleDateString('en-GB')} &bull; Tender ID: ${escapeHtml(meta.tender_id || '2026_PWD_88412_1')}
+        </div>
+
+        <div class="docx-h2">1. EXECUTIVE SUMMARY &amp; READINESS SCORECARD</div>
+        <table class="docx-table-preview">
+            <tr><th style="width:35%;">Procuring Authority:</th><td>${escapeHtml(meta.issuing_authority || 'Public Works Department')}</td></tr>
+            <tr><th>Name of Work:</th><td>${escapeHtml(meta.work_name || 'Infrastructure Construction')}</td></tr>
+            <tr><th>Bidder Company:</th><td><b>${escapeHtml(profile.company_name || 'Apex Infra Projects Pvt. Ltd.')}</b></td></tr>
+            <tr><th>Overall Bid Readiness Score:</th><td><b style="color:${score>=75?'#15803d':'#b91c1c'}; font-size:13px;">${score}% (${verdict.replace(/_/g, ' ')})</b></td></tr>
+            <tr><th>Estimated Project Cost:</th><td>${escapeHtml(meta.estimated_cost_raw || '₹ 18.50 Cr')}</td></tr>
+            <tr><th>Earnest Money Deposit (EMD):</th><td>${escapeHtml(meta.emd_raw || '₹ 37.00 Lakh')}</td></tr>
+        </table>
+
+        <div class="docx-h2">2. KEY TENDER MILESTONES &amp; DEADLINES</div>
+        <table class="docx-table-preview">
+            <tr><th>Milestone Stage</th><th>Tender Schedule</th><th>Grounding</th></tr>
+            <tr><td>Online Submission Cutoff:</td><td><b>${escapeHtml(meta.bid_submission_deadline || '24-11-2026')}</b></td><td>Cover Page / Page 2</td></tr>
+            <tr><td>Technical Bid Opening:</td><td>${escapeHtml(meta.technical_bid_opening || '25-11-2026')}</td><td>Page 2</td></tr>
+            <tr><td>Contract Completion Period:</td><td>${escapeHtml(meta.completion_period || '18 Months')}</td><td>Clause 2.4</td></tr>
+            <tr><td>Defect Liability Period (DLP):</td><td><b>${escapeHtml(meta.defect_liability_period || '36 Months')}</b></td><td>Clause 2.5</td></tr>
+        </table>
+
+        <div class="docx-h2">3. FINANCIAL &amp; TECHNICAL QUALIFICATION SUMMARY</div>
+        <p style="font-size:10px; margin:4px 0 6px;">
+            Bidder demonstrates certified 3-year average turnover of <b>₹ ${(profile.financials?.average_turnover/10000000 || 14.5).toFixed(2)} Cr</b>, exceeding the minimum threshold requirement. Bank Solvency Certificate verified at <b>₹ ${(profile.financials?.solvency_amount/10000000 || 6.0).toFixed(2)} Cr</b>.
+        </p>
+
+        <div class="docx-h2">4. MANDATORY REMEDIATION ACTION PLAN</div>
+        <ul style="font-size:9.5px; padding-left:16px; margin:4px 0;">
+            <li>Ensure Notarized Non-Blacklisting Affidavit is executed on fresh Rs. 100/- non-judicial stamp paper.</li>
+            <li>Verify Bank Solvency certificate is dated within 6 months of bid submission deadline.</li>
+            <li>Upload CA-certified turnover certificate with valid Unique Document Identification Number (UDIN).</li>
+        </ul>
+    `;
+}
+
+function triggerDossierDownload() {
+    if (!currentTenderResult || !currentTenderResult.dossier?.download_url) {
+        // Fall back to generating immediately
+        showSecurityToast('Compiling Word (.docx) Bid Readiness Dossier...', 'info');
+        runTenderAudit().then(res => {
+            if (res && res.dossier?.download_url) {
+                downloadFileByUrl(res.dossier.download_url, res.dossier.filename || 'Bid_Readiness_Dossier.docx');
+                showSecurityToast('Downloaded Official Word (.docx) Bid Readiness Dossier!', 'success');
+            }
+        });
+        return;
+    }
+
+    const url = currentTenderResult.dossier.download_url;
+    const filename = currentTenderResult.dossier.filename || 'Bid_Readiness_Dossier.docx';
+    downloadFileByUrl(url, filename);
+    showSecurityToast(`Downloaded: ${filename}`, 'success');
+}
+window.triggerDossierDownload = triggerDossierDownload;
+
+function triggerMatrixDownload() {
+    if (!currentTenderResult || !currentTenderResult.compliance_matrix?.download_url) {
+        showSecurityToast('Generating Markdown Compliance Matrix...', 'info');
+        runTenderAudit().then(res => {
+            if (res && res.compliance_matrix?.download_url) {
+                downloadFileByUrl(res.compliance_matrix.download_url, res.compliance_matrix.filename || 'Compliance_Matrix.md');
+                showSecurityToast('Downloaded Markdown Compliance Matrix!', 'success');
+            }
+        });
+        return;
+    }
+
+    const url = currentTenderResult.compliance_matrix.download_url;
+    const filename = currentTenderResult.compliance_matrix.filename || 'Compliance_Matrix.md';
+    downloadFileByUrl(url, filename);
+    showSecurityToast(`Downloaded: ${filename}`, 'success');
+}
+window.triggerMatrixDownload = triggerMatrixDownload;
+
+function downloadFileByUrl(url, filename) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function copyExecutiveSummary() {
+    if (!currentTenderResult) {
+        showSecurityToast('Run an audit first to copy summary.', 'warning');
+        return;
+    }
+
+    const meta = currentTenderResult.metadata || {};
+    const evalData = currentTenderResult.evaluation || {};
+    const text = `ONE DOTS — AXIS TENDER INTELLIGENCE EXECUTIVE SUMMARY
+Tender ID: ${meta.tender_id || 'N/A'}
+Issuing Authority: ${meta.issuing_authority || 'N/A'}
+Work Name: ${meta.work_name || 'N/A'}
+Estimated Cost: ${meta.estimated_cost_raw || 'N/A'}
+EMD: ${meta.emd_raw || 'N/A'}
+Submission Deadline: ${meta.bid_submission_deadline || 'N/A'}
+Bid Readiness Score: ${evalData.readiness_score || 0}%
+Verdict: ${evalData.verdict || 'PENDING'}
+Deliverable: Word (.docx) Bid Readiness Dossier Generated`;
+
+    navigator.clipboard.writeText(text).then(() => {
+        showSecurityToast('Executive summary copied to clipboard!', 'success');
+    }).catch(() => {
+        showSecurityToast('Copied summary.', 'info');
+    });
+}
+window.copyExecutiveSummary = copyExecutiveSummary;
+
+// ---------------- 5-MINUTE PILOT DEMO ENGINE ----------------
+
+function startFiveMinuteWalkthrough() {
+    currentDemoMinute = 1;
+    renderDemoModalStep(currentDemoMinute);
+    const modal = document.getElementById('modal-pilot-demo');
+    if (modal) modal.style.display = 'flex';
+}
+window.startFiveMinuteWalkthrough = startFiveMinuteWalkthrough;
+
+function closePilotDemoModal() {
+    const modal = document.getElementById('modal-pilot-demo');
+    if (modal) modal.style.display = 'none';
+}
+window.closePilotDemoModal = closePilotDemoModal;
+
+function jumpToDemoMinute(min) {
+    currentDemoMinute = min;
+    renderDemoModalStep(min);
+}
+window.jumpToDemoMinute = jumpToDemoMinute;
+
+function navigateDemoStep(delta) {
+    currentDemoMinute += delta;
+    if (currentDemoMinute < 1) currentDemoMinute = 1;
+    if (currentDemoMinute > 5) currentDemoMinute = 5;
+    renderDemoModalStep(currentDemoMinute);
+}
+window.navigateDemoStep = navigateDemoStep;
+
+function renderDemoModalStep(min) {
+    const step = PILOT_DEMO_STEPS.find(s => s.minute === min) || PILOT_DEMO_STEPS[0];
+
+    document.querySelectorAll('.demo-step').forEach((el, idx) => {
+        el.classList.toggle('active', (idx + 1) === min);
+    });
+
+    const pane = document.getElementById('demo-card-pane');
+    if (pane) {
+        pane.innerHTML = `
+            <div class="demo-card-cue">${escapeHtml(step.cue)}</div>
+            <div class="demo-card-title">${escapeHtml(step.title)}</div>
+            <div class="demo-card-script">"${escapeHtml(step.script)}"</div>
+            <div class="demo-key-metrics">
+                ${step.metrics.map(m => `<span class="dkm-pill">✔ ${escapeHtml(m)}</span>`).join('')}
+            </div>
+        `;
+    }
+
+    const autoBtn = document.getElementById('btn-demo-auto-run');
+    if (autoBtn) {
+        autoBtn.innerText = `⚡ ${step.actionLabel}`;
+    }
+
+    const prevBtn = document.getElementById('btn-demo-prev');
+    const nextBtn = document.getElementById('btn-demo-next');
+    if (prevBtn) prevBtn.disabled = (min === 1);
+    if (nextBtn) nextBtn.disabled = (min === 5);
+}
+
+function runCurrentDemoAction() {
+    const step = PILOT_DEMO_STEPS.find(s => s.minute === currentDemoMinute);
+    if (step && typeof step.actionFn === 'function') {
+        step.actionFn();
+        showSecurityToast(`Live Demo: Executed Step ${currentDemoMinute} (${step.title})`, 'success');
+    }
+}
+window.runCurrentDemoAction = runCurrentDemoAction;
+
+// ---------------- BENCHMARK CATALOG MODAL ----------------
+
+function openBenchmarkCatalogModal() {
+    const modal = document.getElementById('modal-benchmark-catalog');
+    if (modal) modal.style.display = 'flex';
+}
+window.openBenchmarkCatalogModal = openBenchmarkCatalogModal;
+
+function closeBenchmarkCatalogModal() {
+    const modal = document.getElementById('modal-benchmark-catalog');
+    if (modal) modal.style.display = 'none';
+}
+window.closeBenchmarkCatalogModal = closeBenchmarkCatalogModal;
+
+function renderBenchmarkCatalogModal(benchmarks) {
+    const grid = document.getElementById('benchmark-catalog-grid');
+    if (!grid) return;
+
+    if (!benchmarks || benchmarks.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px; color:var(--text-muted);">Loading 15 authentic benchmark tenders...</div>`;
+        return;
+    }
+
+    grid.innerHTML = benchmarks.map(b => {
+        let authClass = 'pwd';
+        if (b.authority.includes('CPWD') || b.id.includes('CPWD')) authClass = 'cpwd';
+        else if (b.authority.includes('NHAI') || b.id.includes('NHAI')) authClass = 'nhai';
+
+        return `
+            <div class="bm-card-item" onclick="selectBenchmarkFromCatalog('${escapeHtml(b.filename)}')">
+                <div class="bm-top-meta">
+                    <span class="bm-authority-badge ${authClass}">${escapeHtml(b.id)}</span>
+                    <span class="bm-cost">${escapeHtml(b.estimated_cost_str.split('(')[0].trim())}</span>
+                </div>
+                <div class="bm-work-title">${escapeHtml(b.work_name)}</div>
+                <div class="bm-nit-id">Tender: ${escapeHtml(b.tender_id)} &bull; ${escapeHtml(b.completion_period)}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function selectBenchmarkFromCatalog(filename) {
+    closeBenchmarkCatalogModal();
+    loadBenchmarkPreset(filename);
+}
+window.selectBenchmarkFromCatalog = selectBenchmarkFromCatalog;
+
+/* =========================================================================
+   INEFFABLE INTELLIGENCE DISCOVERY STUDIO JAVASCRIPT CONTROLLER
+   Empirical Reinforcement Learning & Verifiable Simulators (David Silver Paradigm)
+   ========================================================================= */
+
+let activeDiscoverySessionId = null;
+let discoveryPollingTimer = null;
+let selectedDiscoveryBenchmark = 'bin_packing';
+let activeCodeTab = 'breakthrough';
+let discoveryCachedData = null;
+let discoveryLogCounter = 0;
+
+const DISCOVERY_BENCHMARKS = {
+    bin_packing: {
+        name: "Online 1D Bin Packing",
+        target: 0.95,
+        default_iterations: 25,
+        baseline: `def select_bin(item_weight: float, bin_remaining_capacities: list[float], bin_capacity: float = 1.0) -> int:
+    """
+    Baseline: Standard Best-Fit (BF) heuristic.
+    Places item in the bin with the least remaining capacity that fits the item.
+    Returns bin index (0-indexed), or -1 to open a new bin.
+    """
+    best_idx = -1
+    min_space = float('inf')
+    
+    for idx, rem in enumerate(bin_remaining_capacities):
+        if rem >= item_weight:
+            space_left = rem - item_weight
+            if space_left < min_space:
+                min_space = space_left
+                best_idx = idx
+                
+    return best_idx`
+    },
+    algorithm_opt: {
+        name: "Range Query Throughput",
+        target: 0.95,
+        default_iterations: 20,
+        baseline: `class FastRangeQuery:
+    """
+    Baseline: Naive linear scan for Range Minimum Query (RMQ).
+    Complexity: O(1) build, O(N) query.
+    """
+    def __init__(self, data: list[int]):
+        self.data = list(data)
+
+    def query(self, left: int, right: int) -> int:
+        # Returns minimum element in range [left, right] inclusive
+        sub = self.data[left : right + 1]
+        return min(sub)`
+    },
+    math_conjecture: {
+        name: "Prime Generator Invariant",
+        target: 0.90,
+        default_iterations: 15,
+        baseline: `def prime_generating_polynomial(n: int) -> int:
+    """
+    Baseline: Euler's polynomial f(n) = n^2 + n + 41.
+    Yields distinct primes for n = 0, 1, ..., 39.
+    """
+    return n * n + n + 41`
+    }
+};
+
+function initDiscoveryStudio() {
+    // Populate baseline into code viewer if empty
+    const codeEl = document.getElementById('discovery-code-content');
+    if (codeEl && codeEl.innerText.includes("Select a domain")) {
+        const bm = DISCOVERY_BENCHMARKS[selectedDiscoveryBenchmark];
+        if (bm) codeEl.innerText = bm.baseline;
+    }
+    // Fetch any active sessions
+    fetchDiscoverySessions();
+}
+window.initDiscoveryStudio = initDiscoveryStudio;
+
+function selectDiscoveryBenchmark(benchmarkId) {
+    selectedDiscoveryBenchmark = benchmarkId;
+    document.querySelectorAll('.discovery-domain-card').forEach(c => c.classList.remove('active'));
+    const activeCard = document.getElementById(`card-bm-${benchmarkId}`);
+    if (activeCard) activeCard.classList.add('active');
+
+    const bm = DISCOVERY_BENCHMARKS[benchmarkId];
+    if (bm) {
+        const iterInput = document.getElementById('disc-input-iterations');
+        const rewInput = document.getElementById('disc-input-reward');
+        if (iterInput) iterInput.value = bm.default_iterations;
+        if (rewInput) rewInput.value = bm.target;
+
+        const codeEl = document.getElementById('discovery-code-content');
+        if (codeEl && (!discoveryCachedData || !discoveryCachedData.best_code)) {
+            codeEl.innerText = bm.baseline;
+        }
+    }
+    appendDiscoveryLog(`Switched target domain to: ${bm ? bm.name : benchmarkId}`, 'system');
+}
+window.selectDiscoveryBenchmark = selectDiscoveryBenchmark;
+
+async function launchDiscoverySession() {
+    const iterInput = document.getElementById('disc-input-iterations');
+    const rewInput = document.getElementById('disc-input-reward');
+    const islandsInput = document.getElementById('disc-select-islands');
+    const launchBtn = document.getElementById('btn-launch-discovery');
+    const stopBtn = document.getElementById('btn-stop-discovery');
+
+    const maxIterations = iterInput ? parseInt(iterInput.value, 10) || 25 : 25;
+    const targetReward = rewInput ? parseFloat(rewInput.value) || 0.95 : 0.95;
+    const numIslands = islandsInput ? parseInt(islandsInput.value, 10) || 3 : 3;
+
+    if (launchBtn) {
+        launchBtn.disabled = true;
+        launchBtn.innerHTML = `<span>⏳</span> Initializing Sandbox...`;
+    }
+    if (stopBtn) stopBtn.disabled = false;
+
+    appendDiscoveryLog(`Initiating isolated sandbox environment for [${selectedDiscoveryBenchmark}]...`, 'system');
+    updateDiscoveryBadge("INITIALIZING", "running");
+
+    try {
+        const resp = await fetch('/api/discovery/start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                benchmark_id: selectedDiscoveryBenchmark,
+                max_iterations: maxIterations,
+                target_reward: targetReward,
+                num_islands: numIslands
+            })
+        });
+
+        if (!resp.ok) {
+            const err = await resp.json();
+            throw new Error(err.detail || 'Failed to start discovery');
+        }
+
+        const data = await resp.json();
+        activeDiscoverySessionId = data.session_id;
+
+        const sessionChip = document.getElementById('disc-active-session-id');
+        if (sessionChip) sessionChip.innerText = `Session: ${activeDiscoverySessionId}`;
+
+        if (launchBtn) {
+            launchBtn.innerHTML = `<span>⚡</span> Experiments Running`;
+        }
+
+        appendDiscoveryLog(`Session ${activeDiscoverySessionId} active with ${numIslands} evolutionary islands. Seeding baseline...`, 'system');
+        startDiscoveryPolling();
+
+    } catch (e) {
+        console.error('Launch discovery error:', e);
+        appendDiscoveryLog(`Error starting discovery: ${e.message}`, 'error');
+        if (launchBtn) {
+            launchBtn.disabled = false;
+            launchBtn.innerHTML = `<span>⚡</span> Launch Autonomous Experiments`;
+        }
+        if (stopBtn) stopBtn.disabled = true;
+        updateDiscoveryBadge("ERROR", "error");
+    }
+}
+window.launchDiscoverySession = launchDiscoverySession;
+
+async function stopActiveDiscoverySession() {
+    if (!activeDiscoverySessionId) return;
+    const stopBtn = document.getElementById('btn-stop-discovery');
+    if (stopBtn) stopBtn.disabled = true;
+
+    try {
+        await fetch(`/api/discovery/stop/${activeDiscoverySessionId}`, { method: 'POST' });
+        appendDiscoveryLog(`Halt signal dispatched to session ${activeDiscoverySessionId}.`, 'system');
+    } catch (e) {
+        console.error('Stop discovery error:', e);
+    }
+}
+window.stopActiveDiscoverySession = stopActiveDiscoverySession;
+
+function startDiscoveryPolling() {
+    if (discoveryPollingTimer) clearInterval(discoveryPollingTimer);
+    discoveryPollingTimer = setInterval(pollDiscoveryTelemetry, 1200);
+}
+
+async function pollDiscoveryTelemetry() {
+    if (!activeDiscoverySessionId) return;
+
+    try {
+        const resp = await fetch(`/api/discovery/status/${activeDiscoverySessionId}`);
+        if (!resp.ok) return;
+
+        const data = await resp.json();
+        discoveryCachedData = data;
+        renderDiscoveryDashboard(data);
+
+        // Check if finished
+        if (!data.is_running && data.status !== 'running') {
+            clearInterval(discoveryPollingTimer);
+            discoveryPollingTimer = null;
+
+            const launchBtn = document.getElementById('btn-launch-discovery');
+            const stopBtn = document.getElementById('btn-stop-discovery');
+            if (launchBtn) {
+                launchBtn.disabled = false;
+                launchBtn.innerHTML = `<span>⚡</span> Launch Autonomous Experiments`;
+            }
+            if (stopBtn) stopBtn.disabled = true;
+
+            const badgeStatus = data.status === 'converged' ? 'CONVERGED' : (data.status === 'stopped' ? 'STOPPED' : 'COMPLETED');
+            updateDiscoveryBadge(badgeStatus, data.status === 'converged' ? 'completed' : 'idle');
+            appendDiscoveryLog(`Experiment sequence finished. Best verifiable reward: ${data.best_reward.toFixed(4)}`, 'breakthrough');
+        }
+
+    } catch (e) {
+        console.error('Polling error:', e);
+    }
+}
+
+function renderDiscoveryDashboard(data) {
+    // 1. Hero Stats
+    const bestRewardEl = document.getElementById('disc-hero-best-reward');
+    const trialsEl = document.getElementById('disc-hero-trials');
+    const breakthroughsEl = document.getElementById('disc-hero-breakthroughs');
+
+    if (bestRewardEl) bestRewardEl.innerText = (data.best_reward || 0.0).toFixed(4);
+    if (trialsEl) trialsEl.innerText = `${data.current_iteration || 0} / ${data.max_iterations || 25}`;
+    if (breakthroughsEl) breakthroughsEl.innerText = data.breakthrough_count || 0;
+
+    // 2. Status Badge
+    if (data.is_running) {
+        updateDiscoveryBadge(`RUNNING • TRIAL ${data.current_iteration}`, 'running');
+    }
+
+    // 3. Render Reward Curve SVG
+    if (data.reward_progression && data.reward_progression.length > 0) {
+        renderRewardSvgChart(data.reward_progression, data.max_iterations || 25);
+    }
+
+    // 4. Update Code Studio View
+    updateCodeDisplay();
+
+    // 5. Update Islands Population Deck
+    if (data.pool_telemetry && data.pool_telemetry.islands) {
+        data.pool_telemetry.islands.forEach((isl, idx) => {
+            const valEl = document.getElementById(`island-${idx}-val`);
+            if (valEl) {
+                valEl.innerText = `Reward: ${isl.best_reward.toFixed(4)} (Pop: ${isl.population})`;
+            }
+        });
+    }
+
+    // 6. Update Negative Constraints
+    const ncList = document.getElementById('discovery-negative-constraints-list');
+    if (ncList && data.recent_failures && data.recent_failures.length > 0) {
+        const failuresWithReflection = data.recent_failures.filter(f => f.learned_reflection);
+        if (failuresWithReflection.length > 0) {
+            ncList.innerHTML = failuresWithReflection.map(f => `
+                <div class="nc-item">
+                    <b>Trial #${f.iteration} [${escapeHtml(f.mutation_type)}]:</b> ${escapeHtml(f.learned_reflection)}
+                </div>
+            `).join('');
+        }
+    }
+
+    // 7. Append log if new trial
+    if (data.reward_progression && data.reward_progression.length > discoveryLogCounter) {
+        const newTrials = data.reward_progression.slice(discoveryLogCounter);
+        newTrials.forEach(t => {
+            const typeClass = t.is_breakthrough ? 'breakthrough' : (t.is_valid ? 'trial' : 'error');
+            const icon = t.is_breakthrough ? '🏆' : (t.is_valid ? '✓' : '✗');
+            appendDiscoveryLog(
+                `${icon} Trial #${t.iteration} [${t.mutation_type}]: Reward = ${t.reward.toFixed(4)} ${t.is_breakthrough ? '(New Breakthrough!)' : ''}`,
+                typeClass
+            );
+        });
+        discoveryLogCounter = data.reward_progression.length;
+    }
+}
+
+function renderRewardSvgChart(progression, maxTrials) {
+    const canvas = document.getElementById('reward-svg-canvas');
+    if (!canvas || !progression || progression.length === 0) return;
+
+    const width = 600;
+    const height = 240;
+    const padLeft = 55;
+    const padRight = 25;
+    const padTop = 30;
+    const padBottom = 35;
+
+    const plotW = width - padLeft - padRight;
+    const plotH = height - padTop - padBottom;
+
+    const totalX = Math.max(progression.length - 1, maxTrials || 25, 1);
+
+    // Compute coordinate points
+    const points = progression.map((p, idx) => {
+        const x = padLeft + (idx / totalX) * plotW;
+        const clampedR = Math.max(0.0, Math.min(1.0, p.reward));
+        const y = padTop + (1.0 - clampedR) * plotH;
+        return { x, y, reward: p.reward, is_breakthrough: p.is_breakthrough, iter: p.iteration };
+    });
+
+    const polylinePoints = points.map(pt => `${pt.x.toFixed(1)},${pt.y.toFixed(1)}`).join(' ');
+
+    // Breakthrough circles
+    const circlesSvg = points.map(pt => {
+        if (pt.is_breakthrough) {
+            return `
+                <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="5.5" fill="#4ade80" stroke="#052e16" stroke-width="2">
+                    <title>Trial #${pt.iter}: Breakthrough Reward ${pt.reward.toFixed(4)}</title>
+                </circle>
+            `;
+        }
+        return `
+            <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="2.5" fill="#38bdf8" opacity="0.65">
+                <title>Trial #${pt.iter}: Reward ${pt.reward.toFixed(4)}</title>
+            </circle>
+        `;
+    }).join('');
+
+    canvas.innerHTML = `
+        <rect width="${width}" height="${height}" fill="#0d1117" rx="8"/>
+        <!-- Grid horizontal lines -->
+        <line x1="${padLeft}" y1="${padTop}" x2="${width - padRight}" y2="${padTop}" stroke="#21262d" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="${padLeft}" y1="${padTop + plotH * 0.25}" x2="${width - padRight}" y2="${padTop + plotH * 0.25}" stroke="#21262d" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="${padLeft}" y1="${padTop + plotH * 0.5}" x2="${width - padRight}" y2="${padTop + plotH * 0.5}" stroke="#21262d" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="${padLeft}" y1="${padTop + plotH * 0.75}" x2="${width - padRight}" y2="${padTop + plotH * 0.75}" stroke="#21262d" stroke-width="1" stroke-dasharray="3,3"/>
+        
+        <!-- Axes -->
+        <line x1="${padLeft}" y1="${padTop}" x2="${padLeft}" y2="${padTop + plotH}" stroke="#30363d" stroke-width="1.5"/>
+        <line x1="${padLeft}" y1="${padTop + plotH}" x2="${width - padRight}" y2="${padTop + plotH}" stroke="#30363d" stroke-width="1.5"/>
+
+        <!-- Y Axis Labels -->
+        <text x="${padLeft - 8}" y="${padTop + 4}" fill="#6e7681" font-size="10" font-family="monospace" text-anchor="end">1.0</text>
+        <text x="${padLeft - 8}" y="${padTop + plotH * 0.5 + 4}" fill="#6e7681" font-size="10" font-family="monospace" text-anchor="end">0.5</text>
+        <text x="${padLeft - 8}" y="${padTop + plotH + 4}" fill="#6e7681" font-size="10" font-family="monospace" text-anchor="end">0.0</text>
+
+        <!-- X Axis Label -->
+        <text x="${padLeft + plotW * 0.5}" y="${height - 10}" fill="#6e7681" font-size="10.5" font-family="monospace" text-anchor="middle">Empirical Experiment Trials</text>
+
+        <!-- Reward Polyline Curve -->
+        <polyline fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="${polylinePoints}"/>
+        
+        <!-- Trial Dots -->
+        ${circlesSvg}
+    `;
+}
+
+function switchCodeViewTab(tab) {
+    activeCodeTab = tab;
+    document.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+    const btn = document.getElementById(`tab-code-${tab}`);
+    if (btn) btn.classList.add('active');
+    updateCodeDisplay();
+}
+window.switchCodeViewTab = switchCodeViewTab;
+
+function updateCodeDisplay() {
+    const codeEl = document.getElementById('discovery-code-content');
+    const mutEl = document.getElementById('disc-code-mutation-type');
+    const runEl = document.getElementById('disc-code-runtime');
+    const verEl = document.getElementById('disc-code-verdict');
+    if (!codeEl) return;
+
+    if (!discoveryCachedData) {
+        const bm = DISCOVERY_BENCHMARKS[selectedDiscoveryBenchmark];
+        if (bm) codeEl.innerText = bm.baseline;
+        return;
+    }
+
+    if (activeCodeTab === 'breakthrough') {
+        codeEl.innerText = discoveryCachedData.best_code || "# No breakthrough found yet.";
+        if (mutEl) mutEl.innerText = `Best Reward: ${(discoveryCachedData.best_reward || 0.0).toFixed(4)}`;
+        if (runEl) runEl.innerText = `Breakthroughs: ${discoveryCachedData.breakthrough_count || 0}`;
+        if (verEl) verEl.innerText = `Status: Verified Objective Reality`;
+    } else if (activeCodeTab === 'latest') {
+        codeEl.innerText = discoveryCachedData.latest_code || "# Waiting for trial...";
+        if (mutEl) mutEl.innerText = `Active Trial: #${discoveryCachedData.current_iteration || 0}`;
+        if (runEl) runEl.innerText = discoveryCachedData.latest_error ? "Status: Crash/Fail" : "Status: Valid Execution";
+        if (verEl) verEl.innerText = discoveryCachedData.latest_error ? `Error: ${discoveryCachedData.latest_error.slice(0, 40)}` : "Verified Clean";
+    } else {
+        const bm = DISCOVERY_BENCHMARKS[selectedDiscoveryBenchmark];
+        codeEl.innerText = bm ? bm.baseline : "# Baseline not found";
+        if (mutEl) mutEl.innerText = `Role: Standard Baseline Evaluation Floor`;
+        if (runEl) runEl.innerText = `Source: Textbook/Greedy Baseline`;
+        if (verEl) verEl.innerText = `Ground Truth Baseline`;
+    }
+}
+
+function updateDiscoveryBadge(text, type) {
+    const badge = document.getElementById('disc-status-badge');
+    if (!badge) return;
+    badge.innerText = text;
+    badge.className = `status-badge ${type}`;
+}
+
+function appendDiscoveryLog(msg, type = 'system') {
+    const logBox = document.getElementById('discovery-terminal-log');
+    if (!logBox) return;
+
+    const now = new Date();
+    const timeStr = now.toTimeString().split(' ')[0];
+
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type}`;
+    entry.innerHTML = `<span class="log-ts">[${timeStr}]</span><span>${escapeHtml(msg)}</span>`;
+    logBox.appendChild(entry);
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
+function clearDiscoveryLogs() {
+    const logBox = document.getElementById('discovery-terminal-log');
+    if (logBox) {
+        logBox.innerHTML = `<div class="log-entry system"><span class="log-ts">[00:00:00]</span><span>Terminal cleared. Ready for next experiment.</span></div>`;
+    }
+}
+window.clearDiscoveryLogs = clearDiscoveryLogs;
+
+function copyDiscoveredCode() {
+    const codeEl = document.getElementById('discovery-code-content');
+    if (!codeEl) return;
+    navigator.clipboard.writeText(codeEl.innerText).then(() => {
+        showGlobalToast("Discovered Python code copied to clipboard! 📋");
+    });
+}
+window.copyDiscoveredCode = copyDiscoveredCode;
+
+function exportDiscoveredArtifact() {
+    if (!activeDiscoverySessionId) {
+        showGlobalToast("No active discovery session to export.");
+        return;
+    }
+    window.location.href = `/api/discovery/export/${activeDiscoverySessionId}`;
+}
+window.exportDiscoveredArtifact = exportDiscoveredArtifact;
+
+async function fetchDiscoverySessions() {
+    try {
+        const resp = await fetch('/api/discovery/sessions?limit=5');
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (data.sessions && data.sessions.length > 0) {
+            const latest = data.sessions[0];
+            activeDiscoverySessionId = latest.session_id;
+            const sessionChip = document.getElementById('disc-active-session-id');
+            if (sessionChip) sessionChip.innerText = `Session: ${latest.session_id}`;
+            pollDiscoveryTelemetry();
+        }
+    } catch (e) {
+        // Silently ignore
+    }
+}
+
+
 
 

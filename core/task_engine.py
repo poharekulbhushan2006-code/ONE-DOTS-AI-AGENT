@@ -465,6 +465,50 @@ class TaskExecutionEngine:
                 reqs = tools.axis.parse_requirements(params.get("raw_text", ""))
                 return {"success": True, "count": len(reqs), "requirements": reqs}
 
+            elif tool_name == "extract_tender_criteria":
+                return tools.extract_tender_criteria(
+                    pdf_path=params.get("pdf_path"),
+                    raw_text=params.get("raw_text")
+                )
+
+            elif tool_name == "evaluate_bidder_eligibility":
+                criteria = params.get("criteria", [])
+                if not criteria:
+                    for log in task.execution_log:
+                        if log.get("output", {}).get("criteria"):
+                            criteria = log["output"]["criteria"]
+                            break
+                tender_meta = params.get("tender_metadata", {})
+                if not tender_meta:
+                    for log in task.execution_log:
+                        if log.get("output", {}).get("metadata"):
+                            tender_meta = log["output"]["metadata"]
+                            break
+                return tools.evaluate_bidder_eligibility(
+                    criteria=criteria,
+                    contractor_profile=params.get("contractor_profile", {}),
+                    tender_metadata=tender_meta
+                )
+
+            elif tool_name == "generate_bid_dossier":
+                tender_meta = params.get("tender_metadata", {})
+                eval_res = params.get("evaluation_result", {})
+                profile = params.get("contractor_profile", {})
+                if not eval_res or not tender_meta:
+                    for log in task.execution_log:
+                        out = log.get("output", {})
+                        if "metadata" in out and not tender_meta:
+                            tender_meta = out["metadata"]
+                        if "matrix" in out and not eval_res:
+                            eval_res = out
+                return tools.generate_bid_dossier(
+                    tender_metadata=tender_meta,
+                    evaluation_result=eval_res,
+                    contractor_profile=profile,
+                    output_filename=params.get("output_filename"),
+                    task_id=task.id
+                )
+
             elif tool_name == "build_compliance_matrix":
                 # Find requirements from previous step if available
                 reqs = []
@@ -472,11 +516,15 @@ class TaskExecutionEngine:
                     if log.get("output", {}).get("requirements"):
                         reqs = log["output"]["requirements"]
                         break
+                    elif log.get("output", {}).get("criteria"):
+                        reqs = log["output"]["criteria"]
+                        break
                 if not reqs:
                     reqs = tools.axis.parse_requirements("REQ-001: Isolated sandboxes. REQ-002: RLS security.")
                 return tools.axis.build_compliance_matrix(
                     requirements=reqs,
                     system_capabilities=params.get("system_capabilities", {}),
+                    contractor_profile=params.get("contractor_profile"),
                     title=params.get("title", "Compliance Matrix"),
                     task_id=task.id,
                 )

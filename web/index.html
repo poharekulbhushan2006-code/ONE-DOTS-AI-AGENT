@@ -58,6 +58,8 @@
                     <button class="nav-link-btn active" id="btn-view-showcase" onclick="switchMainView('view-showcase')">Overview</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('introducing-dots-film')"><span style="color: var(--brand-gold); margin-right: 3px;">▶</span> Film</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('hero-demo-window')">Live Workstation</button>
+                    <button class="nav-link-btn" id="btn-view-tenders" onclick="switchMainView('view-tenders')"><span style="color: #f59e0b; margin-right: 3px;">📑</span> Tender Intelligence</button>
+                    <button class="nav-link-btn" id="btn-view-discovery" onclick="switchMainView('view-discovery')"><span style="color: #ef4444; margin-right: 3px;">🔬</span> Discovery Engine</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('specialists-matrix')">Specialists</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('security-architecture')">Security Matrix</button>
                     <button class="nav-link-btn" onclick="scrollToShowcaseSection('capabilities-grid')">Capabilities</button>
@@ -750,6 +752,9 @@
                     <button class="sw-mode-btn" id="sw-mode-repl" onclick="setWorkstationMode('repl')">
                         <span>💻</span> Sandbox REPL
                     </button>
+                    <button class="sw-mode-btn" id="sw-mode-tenders" onclick="switchMainView('view-tenders')">
+                        <span>📑</span> Tender Intelligence
+                    </button>
                     <button class="sw-mode-btn" id="sw-mode-audit" onclick="setWorkstationMode('audit')">
                         <span>🛡️</span> Security &amp; Audit
                     </button>
@@ -1056,6 +1061,596 @@
     </section>
 
     <!-- =========================================================================
+         VIEW 4: AXIS TENDER & BID INTELLIGENCE SPECIALIST WORKBENCH
+         ========================================================================= -->
+    <section class="app-view" id="view-tenders">
+        <div class="tenders-view-container">
+            
+            <!-- Top Hero Banner / Command Strip -->
+            <div class="tenders-hero-header">
+                <div class="tenders-hero-topline">
+                    <div class="tenders-badge-pill">
+                        <span class="tenders-pulse-gold"></span>
+                        <span>AXIS SPECIALIST SUBSYSTEM &bull; BID READINESS &amp; NIT AUDIT</span>
+                    </div>
+                    <div class="tenders-header-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="startFiveMinuteWalkthrough()" id="btn-start-demo-walkthrough">
+                            <span>▶</span> 5-Min Pilot Demo Walkthrough
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="switchMainView('view-workstation')">
+                            <span>◈</span> Agent Workstation
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tenders-hero-body">
+                    <div class="tenders-title-wrap">
+                        <div class="tenders-icon-avatar">📑</div>
+                        <div>
+                            <h1 class="tenders-headline">Autonomous Tender Intelligence &amp; Bid Readiness</h1>
+                            <p class="tenders-subdeck">
+                                Drag-and-drop government procurement tenders (Maharashtra PWD, CPWD, NHAI). Ingest 100-page NITs in under 10 seconds, extract core parameters, audit turnover &amp; solvency thresholds, and generate an executive-ready Microsoft Word (.docx) Bid Readiness Dossier with one click.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry Stats Strip -->
+                    <div class="tenders-telemetry-ribbon">
+                        <div class="tt-stat-item">
+                            <span class="tt-stat-dot gold"></span>
+                            <span class="tt-stat-val">&lt; 10s</span>
+                            <span class="tt-stat-lbl">100-Page Ingestion</span>
+                        </div>
+                        <div class="tt-stat-sep">/</div>
+                        <div class="tt-stat-item">
+                            <span class="tt-stat-dot emerald"></span>
+                            <span class="tt-stat-val">100% Grounded</span>
+                            <span class="tt-stat-lbl">Clause &amp; Page Citations</span>
+                        </div>
+                        <div class="tt-stat-sep">/</div>
+                        <div class="tt-stat-item">
+                            <span class="tt-stat-dot cyan"></span>
+                            <span class="tt-stat-val">₹ Cr / Lakh</span>
+                            <span class="tt-stat-lbl">Native Indian Currency Engine</span>
+                        </div>
+                        <div class="tt-stat-sep">/</div>
+                        <div class="tt-stat-item">
+                            <span class="tt-stat-dot purple"></span>
+                            <span class="tt-stat-val">One-Click</span>
+                            <span class="tt-stat-lbl">Word .docx Deliverable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Benchmark Selector Bar -->
+            <div class="tenders-benchmark-strip glass-card">
+                <div class="tb-strip-label">
+                    <span style="color: var(--brand-gold);">⚡ Benchmark Presets:</span>
+                    <span>15 Authentic Calibrated Documents</span>
+                </div>
+                <div class="tb-quick-buttons" id="tb-quick-buttons">
+                    <button class="tb-btn active" id="btn-bm-highway" onclick="loadBenchmarkPreset('benchmark_01_mahapwd_highway_sh42.pdf')">
+                        🛣️ Maha PWD SH-42 (₹18.5 Cr)
+                    </button>
+                    <button class="tb-btn" id="btn-bm-hospital" onclick="loadBenchmarkPreset('benchmark_06_cpwd_medical_college_hospital.pdf')">
+                        🏥 CPWD Hospital (₹64.2 Cr)
+                    </button>
+                    <button class="tb-btn" id="btn-bm-expressway" onclick="loadBenchmarkPreset('benchmark_11_nhai_greenfield_expressway_ham.pdf')">
+                        🏎️ NHAI HAM Expressway (₹245 Cr)
+                    </button>
+                    <button class="tb-btn" id="btn-bm-bridge" onclick="loadBenchmarkPreset('benchmark_02_mahapwd_bridge_godavari.pdf')">
+                        🌉 Maha PWD Major River Bridge (₹42.8 Cr)
+                    </button>
+                    <button class="tb-btn" id="btn-bm-catalog" onclick="openBenchmarkCatalogModal()">
+                        📂 All 15 Benchmarks...
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3-Column Interactive Workbench -->
+            <div class="tenders-grid-workbench">
+                
+                <!-- Left Deck: Drag & Drop Ingestion + Contractor Configuration -->
+                <div class="tenders-col-input">
+                    
+                    <!-- Drag & Drop PDF Card -->
+                    <div class="glass-card tenders-card" id="tender-upload-card">
+                        <div class="tenders-card-header">
+                            <h3>1. Tender PDF Ingestion</h3>
+                            <span class="badge-pill-subtle">PDF / TXT</span>
+                        </div>
+                        <div class="tender-dropzone" id="tender-dropzone" ondragover="handleTenderDragOver(event)" ondragleave="handleTenderDragLeave(event)" ondrop="handleTenderDrop(event)">
+                            <div class="dropzone-inner">
+                                <div class="drop-icon-circle">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--brand-gold)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="12" y2="12"></line><line x1="15" y1="15" x2="12" y2="12"></line></svg>
+                                </div>
+                                <div class="drop-text-primary">Drag &amp; Drop Tender PDF Here</div>
+                                <div class="drop-text-sub">Support for multi-page NITs up to 100+ pages</div>
+                                <div class="drop-btn-row">
+                                    <button class="btn btn-outline btn-sm" onclick="document.getElementById('tender-file-input').click()">
+                                        Choose File
+                                    </button>
+                                    <button class="btn btn-ghost btn-sm" onclick="toggleRawTextDrawer()">
+                                        Paste Text
+                                    </button>
+                                </div>
+                                <input type="file" id="tender-file-input" accept=".pdf,.txt" style="display:none;" onchange="handleTenderFileSelect(event)">
+                            </div>
+                        </div>
+
+                        <!-- Active File Chip -->
+                        <div class="active-file-indicator" id="active-tender-file-chip" style="display: none;">
+                            <div class="af-icon">📄</div>
+                            <div class="af-info">
+                                <div class="af-name" id="af-file-name">benchmark_01_mahapwd_highway_sh42.pdf</div>
+                                <div class="af-meta" id="af-file-meta">4 pages &bull; Ready for analysis</div>
+                            </div>
+                            <button class="af-remove-btn" onclick="clearSelectedTenderFile()" title="Clear file">&times;</button>
+                        </div>
+
+                        <!-- Expandable Raw Text Area (Fallback) -->
+                        <div class="tender-raw-text-drawer" id="tender-raw-text-drawer" style="display: none;">
+                            <label class="field-label">Raw Notice Inviting Tender (NIT) Text:</label>
+                            <textarea id="tender-raw-text" class="tenders-textarea" rows="5" placeholder="Paste extracted tender notice text here..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contractor Profile Card -->
+                    <div class="glass-card tenders-card">
+                        <div class="tenders-card-header">
+                            <h3>2. Bidder Credentials Profile</h3>
+                            <div class="profile-preset-toggle">
+                                <button class="preset-pill active" id="btn-preset-qualified" onclick="setContractorPreset('qualified')">Tier-1 Qualified</button>
+                                <button class="preset-pill" id="btn-preset-underqualified" onclick="setContractorPreset('underqualified')">Under-Qualified</button>
+                            </div>
+                        </div>
+
+                        <div class="contractor-form-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <input type="text" id="cp-company-name" class="tenders-input" value="Apex Infra Projects Pvt. Ltd.">
+                                </div>
+                                <div class="form-group">
+                                    <label>Enlistment Class</label>
+                                    <input type="text" id="cp-class" class="tenders-input" value="Class I (Civil)">
+                                </div>
+                            </div>
+
+                            <div class="form-section-title">Financial Capacity</div>
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label>FY 22-23 (₹ Cr)</label>
+                                    <input type="number" step="0.1" id="cp-turnover-1" class="tenders-input" value="12.5" oninput="recalcTurnoverAverage()">
+                                </div>
+                                <div class="form-group">
+                                    <label>FY 23-24 (₹ Cr)</label>
+                                    <input type="number" step="0.1" id="cp-turnover-2" class="tenders-input" value="14.2" oninput="recalcTurnoverAverage()">
+                                </div>
+                                <div class="form-group">
+                                    <label>FY 24-25 (₹ Cr)</label>
+                                    <input type="number" step="0.1" id="cp-turnover-3" class="tenders-input" value="16.8" oninput="recalcTurnoverAverage()">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Average 3-Yr Turnover</label>
+                                    <input type="text" id="cp-avg-turnover-display" class="tenders-input readonly" value="₹ 14.50 Cr" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Bank Solvency (₹ Cr)</label>
+                                    <input type="number" step="0.1" id="cp-solvency" class="tenders-input" value="6.0">
+                                </div>
+                            </div>
+
+                            <div class="form-section-title">Similar Completed Works</div>
+                            <div class="form-group">
+                                <label>Largest Completed Similar Work (₹ Cr)</label>
+                                <input type="number" step="0.1" id="cp-largest-work" class="tenders-input" value="11.5">
+                            </div>
+
+                            <div class="form-section-title">Statutory &amp; Integrity Checklist</div>
+                            <div class="statutory-checkbox-grid">
+                                <label class="stat-chk-item"><input type="checkbox" id="cp-chk-gst" checked> GSTIN Active</label>
+                                <label class="stat-chk-item"><input type="checkbox" id="cp-chk-pan" checked> PAN Verified</label>
+                                <label class="stat-chk-item"><input type="checkbox" id="cp-chk-epf" checked> EPF / ESIC</label>
+                                <label class="stat-chk-item"><input type="checkbox" id="cp-chk-affidavit" checked> Non-Blacklist Affidavit</label>
+                            </div>
+                        </div>
+
+                        <div class="tenders-card-footer">
+                            <button class="button-primary btn-full" id="btn-run-tender-audit" onclick="runTenderAudit()">
+                                <span id="audit-btn-icon">⚡</span>
+                                <span id="audit-btn-text">Run Tender Intelligence Audit</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center Deck: Extracted NIT Parameters & Compliance Matrix -->
+                <div class="tenders-col-results">
+                    
+                    <!-- Progress / Processing Banner -->
+                    <div class="tender-processing-banner" id="tender-processing-banner" style="display: none;">
+                        <div class="tpb-spinner"></div>
+                        <div class="tpb-content">
+                            <div class="tpb-title" id="tpb-title">Ingesting 100-page tender PDF...</div>
+                            <div class="tpb-bar"><div class="tpb-fill" id="tpb-fill"></div></div>
+                        </div>
+                        <div class="tpb-time" id="tpb-timer">0.8s</div>
+                    </div>
+
+                    <!-- Executive Scorecard Banner -->
+                    <div class="glass-card tenders-card" id="executive-scorecard-card">
+                        <div class="tenders-card-header">
+                            <h3>Executive Bid Readiness Scorecard</h3>
+                            <span class="scorecard-authority-tag" id="sc-authority-tag">MAHARASHTRA PWD</span>
+                        </div>
+                        <div class="scorecard-body">
+                            <div class="score-dial-wrap">
+                                <div class="score-circle-dial" id="score-circle-dial">
+                                    <span class="score-number" id="sc-score-val">92%</span>
+                                    <span class="score-label">READINESS</span>
+                                </div>
+                            </div>
+                            <div class="scorecard-verdict-col">
+                                <div class="verdict-row">
+                                    <span class="verdict-badge qualified" id="sc-verdict-badge">ELIGIBLE TO BID</span>
+                                    <span class="verdict-time" id="sc-analysis-time">Analyzed in 0.84 seconds</span>
+                                </div>
+                                <div class="scorecard-stat-pills">
+                                    <div class="sc-stat-pill">
+                                        <span class="lbl">Estimated Cost:</span>
+                                        <span class="val gold" id="sc-stat-cost">₹ 18.50 Cr</span>
+                                    </div>
+                                    <div class="sc-stat-pill">
+                                        <span class="lbl">EMD Required:</span>
+                                        <span class="val" id="sc-stat-emd">₹ 37.00 Lakh</span>
+                                    </div>
+                                    <div class="sc-stat-pill">
+                                        <span class="lbl">Submission Cutoff:</span>
+                                        <span class="val" id="sc-stat-deadline">24-11-2026</span>
+                                    </div>
+                                </div>
+                                <!-- Shortfalls callout (Dynamic) -->
+                                <div class="shortfalls-alert-box" id="sc-shortfalls-box" style="display: none;">
+                                    <div class="sf-icon">⚠️</div>
+                                    <div class="sf-text" id="sc-shortfalls-text">Gaps identified: Turnover shortfall ₹2.1 Cr below NIT minimum threshold.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Extracted NIT Parameters Grid -->
+                    <div class="glass-card tenders-card">
+                        <div class="tenders-card-header">
+                            <h3>Extracted NIT Parameters (Page-Grounded)</h3>
+                            <span class="badge-pill-subtle" id="nit-citation-count">8 Verified Citations</span>
+                        </div>
+                        <div class="nit-params-grid" id="nit-params-grid">
+                            <!-- Populated with Tender ID, Cost, EMD, Deadlines, DLP, Validity -->
+                        </div>
+                    </div>
+
+                    <!-- Eligibility Criteria & Compliance Matrix Table -->
+                    <div class="glass-card tenders-card">
+                        <div class="tenders-card-header">
+                            <div>
+                                <h3>Clause-by-Clause Compliance Matrix</h3>
+                                <span class="subtext">Turnover, Solvency, Similar Works, Statutory &amp; Plant holding</span>
+                            </div>
+                            <div class="matrix-filter-buttons">
+                                <button class="filter-btn active" id="mf-btn-all" onclick="filterMatrixCategory('ALL')">All</button>
+                                <button class="filter-btn" id="mf-btn-fin" onclick="filterMatrixCategory('Financial')">Financial</button>
+                                <button class="filter-btn" id="mf-btn-tech" onclick="filterMatrixCategory('Technical')">Technical</button>
+                                <button class="filter-btn" id="mf-btn-stat" onclick="filterMatrixCategory('Statutory')">Statutory</button>
+                            </div>
+                        </div>
+                        <div class="compliance-table-container">
+                            <table class="compliance-matrix-table" id="compliance-matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Clause &amp; Category</th>
+                                        <th>Tender Requirement</th>
+                                        <th>Contractor Evidence &amp; Delta</th>
+                                        <th>Citation</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="compliance-matrix-tbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Deck: One-Click Deliverables & Live Dossier Preview -->
+                <div class="tenders-col-deliverables">
+                    
+                    <!-- One-Click Deliverables Action Center -->
+                    <div class="glass-card tenders-card action-deck-card">
+                        <div class="tenders-card-header">
+                            <h3>Official Deliverables</h3>
+                            <span class="badge-pill-gold">Ready for Bid Submission</span>
+                        </div>
+                        <div class="deliverables-cta-body">
+                            <button class="button-primary btn-dossier-download btn-full" id="btn-download-dossier" onclick="triggerDossierDownload()">
+                                <div class="dossier-btn-content">
+                                    <div class="dossier-icon">📥</div>
+                                    <div>
+                                        <div class="dossier-btn-title">Download Word (.docx) Dossier</div>
+                                        <div class="dossier-btn-sub">Complete executive audit &amp; readiness scorecard</div>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button class="btn btn-secondary btn-full" id="btn-download-matrix" onclick="triggerMatrixDownload()">
+                                <span>📊</span> Download Markdown Matrix (.md)
+                            </button>
+
+                            <button class="btn btn-ghost btn-full" onclick="copyExecutiveSummary()">
+                                <span>📋</span> Copy Executive Briefing to Clipboard
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Live Word Dossier Document Preview -->
+                    <div class="glass-card tenders-card dossier-preview-card">
+                        <div class="tenders-card-header">
+                            <h3>Live Dossier Preview</h3>
+                            <span class="preview-tag">Microsoft Word Format</span>
+                        </div>
+                        <div class="docx-preview-paper" id="docx-preview-paper">
+                            <!-- Paper layout preview populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         VIEW: INEFFABLE INTELLIGENCE DISCOVERY STUDIO
+         Self-Learning Empirical Reinforcement Learning from Experience (David Silver Paradigm)
+         ========================================================================= -->
+    <section class="app-view" id="view-discovery">
+        <div class="discovery-container">
+            
+            <!-- Hero Header Banner -->
+            <div class="discovery-hero-banner glass-card">
+                <div class="discovery-hero-badge">
+                    <span class="live-pulse-ruby"></span>
+                    <span>INEFFABLE INTELLIGENCE PARADIGM &bull; RL FROM EXPERIENCE &amp; SIMULATORS</span>
+                </div>
+                <div class="discovery-hero-title-row">
+                    <div>
+                        <h1 class="discovery-hero-title">Empirical Discovery Studio</h1>
+                        <p class="discovery-hero-sub">
+                            AI that discovers breakthroughs through autonomous trial-and-error, sandbox experiments, and objective verifiable rewards. Zero human hallucinations.
+                        </p>
+                    </div>
+                    <div class="discovery-hero-stats">
+                        <div class="hero-stat-box">
+                            <span class="stat-number" id="disc-hero-best-reward">0.0000</span>
+                            <span class="stat-label">Best Verified Reward</span>
+                        </div>
+                        <div class="hero-stat-box">
+                            <span class="stat-number" id="disc-hero-trials">0</span>
+                            <span class="stat-label">Experiments Run</span>
+                        </div>
+                        <div class="hero-stat-box">
+                            <span class="stat-number" id="disc-hero-breakthroughs">0</span>
+                            <span class="stat-label">Breakthroughs Found</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benchmark Selector & Config Toolbar -->
+            <div class="discovery-config-deck glass-card">
+                <div class="config-deck-header">
+                    <div class="deck-title-group">
+                        <span class="deck-step-num">1</span>
+                        <div>
+                            <h3 style="margin: 0; font-size: 15px; color: #fff;">Select Empirical Discovery Domain</h3>
+                            <span class="subtext">Zero-trust simulators with deterministic ground truth verification</span>
+                        </div>
+                    </div>
+                    <div class="config-actions">
+                        <button class="button-primary btn-discovery-launch" id="btn-launch-discovery" onclick="launchDiscoverySession()">
+                            <span>⚡</span> Launch Autonomous Experiments
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="btn-stop-discovery" onclick="stopActiveDiscoverySession()" disabled>
+                            ⏹ Halt Session
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3 Benchmark Cards -->
+                <div class="discovery-benchmarks-grid" id="discovery-benchmarks-grid">
+                    <div class="discovery-domain-card active" id="card-bm-bin_packing" onclick="selectDiscoveryBenchmark('bin_packing')">
+                        <div class="domain-card-header">
+                            <span class="domain-icon">📦</span>
+                            <span class="domain-difficulty-tag">Frontier DeepMind</span>
+                        </div>
+                        <h4 class="domain-name">Online 1D Bin Packing</h4>
+                        <p class="domain-desc">Discovers novel packing heuristics that beat Best-Fit across Weibull and Gaussian item distributions.</p>
+                        <div class="domain-meta-row">
+                            <span>Target Reward: <b>0.9500</b></span>
+                            <span>Standard: FunSearch</span>
+                        </div>
+                    </div>
+
+                    <div class="discovery-domain-card" id="card-bm-algorithm_opt" onclick="selectDiscoveryBenchmark('algorithm_opt')">
+                        <div class="domain-card-header">
+                            <span class="domain-icon">⚡</span>
+                            <span class="domain-difficulty-tag">Asymptotic Synthesis</span>
+                        </div>
+                        <h4 class="domain-name">Range Query Throughput</h4>
+                        <p class="domain-desc">Discovers sub-linear O(1) query data structures with 100% mathematical correctness and 20x-50x speedups.</p>
+                        <div class="domain-meta-row">
+                            <span>Target Reward: <b>0.9500</b></span>
+                            <span>Standard: Sparse Table</span>
+                        </div>
+                    </div>
+
+                    <div class="discovery-domain-card" id="card-bm-math_conjecture" onclick="selectDiscoveryBenchmark('math_conjecture')">
+                        <div class="domain-card-header">
+                            <span class="domain-icon">📐</span>
+                            <span class="domain-difficulty-tag">Theoretical Math</span>
+                        </div>
+                        <h4 class="domain-name">Prime Generator Invariant</h4>
+                        <p class="domain-desc">Explores algebraic polynomial invariants searching for dense prime sequences that beat Euler's formula.</p>
+                        <div class="domain-meta-row">
+                            <span>Target Reward: <b>0.9000</b></span>
+                            <span>Standard: Euler Polynomial</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hyperparameters Row -->
+                <div class="discovery-params-row">
+                    <div class="param-group">
+                        <label>Max Trials / Iterations:</label>
+                        <div class="param-input-wrap">
+                            <input type="number" id="disc-input-iterations" value="25" min="5" max="100">
+                            <span class="param-unit">experiments</span>
+                        </div>
+                    </div>
+                    <div class="param-group">
+                        <label>Target Verifiable Reward:</label>
+                        <div class="param-input-wrap">
+                            <input type="number" id="disc-input-reward" value="0.95" step="0.05" min="0.5" max="1.0">
+                            <span class="param-unit">[0.0 - 1.0]</span>
+                        </div>
+                    </div>
+                    <div class="param-group">
+                        <label>Island Evolutionary Populations:</label>
+                        <div class="param-input-wrap">
+                            <select id="disc-select-islands">
+                                <option value="2">2 Islands (Alpha, Beta)</option>
+                                <option value="3" selected>3 Islands (Alpha, Beta, Gamma)</option>
+                                <option value="4">4 Islands (Distributed)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="param-group" style="align-self: flex-end;">
+                        <span class="active-session-chip" id="disc-active-session-id">No active session</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Discovery Mission Control (3-Column Layout) -->
+            <div class="discovery-workbench-grid">
+                
+                <!-- Left Column: Reward Trajectory Graph & Island Populations -->
+                <div class="discovery-col-chart glass-card">
+                    <div class="card-inner-header">
+                        <div>
+                            <h3 style="margin: 0; font-size: 15px; color: #fff;">Empirical Reward Trajectory</h3>
+                            <span class="subtext">Deterministic fitness scores across trial iterations</span>
+                        </div>
+                        <span class="status-badge running" id="disc-status-badge">READY</span>
+                    </div>
+
+                    <!-- SVG Chart Display -->
+                    <div class="reward-chart-container" id="reward-chart-container">
+                        <svg class="reward-svg-canvas" id="reward-svg-canvas" viewBox="0 0 600 240">
+                            <rect width="600" height="240" fill="#0d1117" rx="8"/>
+                            <line x1="50" y1="20" x2="50" y2="200" stroke="#30363d" stroke-width="1"/>
+                            <line x1="50" y1="200" x2="580" y2="200" stroke="#30363d" stroke-width="1"/>
+                            <text x="300" y="115" fill="#6e7681" text-anchor="middle" font-size="13">Launch experiments to observe live reward curve</text>
+                        </svg>
+                    </div>
+
+                    <!-- Multi-Island Population Monitor -->
+                    <div class="island-populations-deck" id="island-populations-deck">
+                        <div class="island-deck-header">
+                            <span style="font-size: 12px; font-weight: 600; color: #cbd5e1;">EVOLUTIONARY ISLAND POPULATIONS</span>
+                            <span class="subtext" id="disc-migration-counter">Periodic migration: every 10 trials</span>
+                        </div>
+                        <div class="islands-pill-grid" id="islands-pill-grid">
+                            <div class="island-stat-pill">
+                                <span class="island-name">Island Alpha</span>
+                                <span class="island-val" id="island-0-val">Reward: --</span>
+                            </div>
+                            <div class="island-stat-pill">
+                                <span class="island-name">Island Beta</span>
+                                <span class="island-val" id="island-1-val">Reward: --</span>
+                            </div>
+                            <div class="island-stat-pill">
+                                <span class="island-name">Island Gamma</span>
+                                <span class="island-val" id="island-2-val">Reward: --</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Center Column: Discovered Code Studio -->
+                <div class="discovery-col-code glass-card">
+                    <div class="card-inner-header">
+                        <div class="code-view-tabs">
+                            <button class="code-tab-btn active" id="tab-code-breakthrough" onclick="switchCodeViewTab('breakthrough')">🏆 Best Breakthrough</button>
+                            <button class="code-tab-btn" id="tab-code-latest" onclick="switchCodeViewTab('latest')">⚡ Active Trial</button>
+                            <button class="code-tab-btn" id="tab-code-baseline" onclick="switchCodeViewTab('baseline')">📋 Baseline</button>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary btn-xs" onclick="copyDiscoveredCode()">📋 Copy</button>
+                            <button class="button-primary btn-xs" id="btn-export-discovery" onclick="exportDiscoveredArtifact()">📥 Export .py</button>
+                        </div>
+                    </div>
+
+                    <div class="code-editor-container">
+                        <pre class="discovery-code-block" id="discovery-code-block"><code id="discovery-code-content"># Select a domain above and click 'Launch Autonomous Experiments'
+# to begin trial-and-error discovery in an isolated sandbox.</code></pre>
+                    </div>
+
+                    <!-- Code Telemetry Footer -->
+                    <div class="code-telemetry-bar">
+                        <span id="disc-code-mutation-type">Strategy: None</span>
+                        <span id="disc-code-runtime">Runtime: -- ms</span>
+                        <span id="disc-code-verdict">Verification: --</span>
+                    </div>
+                </div>
+
+                <!-- Right Column: Sandbox Terminal & Learned Negative Constraints -->
+                <div class="discovery-col-terminal glass-card">
+                    <div class="card-inner-header">
+                        <div>
+                            <h3 style="margin: 0; font-size: 15px; color: #fff;">Sandbox Verifier Stream</h3>
+                            <span class="subtext">Zero-trust output &amp; failure self-correction</span>
+                        </div>
+                        <button class="btn btn-ghost btn-xs" onclick="clearDiscoveryLogs()">Clear</button>
+                    </div>
+
+                    <!-- Terminal Log Stream -->
+                    <div class="discovery-terminal-log" id="discovery-terminal-log">
+                        <div class="log-entry system">
+                            <span class="log-ts">[00:00:00]</span>
+                            <span>Discovery Engine initialized. Ready to execute isolated sandbox experiments.</span>
+                        </div>
+                    </div>
+
+                    <!-- Learned Negative Constraints Deck -->
+                    <div class="negative-constraints-deck">
+                        <div class="nc-header">
+                            <span style="font-size: 12px; font-weight: 600; color: #ef4444;">🛡️ LEARNED NEGATIVE CONSTRAINTS</span>
+                            <span class="subtext">Auto-extracted from failures</span>
+                        </div>
+                        <div class="nc-list" id="discovery-negative-constraints-list">
+                            <div class="nc-empty-msg">No failure patterns encountered yet. Sandbox running cleanly.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =========================================================================
          VIEW 3: COMPLETE DOCUMENTATION & LEARN HUB (CHATGPT LEARN STYLE)
          ========================================================================= -->
     <section class="app-view" id="view-docs">
@@ -1282,6 +1877,12 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
                 <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-workstation'); selectAgentByDotKey('hex'); closeSearchModal();">
                     <span class="result-item-title">🛡️ Dark Navy Dot (HEX) — Principal Security Architect</span>
                     <span class="result-item-sub">AppSec audits, OWASP matrices, automated pytest fixes, code review</span>
+                </a>
+
+                <!-- Tender Intelligence Tool -->
+                <a href="javascript:void(0)" class="search-result-item" onclick="switchMainView('view-tenders'); closeSearchModal();">
+                    <span class="result-item-title">📑 Tender Intelligence &amp; Word .docx Bid Dossier (AXIS)</span>
+                    <span class="result-item-sub">Drag-and-drop NIT tender PDFs (PWD, CPWD, NHAI), instant parameter extraction &amp; bid readiness dossier</span>
                 </a>
 
                 <!-- Core Workstation Tools -->
@@ -1724,6 +2325,85 @@ curl -X POST http://127.0.0.1:8000/api/agents/{agent_id}/execute \
             <div class="modal-footer" style="margin-top: 16px; justify-content: space-between;">
                 <span style="font-size: 12px; color: var(--text-dim);">Protected by SQLite WAL PRAGMA synchronous enforcement</span>
                 <button class="btn btn-primary" onclick="closeAdminModal()">Done</button>
+            </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: 5-MINUTE PILOT CUSTOMER WALKTHROUGH DEMONSTRATION
+         ========================================================================= -->
+    <div class="modal-backdrop" id="modal-pilot-demo" style="display: none;">
+        <div class="modal-content glass-card pilot-demo-modal-dialog">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <span class="badge-pill-gold">PRESENTER WALKTHROUGH</span>
+                    <h2>5-Minute Customer Pilot Demo Script</h2>
+                </div>
+                <button class="modal-close-btn" onclick="closePilotDemoModal()">&times;</button>
+            </div>
+            
+            <div class="pilot-demo-timeline-body">
+                <div class="demo-progress-track">
+                    <div class="demo-step active" id="demo-step-1" onclick="jumpToDemoMinute(1)">
+                        <span class="step-num">Min 1</span>
+                        <span class="step-label">The Problem</span>
+                    </div>
+                    <div class="demo-step" id="demo-step-2" onclick="jumpToDemoMinute(2)">
+                        <span class="step-num">Min 2</span>
+                        <span class="step-label">&lt;10s Ingestion</span>
+                    </div>
+                    <div class="demo-step" id="demo-step-3" onclick="jumpToDemoMinute(3)">
+                        <span class="step-num">Min 3</span>
+                        <span class="step-label">Clause Audit</span>
+                    </div>
+                    <div class="demo-step" id="demo-step-4" onclick="jumpToDemoMinute(4)">
+                        <span class="step-num">Min 4</span>
+                        <span class="step-label">Gap Remediation</span>
+                    </div>
+                    <div class="demo-step" id="demo-step-5" onclick="jumpToDemoMinute(5)">
+                        <span class="step-num">Min 5</span>
+                        <span class="step-label">Word Deliverable</span>
+                    </div>
+                </div>
+
+                <div class="demo-card-pane" id="demo-card-pane">
+                    <!-- Dynamic Step Card Content populated by JS -->
+                </div>
+            </div>
+
+            <div class="modal-footer" style="justify-content: space-between;">
+                <div class="demo-controls-left">
+                    <button class="btn btn-secondary btn-sm" id="btn-demo-prev" onclick="navigateDemoStep(-1)">◀ Previous</button>
+                    <button class="btn btn-secondary btn-sm" id="btn-demo-next" onclick="navigateDemoStep(1)">Next ▶</button>
+                </div>
+                <div class="demo-controls-right">
+                    <button class="button-primary btn-sm" id="btn-demo-auto-run" onclick="runCurrentDemoAction()">
+                        ⚡ Run Live Action in App
+                    </button>
+                    <button class="btn btn-ghost btn-sm" onclick="closePilotDemoModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: 15 BENCHMARK TENDER DOCUMENTS CATALOG
+         ========================================================================= -->
+    <div class="modal-backdrop" id="modal-benchmark-catalog" style="display: none;">
+        <div class="modal-content glass-card benchmark-catalog-modal-dialog">
+            <div class="modal-header">
+                <div>
+                    <h2>15 Authentic Calibrated Benchmark Tenders</h2>
+                    <span class="subtext">Real-world procurement tender specifications from Maharashtra PWD, CPWD, and NHAI</span>
+                </div>
+                <button class="modal-close-btn" onclick="closeBenchmarkCatalogModal()">&times;</button>
+            </div>
+            
+            <div class="benchmark-catalog-body" id="benchmark-catalog-grid">
+                <!-- Populated dynamically via /api/tenders/benchmarks -->
+            </div>
+
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button class="btn btn-primary" onclick="closeBenchmarkCatalogModal()">Done</button>
             </div>
         </div>
     </div>

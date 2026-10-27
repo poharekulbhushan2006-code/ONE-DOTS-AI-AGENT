@@ -1,181 +1,117 @@
-# ◈ ONE DOTS: Always-On Frontier Intelligence & Autonomous Agent Platform
+# ◈ ONE DOTS: Always-On Frontier Intelligence Platform
 
-> **Dots are remarkably capable, always-on agents built to handle everything.**  
-> They’re a whole new way to work with AI—one that gets to know what matters to you, is always working on your behalf, and takes important work off your plate so you get more of your time and attention back.  
-> Powered by **Google Gemini** (`gemini-3.5-flash-lite` / `gemini-3.8-flash`) with dedicated cloud computers, proactive research, 24/7 background cadences, and conversational Voice Calling.
-
----
-
-## 🌟 The Vision: Dots Have Your Back
-
-ONE DOTS brings frontier intelligence that has your back. Each Dot has its own cloud computer sandbox, learns from feedback over time, and works towards your goals 24/7. Through an ecosystem of integrations, they connect with over 4,000 apps and provide a unified experience combining:
-1. **Flagship Product Showcase**: Official OpenAI-style launch experience with live cinematic film preview, department archetypes, and commercial pricing.
-2. **Autonomous Agent Workstation**: Real-time fleet management, interactive Gemini chat, live REPL cloud computer with safe STDIN support, and file studio.
-3. **Docs & Learn Knowledge Hub**: In-depth architecture guides modeled on `learn.chatgpt.com/docs`, with search, interactive code samples, and an embedded AI Docs assistant.
-
-Your dot is always within reach. You can ask questions, explore ideas, give feedback, or hop on a **live voice call** when you need to talk something out. The more you work together, the more your dot learns your preferences, how you think, and what good looks like to you.
+> **Autonomous AI dots that learn through continuous execution, proactive research, and trial-and-error discovery.**  
+> Powered by **Google Gemini** (`gemini-3.5-flash-lite` / `gemini-3.8-flash`) with dedicated cloud computer sandboxes, real-time voice calls, and empirical discovery environments.
 
 ---
 
-## 🤖 The 5 Specialist Dot Archetypes
+## 🌟 Overview
 
-Built directly into the CLI, REST API, and Conversational Workstation UI:
+ONE DOTS provides a unified platform combining always-on autonomous agents, enterprise intelligence, and pure reinforcement learning discovery:
 
-| Dot | Archetype | Mission & Capabilities |
+1. **Autonomous Workstation**: Real-time agent fleet management, Gemini-powered conversational streaming, cloud sandboxes, and file studio.
+2. **Ineffable Intelligence Discovery Studio**: Pure trial-and-error discovery engine (inspired by David Silver & DeepMind FunSearch) discovering algorithmic heuristics and mathematical invariants in isolated execution sandboxes.
+3. **Conversational Voice Calling**: Hands-free voice interface with real-time speech recognition, natural synthesis, and animated audio soundwaves.
+4. **Docs & Knowledge Portal**: Architectural guides, interactive code samples, and embedded AI documentation assistant.
+
+---
+
+## 🤖 The 6 Specialist Dot Archetypes
+
+| Dot | Archetype | Domain & Core Capabilities |
 |---|---|---|
-| 🔵 **Blue Dot** | **NOVA** (Product Launch Lead) | *Strategy & Project Planning*: Turns ideas into milestones and dependencies, identifies positioning, conducts web research, tracks Linear/GitHub tasks, and performs change-impact analysis when requirements shift. |
-| 🟢 **Green Dot** | **SAGE** (Research Scientist) | *Research & Empirical Analysis*: Parses CSV/XLSX datasets, executes NumPy/pandas/SciPy statistical modeling (Welch's t-test, ANOVA), generates publication-grade Matplotlib charts, and formulates sourced research reports. |
-| 🟡 **Yellow Dot** | **AXIS** (Enterprise Specialist) | *Business & Technical Documentation*: Analyzes customer RFP and tender documents (PDF/DOCX), generates Requirement-to-Evidence compliance matrices, identifies gaps, and drafts commercial proposals. |
-| 🟣 **Purple Dot** | **MUSE** (Content & Media Studio) | *Deliverable Production Studio*: Generates genuine, downloadable PowerPoint presentation decks (`.pptx`), Word reports/study guides (`.docx`), summaries, and platform-specific content variants. |
-| 🛡️ **Dev Dot** | **HEX** (Autonomous Developer) | *Coding & Verified Execution*: Inspects repositories, maps dependencies, reproduces bugs, writes atomic patches in isolated sandboxes, executes pytest test suites, and generates verified code diffs. |
-
-
----
-
-## 🛡️ Built-In Safeguards & Proactive Research
-
-- **Isolated Cloud Computer Sandbox**: Each dot operates inside its own dedicated sandbox workspace (`data/sandboxes/<agent_id>`). It can write files, execute Python scripts, and run shell commands in complete isolation.
-- **Proactive Research**: When not actively conversing, dots perform background research across live web sources using read-only tools that cannot alter external system content without consent.
-- **Action Review & Human Approval Gate**: Sensitive or high-risk tasks are automatically held in the approval queue (`/api/decisions/pending`) for operator sign-off before proceeding.
-- **Tri-Tier Persistent Memory**:
-  - *Working Memory*: Active task execution context.
-  - *Episodic Semantic Memory*: SQLite database (`data/episodic_memory.db`) with token scoring, WAL mode, and fast recall.
-  - *Durable State Store*: Relational database (`data/one_state.db`) with WAL mode tracking steps, reports, checkpoints, and chat histories.
+| 🔵 **Blue Dot** | **NOVA** | *Product Launch Lead*: Milestone planning, positioning, task tracking, and change-impact analysis. |
+| 🟢 **Green Dot** | **SAGE** | *Research Scientist*: Dataset analysis, NumPy/SciPy statistical modeling, and publication-ready charts. |
+| 🟡 **Yellow Dot** | **AXIS** | *Enterprise Tender Specialist*: RFP & tender clause extraction, compliance matrices, and proposal drafting. |
+| 🟣 **Purple Dot** | **MUSE** | *Content Studio*: Generation of genuine Word documents (`.docx`), presentation decks (`.pptx`), and platform content. |
+| 🛡️ **Dev Dot** | **HEX** | *Autonomous Developer*: Codebase inspection, dependency mapping, atomic sandbox patching, and pytest verification. |
+| 🔴 **Red Dot** | **SILVER / AURA** | *Ineffable Intelligence Engine*: Autonomous trial-and-error discovery system. Discovers algorithmic optimizations, combinatorial heuristics, and mathematical conjectures verified in isolated sandboxes. |
 
 ---
 
-## 🎙️ Live Conversational Voice Call
+## 🔬 Ineffable Intelligence: Empirical Discovery Engine
 
-- **Hop on a Call**: Click the **📞 Voice Call** button in the dashboard to speak directly with your dot.
-- **Speech Recognition**: Listens in real-time via `webkitSpeechRecognition`.
-- **Speech Synthesis**: Speaks replies with natural speech audio using `window.speechSynthesis`.
-- **Audio Soundwave**: Visual pulsating glow reflects your dot's voice and thoughts in real-time.
+Inspired by David Silver's pure trial-and-error reinforcement learning paradigm and DeepMind FunSearch, the Discovery Engine learns from its own attempts rather than static training datasets:
+
+- **Isolated Sandbox Verification**: Executes program candidates in air-gapped runtimes with deterministic evaluation, timeouts, and memory constraints.
+- **Island Model Evolution**: Multi-island population pool prevents premature convergence and periodically migrates elite candidate solutions.
+- **Verifiable Benchmarks**:
+  - `bin_packing`: Combinatorial online bin-packing heuristic discovery (OR-Library).
+  - `algorithm_opt`: Runtime speedup optimizations for sorting and search algorithms.
+  - `math_conjecture`: Extremal graph invariants and counterexample search for mathematical conjectures.
+- **Persistent Experience Store**: SQLite database recording trial code, execution metrics, reward progressions, and negative constraint reflections.
 
 ---
 
-## ⚡ Architecture Overview
+## ⚡ Project Structure
 
 ```
 DOTS AI AGENT/
-├── .env                  # Google Gemini API Key & model routing
-├── app.py                # Fast root server launcher (runs uvicorn api.app:app)
-├── cli.py                # Command-Line Management Tool (server, deploy, list, tick, delete, test)
-├── requirements.txt      # Project dependencies (FastAPI, Google GenAI, Playwright, etc.)
-├── run.bat               # One-click Windows launch script
-├── test_gemini.py        # Live Google Gemini API connectivity verifier
-│
 ├── api/
-│   └── app.py            # FastAPI REST backend & dashboard static mount
-│
+│   ├── app.py            # FastAPI REST backend & static workstation mount
+│   └── index.py          # Vercel serverless entrypoint
 ├── core/
-│   ├── orchestrator.py   # 6-Stage Autonomous Lifecycle Engine (Research ➔ Analyze ➔ Build ➔ Monitor ➔ Report ➔ Adapt)
-│   ├── heartbeat.py      # Background cadence scheduler with in-flight lock protection
-│   ├── conversation.py   # Google Gemini conversational cognitive engine & catch-up digest
-│   └── models.py         # Pydantic schemas (OneAgent, TaskStep, ChatMessage, Decision, Report)
-│
-├── memory/
-│   ├── state_store.py    # SQLite relational state store (WAL mode, timeout=30s)
-│   └── semantic_memory.py # Episodic semantic memory store (WAL mode, timeout=30s)
-│
-├── sandbox/
-│   └── executor.py       # Isolated cloud computer subprocess execution environment
-│
-├── browser/
-│   └── controller.py     # Headless Chromium Playwright automation & snapshot capture
-│
-├── tools/
-│   └── registry.py       # Integrated tools: web search, browser inspect, sandbox runner, memory recall
-│
-├── hil/
-│   └── approval_gate.py  # Human-in-the-loop action review and approval gate
-│
-├── web/                  # OpenAI Dot-style Conversational Workstation UI
-│   ├── index.html        # Glassmorphic UI with Voice Call, 5 Specialist Dots, Cloud Computer Inspector
-│   ├── app.js            # Real-time state synchronization, SpeechRecognition, chat stream
-│   └── style.css         # Modern dark-mode glassmorphic aesthetics
-│
-├── tests/
-│   └── test_dots_agents.py # Automated test suite for DOTS AI AGENT
-│
-└── data/                 # Persistent state databases, sandboxes, screenshots, reports
+│   ├── orchestrator.py   # 6-Stage Autonomous Lifecycle Engine
+│   ├── conversation.py   # Google Gemini conversational cognitive engine
+│   └── discovery/        # Ineffable Intelligence Engine
+│       ├── discovery_engine.py  # Autonomous trial-and-error search loop
+│       ├── island_pool.py       # Multi-island evolutionary candidate pool
+│       ├── experience_store.py  # SQLite trial & breakthrough store
+│       └── verifiers/           # Benchmarks (Bin Packing, Algo Opt, Math Conjectures)
+├── memory/               # SQLite state store & episodic semantic memory
+├── sandbox/              # Isolated cloud computer subprocess runtime
+├── tools/                # Web search, browser inspection, tender intelligence
+├── web/                  # Glassmorphic Workstation & Discovery Studio UI
+└── tests/                # Automated pytest validation suite (51 passing tests)
 ```
 
 ---
 
-## 🚀 Quickstart & How to Run
+## 🚀 Quickstart
 
-### 1. Launch with One Click
-Double-click `run.bat` or run in terminal:
+### 1. Launch with One Click (Windows)
 ```powershell
 .\run.bat
 ```
 
-### 2. Launch via Python
+### 2. Manual Launch
 ```powershell
-# Activate virtual environment
 .venv\Scripts\activate
-
-# Launch the server
 python app.py
 ```
-Or via the CLI:
-```powershell
-python cli.py server
-```
 
-Then open your browser at:
-* **Conversational Workstation UI**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
-* **Interactive API Documentation (Swagger)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+Open:
+- **Workstation & Discovery Studio**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **API Documentation (Swagger)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
-## 🛠️ CLI Commands
+## ☁️ Deployment (Vercel & Cloud)
 
-```powershell
-# List all active dots in your fleet
-python cli.py list
+Configured for zero-config serverless deployment via `vercel.json`:
+- **Frontend**: Pre-compiled static assets served with strict CSP security headers.
+- **Backend API**: Python serverless runtime routed through `api/index.py`.
 
-# Deploy a Specialist Dot template
-python cli.py deploy --template felipe   # Blue Dot (Felipe - Product Launch)
-python cli.py deploy --template todd     # Green Dot (Todd - Research Scientist)
-python cli.py deploy --template alfred   # Yellow Dot (Alfred - Enterprise Sales)
-python cli.py deploy --template jojo     # Purple Dot (Jojo - Content Creator)
-python cli.py deploy --template dev      # Dev Dot (Sentry - PR & Bug Fixer)
-
-# Deploy a custom dot
-python cli.py deploy --name "MarketRadar" --mission "Monitor AI models and track pricing shifts" --interval 180
-
-# Trigger an immediate autonomous cycle
-python cli.py tick --id <agent_id>
-
-# Retire and delete an agent
-python cli.py delete --id <agent_id>
-
-# Run core subsystem self-test
-python cli.py test
+Continuous deployment is triggered automatically on push:
+```bash
+git push origin master
 ```
 
 ---
 
-## 🧪 Automated Testing
+## 🧪 Testing
 
-Run the automated test suite:
+Run the full automated test suite:
 ```powershell
 .venv\Scripts\python.exe -m pytest tests -v
 ```
 
-Verify live Google Gemini connectivity:
-```powershell
-.venv\Scripts\python.exe test_gemini.py
-```
-
 ---
 
-## 📡 REST API Summary
+## 📡 Key REST Endpoints
 
-- **Fleet Management**: `POST /api/agents`, `GET /api/agents`, `GET /api/agents/{id}`, `DELETE /api/agents/{id}`
-- **Execution Cycles**: `POST /api/agents/{id}/tick`, `POST /api/agents/{id}/pause`, `POST /api/agents/{id}/resume`
-- **Telemetry & Deliverables**: `GET /api/agents/{id}/steps`, `GET /api/agents/{id}/reports`
-- **Conversational AI**: `POST /api/agents/{id}/chat`, `GET /api/agents/{id}/chat`, `GET /api/agents/{id}/briefing`
-- **Cloud Computer Workspace**: `GET /api/agents/{id}/files`, `GET /api/agents/{id}/files/content`, `POST /api/agents/{id}/execute`
-- **Human Escalation Gate**: `GET /api/decisions/pending`, `POST /api/decisions/{id}/approve`, `POST /api/decisions/{id}/reject`
+- **Fleet Management**: `GET /api/agents` • `POST /api/agents` • `DELETE /api/agents/{id}`
+- **Conversational Chat**: `POST /api/agents/{id}/chat` • `GET /api/agents/{id}/briefing`
+- **Discovery Studio**: `GET /api/discovery/benchmarks` • `POST /api/discovery/start` • `GET /api/discovery/status/{id}` • `POST /api/discovery/stop/{id}`
+- **Tender Intelligence**: `POST /api/tenders/upload` • `GET /api/tenders/benchmarks`
+- **Cloud Sandbox**: `POST /api/agents/{id}/execute` • `GET /api/agents/{id}/files`

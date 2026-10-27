@@ -4,6 +4,7 @@ Stores, catalogues, and serves verifiable deliverables (PPTX, DOCX, PDF, PNG, CS
 """
 
 import os
+import re
 import mimetypes
 from pathlib import Path
 from datetime import datetime, timezone
@@ -87,8 +88,10 @@ class ArtifactVault:
         determined_type = file_type or ext or "bin"
 
         artifact_id = str(uuid.uuid4())[:8]
-        safe_name = f"{artifact_id}_{name}"
+        clean_file_basename = re.sub(r'[^a-zA-Z0-9_\-\.]', '_', Path(name).name)
+        safe_name = f"{artifact_id}_{clean_file_basename}"
         target_path = agent_dir / safe_name
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_bytes(content)
 
         size = len(content)

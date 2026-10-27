@@ -20,6 +20,7 @@ import os
 import sys
 import uuid
 import json
+import re
 import traceback
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -35,6 +36,7 @@ from fastapi import (
     Depends,
     UploadFile,
     File,
+    Form,
     Header,
     status,
 )
@@ -86,6 +88,7 @@ from core.conversation import AgentConversationEngine
 from sandbox.executor import SandboxEnvironment
 from core.task_engine import task_engine
 from tools.artifacts import artifact_vault
+from tools.axis_requirements import AxisRequirementsEngine
 
 
 # ------------------ LIFECYCLE & APP SETUP ------------------
@@ -1193,6 +1196,435 @@ async def dispatch_multi_agent_team(
         "deliverables": all_artifacts,
         "message": f"Team orchestration completed across all 5 Dots with {len(all_artifacts)} verified deliverables generated."
     }
+
+
+# ------------------ AXIS TENDER & BID INTELLIGENCE ENDPOINTS ------------------
+
+class TenderExtractRequest(BaseModel):
+    pdf_path: Optional[str] = None
+    raw_text: Optional[str] = None
+
+class TenderEvaluateRequest(BaseModel):
+    criteria: Optional[List[Dict[str, Any]]] = None
+    tender_metadata: Optional[Dict[str, Any]] = None
+    raw_text: Optional[str] = None
+    pdf_path: Optional[str] = None
+    contractor_profile: Dict[str, Any]
+
+class TenderDossierRequest(BaseModel):
+    tender_metadata: Dict[str, Any]
+    evaluation_result: Dict[str, Any]
+    contractor_profile: Dict[str, Any]
+    output_filename: Optional[str] = None
+
+
+@app.post("/api/tenders/extract")
+def extract_tender_intelligence(
+    req: TenderExtractRequest,
+    user: AuthenticatedUser = Depends(require_auth),
+):
+    """
+    Extracts high-stakes tender header parameters (NIT, Authority, Estimated Cost, EMD, Deadlines)
+    and structured eligibility criteria with page numbers and clause citations.
+    """
+    engine = AxisRequirementsEngine(agent_id="dot-axis-03")
+    pages = []
+    if req.pdf_path:
+        res = engine.extract_text_from_pdf(req.pdf_path)
+        if not res.get("success", False):
+            raise HTTPException(status_code=400, detail=res.get("error", "PDF extraction failed."))
+        pages = res.get("pages", [])
+    elif req.raw_text:
+        pages = [{"page": 1, "text": req.raw_text}]
+    else:
+        raise HTTPException(status_code=400, detail="Must provide either 'pdf_path' or 'raw_text'.")
+
+    metadata = engine.extract_tender_metadata(pages)
+    criteria = engine.extract_eligibility_criteria(pages, tender_metadata=metadata)
+
+    return {
+        "success": True,
+        "metadata": metadata,
+        "criteria_count": len(criteria),
+        "criteria": criteria,
+    }
+
+
+@app.post("/api/tenders/evaluate")
+def evaluate_tender_eligibility(
+    req: TenderEvaluateRequest,
+    user: AuthenticatedUser = Depends(require_auth),
+):
+    """
+    Cross-evaluates contractor's uploaded credentials against tender criteria:
+    Calculates turnover shortfalls, past experience matches, statutory compliance,
+    readiness score (0-100%), and executive verdict.
+    """
+    engine = AxisRequirementsEngine(agent_id="dot-axis-03")
+
+    criteria = req.criteria
+    tender_meta = req.tender_metadata
+
+    if not criteria and (req.raw_text or req.pdf_path):
+        pages = []
+        if req.pdf_path:
+            p_res = engine.extract_text_from_pdf(req.pdf_path)
+            if p_res.get("success"):
+                pages = p_res.get("pages", [])
+        elif req.raw_text:
+            pages = [{"page": 1, "text": req.raw_text}]
+
+        tender_meta = engine.extract_tender_metadata(pages)
+        criteria = engine.extract_eligibility_criteria(pages, tender_metadata=tender_meta)
+
+    if not criteria:
+        raise HTTPException(status_code=400, detail="Criteria list or tender text/PDF required.")
+
+    eval_result = engine.evaluate_bidder_eligibility(
+        criteria=criteria,
+        contractor_profile=req.contractor_profile,
+        tender_metadata=tender_meta
+    )
+    return eval_result
+
+
+@app.post("/api/tenders/compliance-matrix")
+def generate_tender_compliance_matrix(
+    req: TenderEvaluateRequest,
+    user: AuthenticatedUser = Depends(require_auth),
+):
+    """
+    Generates a Markdown compliance matrix artifact registered in the vault.
+    """
+    engine = AxisRequirementsEngine(agent_id="dot-axis-03")
+    criteria = req.criteria or []
+    if not criteria and req.raw_text:
+        criteria = engine.extract_eligibility_criteria(req.raw_text)
+
+    res = engine.build_compliance_matrix(
+        requirements=criteria,
+        contractor_profile=req.contractor_profile,
+        title="Tender Requirement Compliance & Bidder Gap Matrix"
+    )
+    return res
+
+
+@app.post("/api/tenders/dossier")
+def generate_bid_readiness_dossier_endpoint(
+    req: TenderDossierRequest,
+    user: AuthenticatedUser = Depends(require_auth),
+):
+    """
+    Generates a formal, client-ready Microsoft Word (.docx) Bid Readiness Dossier deliverable
+    with compliance scorecard, key dates table, shortfall analysis, and remediation checklist.
+    """
+    engine = AxisRequirementsEngine(agent_id="dot-axis-03")
+    res = engine.generate_bid_dossier(
+        tender_metadata=req.tender_metadata,
+        evaluation_result=req.evaluation_result,
+        contractor_profile=req.contractor_profile,
+        output_filename=req.output_filename,
+    )
+    return res
+
+
+@app.get("/api/tenders/contractor-template")
+def get_contractor_profile_template():
+    """Returns sample contractor profile schema with turnover, completed works, and statutory checklist."""
+    return {
+        "company_name": "Apex Infra Projects Pvt. Ltd.",
+        "contractor_class": "Class I (Civil)",
+        "financials": {
+            "annual_turnovers": {
+                "2022-23": 125000000.0,
+                "2023-24": 142000000.0,
+                "2024-25": 168000000.0
+            },
+            "average_turnover": 145000000.0,
+            "solvency_amount": 60000000.0,
+            "net_worth": 45000000.0
+        },
+        "past_projects": [
+            {
+                "name": "Widening & Strengthening of SH-42 (KM 14 to 32)",
+                "client": "Public Works Department (PWD)",
+                "value": 115000000.0,
+                "completion_year": 2024,
+                "has_completion_cert": True
+            },
+            {
+                "name": "Construction of 4-Lane Minor Bridge and Approaches",
+                "client": "MSRDC",
+                "value": 78000000.0,
+                "completion_year": 2023,
+                "has_completion_cert": True
+            }
+        ],
+        "statutory": {
+            "gst_registered": True,
+            "gstin": "27AAACA9999P1Z8",
+            "pan_available": True,
+            "epf_registered": True,
+            "esic_registered": True,
+            "valid_until": "2028-03-31",
+            "non_blacklisted_affidavit": True,
+            "litigation_history": False
+        },
+        "machinery": [
+            "Hot Mix Plant (100-120 TPH)",
+            "Hydrostatic Sensor Paver",
+            "Vibratory Tandem Roller (8-10 Ton)",
+            "Pneumatic Tyre Roller (PTR)",
+            "Excavator JCB 3DX",
+            "Concrete Batching Plant (30 m3/hr)"
+        ],
+        "personnel": [
+            {"role": "Project Manager", "qualification": "B.E. Civil", "experience_years": 14},
+            {"role": "Quality Control Engineer", "qualification": "Diploma Civil", "experience_years": 8},
+            {"role": "Safety Officer", "qualification": "Degree with Safety Cert", "experience_years": 6}
+        ]
+    }
+
+
+@app.post("/api/tenders/upload")
+async def upload_and_analyze_tender(
+    file: UploadFile = File(...),
+    contractor_profile: Optional[str] = Form(None),
+    generate_dossier: bool = Form(True),
+    user: AuthenticatedUser = Depends(require_auth),
+):
+    """
+    Accepts multipart drag-and-drop tender documents (.pdf or .txt).
+    Performs instant sub-second text extraction, extracts high-stakes NIT parameters,
+    evaluates contractor eligibility against all criteria, and generates both a client-ready
+    Microsoft Word (.docx) Bid Readiness Dossier deliverable and Markdown compliance matrix.
+    """
+    engine = AxisRequirementsEngine(agent_id="dot-axis-03")
+    content = await file.read()
+    filename = sanitize_filename(file.filename or "tender_document.pdf")
+
+    pages = []
+    if filename.lower().endswith(".pdf") or content.startswith(b"%PDF"):
+        res = engine.extract_text_from_pdf(content)
+        if not res.get("success", False):
+            raise HTTPException(status_code=400, detail=res.get("error", "PDF extraction failed."))
+        pages = res.get("pages", [])
+    else:
+        try:
+            raw_text = content.decode("utf-8")
+        except UnicodeDecodeError:
+            raw_text = content.decode("latin-1", errors="ignore")
+        pages = [{"page": 1, "text": raw_text}]
+
+    metadata = engine.extract_tender_metadata(pages)
+    criteria = engine.extract_eligibility_criteria(pages, tender_metadata=metadata)
+
+    # Resolve contractor profile
+    profile_data = None
+    if contractor_profile:
+        try:
+            profile_data = json.loads(contractor_profile)
+        except Exception:
+            profile_data = None
+
+    if not profile_data:
+        profile_data = get_contractor_profile_template()
+
+    # Evaluate eligibility
+    eval_result = engine.evaluate_bidder_eligibility(
+        criteria=criteria,
+        contractor_profile=profile_data,
+        tender_metadata=metadata,
+    )
+
+    # Generate Word .docx Bid Readiness Dossier
+    dossier_data = None
+    if generate_dossier:
+        safe_tender_id = re.sub(r'[^A-Za-z0-9_\-]', '_', metadata.get("tender_id", "TENDER"))
+        out_name = f"Bid_Readiness_Dossier_{safe_tender_id}.docx"
+        dossier_data = engine.generate_bid_dossier(
+            tender_metadata=metadata,
+            evaluation_result=eval_result,
+            contractor_profile=profile_data,
+            output_filename=out_name,
+        )
+
+    # Generate Markdown Compliance Matrix
+    matrix_data = engine.build_compliance_matrix(
+        requirements=criteria,
+        contractor_profile=profile_data,
+        title=f"Tender Compliance & Bidder Gap Matrix — {metadata.get('tender_id')}"
+    )
+
+    return {
+        "success": True,
+        "filename": filename,
+        "total_pages": len(pages),
+        "metadata": metadata,
+        "criteria_count": len(criteria),
+        "criteria": criteria,
+        "evaluation": eval_result,
+        "dossier": dossier_data,
+        "compliance_matrix": matrix_data,
+    }
+
+
+@app.get("/api/tenders/benchmarks")
+def list_benchmark_tenders():
+    """Returns catalog of 15 authentic calibrated benchmark tenders across Maharashtra PWD, CPWD, and NHAI."""
+    manifest_file = settings.BASE_DIR / "data" / "benchmark_tenders" / "manifest.json"
+    if not manifest_file.exists():
+        manifest_file = settings.DATA_DIR / "benchmark_tenders" / "manifest.json"
+    if not manifest_file.exists():
+        return {"count": 0, "benchmarks": []}
+    catalog = json.loads(manifest_file.read_text(encoding="utf-8"))
+    return {"count": len(catalog), "benchmarks": catalog}
+
+
+@app.post("/api/tenders/benchmarks/{benchmark_id}/analyze")
+def analyze_benchmark_tender(
+    benchmark_id: str,
+    contractor_profile: Optional[Dict[str, Any]] = None,
+    user: AuthenticatedUser = Depends(require_auth),
+):
+    """Executes instant analysis and generates Word .docx dossier for a benchmark tender by ID."""
+    manifest_file = settings.BASE_DIR / "data" / "benchmark_tenders" / "manifest.json"
+    if not manifest_file.exists():
+        manifest_file = settings.DATA_DIR / "benchmark_tenders" / "manifest.json"
+    if not manifest_file.exists():
+        raise HTTPException(status_code=404, detail="Benchmark catalog not found.")
+
+    catalog = json.loads(manifest_file.read_text(encoding="utf-8"))
+    spec = next((b for b in catalog if b["id"] == benchmark_id or b["filename"] == benchmark_id), None)
+    if not spec:
+        raise HTTPException(status_code=404, detail=f"Benchmark tender '{benchmark_id}' not found.")
+
+    pdf_path = settings.BASE_DIR / "data" / "benchmark_tenders" / spec["filename"]
+    if not pdf_path.exists():
+        pdf_path = settings.DATA_DIR / "benchmark_tenders" / spec["filename"]
+    if not pdf_path.exists():
+        raise HTTPException(status_code=404, detail=f"Benchmark PDF file '{spec['filename']}' not found.")
+
+    engine = AxisRequirementsEngine(agent_id="dot-axis-03")
+    res = engine.extract_text_from_pdf(str(pdf_path.resolve()))
+    if not res.get("success"):
+        raise HTTPException(status_code=500, detail=res.get("error", "Extraction failed"))
+
+    pages = res.get("pages", [])
+    metadata = engine.extract_tender_metadata(pages)
+    criteria = engine.extract_eligibility_criteria(pages, tender_metadata=metadata)
+
+    profile = contractor_profile or get_contractor_profile_template()
+    eval_result = engine.evaluate_bidder_eligibility(
+        criteria=criteria,
+        contractor_profile=profile,
+        tender_metadata=metadata,
+    )
+
+    safe_tender_id = re.sub(r'[^A-Za-z0-9_\-]', '_', metadata.get("tender_id", spec["id"]))
+    out_name = f"Bid_Readiness_Dossier_{safe_tender_id}.docx"
+    dossier_data = engine.generate_bid_dossier(
+        tender_metadata=metadata,
+        evaluation_result=eval_result,
+        contractor_profile=profile,
+        output_filename=out_name,
+    )
+
+    matrix_data = engine.build_compliance_matrix(
+        requirements=criteria,
+        contractor_profile=profile,
+        title=f"Compliance Matrix — {metadata.get('tender_id')}"
+    )
+
+    return {
+        "success": True,
+        "benchmark_id": spec["id"],
+        "filename": spec["filename"],
+        "total_pages": len(pages),
+        "metadata": metadata,
+        "criteria": criteria,
+        "evaluation": eval_result,
+        "dossier": dossier_data,
+        "compliance_matrix": matrix_data,
+    }
+
+
+# ------------------ INEFFABLE INTELLIGENCE DISCOVERY ENGINE ------------------
+
+class StartDiscoveryRequest(BaseModel):
+    benchmark_id: str = Field(default="bin_packing", description="Discovery benchmark domain")
+    max_iterations: int = Field(default=25, ge=1, le=100)
+    target_reward: float = Field(default=0.95, ge=0.1, le=1.0)
+    num_islands: int = Field(default=3, ge=1, le=6)
+
+
+@app.get("/api/discovery/benchmarks")
+def list_discovery_benchmarks():
+    """Returns catalog of verifiable scientific and algorithmic discovery domains."""
+    from core.discovery.discovery_engine import discovery_manager
+    return {"benchmarks": discovery_manager.get_available_benchmarks()}
+
+
+@app.post("/api/discovery/start")
+def start_discovery_session(req: StartDiscoveryRequest):
+    """Launches an autonomous empirical trial-and-error discovery loop."""
+    from core.discovery.discovery_engine import discovery_manager
+    session_id = discovery_manager.start_session(
+        benchmark_id=req.benchmark_id,
+        max_iterations=req.max_iterations,
+        target_reward=req.target_reward,
+        num_islands=req.num_islands,
+    )
+    return {
+        "success": True,
+        "session_id": session_id,
+        "status": "started",
+        "benchmark_id": req.benchmark_id,
+        "message": "Autonomous discovery loop initiated in isolated sandbox."
+    }
+
+
+@app.get("/api/discovery/sessions")
+def list_discovery_sessions(limit: int = 20):
+    """Returns history of past discovery sessions."""
+    from core.discovery.experience_store import DiscoveryExperienceStore
+    store = DiscoveryExperienceStore()
+    return {"sessions": store.list_sessions(limit=limit)}
+
+
+@app.get("/api/discovery/status/{session_id}")
+def get_discovery_status(session_id: str):
+    """Streams live telemetry, trial progression, reward curve, and active code."""
+    from core.discovery.discovery_engine import discovery_manager
+    status_data = discovery_manager.get_status(session_id)
+    if not status_data:
+        raise HTTPException(status_code=404, detail="Discovery session not found")
+    return status_data
+
+
+@app.post("/api/discovery/stop/{session_id}")
+def stop_discovery_session(session_id: str):
+    """Halts a running discovery session."""
+    from core.discovery.discovery_engine import discovery_manager
+    stopped = discovery_manager.stop_session(session_id)
+    return {"success": stopped, "session_id": session_id}
+
+
+@app.get("/api/discovery/export/{session_id}")
+def export_discovery_artifact(session_id: str):
+    """Exports the best discovered code as a downloadable python artifact."""
+    from core.discovery.experience_store import DiscoveryExperienceStore
+    store = DiscoveryExperienceStore()
+    sess = store.get_session(session_id)
+    if not sess or not sess.get("best_code"):
+        raise HTTPException(status_code=404, detail="No breakthrough code found for this session")
+
+    content = f"# Discovered by ONE DOTS Discovery Engine (Ineffable Paradigm)\n# Domain: {sess.get('domain')}\n# Best Verifiable Reward: {sess.get('best_reward')}\n# Total Trials: {sess.get('total_trials')}\n\n{sess.get('best_code')}\n"
+    return Response(
+        content=content,
+        media_type="text/x-python",
+        headers={"Content-Disposition": f"attachment; filename=discovery_{session_id}.py"}
+    )
 
 
 # ------------------ HEALTH & PUBLIC ENTRY ------------------

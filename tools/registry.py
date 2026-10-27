@@ -176,6 +176,80 @@ class ToolRegistry:
             "message": f"Report '{title}' successfully published and stored.",
         }
 
+    # 9. AXIS Tender & Bid Intelligence Tools
+    def extract_tender_criteria(
+        self,
+        pdf_path: Optional[str] = None,
+        raw_text: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Extract tender parameters (NIT, EMD, deadlines) and eligibility criteria."""
+        pages = []
+        if pdf_path:
+            res = self.axis.extract_text_from_pdf(pdf_path)
+            if not res.get("success", False):
+                return res
+            pages = res.get("pages", [])
+        elif raw_text:
+            pages = [{"page": 1, "text": raw_text}]
+        else:
+            return {"success": False, "error": "Either pdf_path or raw_text must be provided."}
+
+        metadata = self.axis.extract_tender_metadata(pages)
+        criteria = self.axis.extract_eligibility_criteria(pages, tender_metadata=metadata)
+        return {
+            "success": True,
+            "metadata": metadata,
+            "criteria_count": len(criteria),
+            "criteria": criteria,
+        }
+
+    def evaluate_bidder_eligibility(
+        self,
+        criteria: List[Dict[str, Any]],
+        contractor_profile: Dict[str, Any],
+        tender_metadata: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """Evaluate contractor profile against tender requirements."""
+        return self.axis.evaluate_bidder_eligibility(
+            criteria=criteria,
+            contractor_profile=contractor_profile,
+            tender_metadata=tender_metadata
+        )
+
+    def build_compliance_matrix(
+        self,
+        requirements: List[Dict[str, Any]],
+        system_capabilities: Optional[Dict[str, str]] = None,
+        contractor_profile: Optional[Dict[str, Any]] = None,
+        title: str = "Tender Requirement Compliance & Bidder Gap Matrix",
+        task_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Generate compliance matrix report and artifact."""
+        return self.axis.build_compliance_matrix(
+            requirements=requirements,
+            system_capabilities=system_capabilities,
+            contractor_profile=contractor_profile,
+            title=title,
+            task_id=task_id
+        )
+
+    def generate_bid_dossier(
+        self,
+        tender_metadata: Dict[str, Any],
+        evaluation_result: Dict[str, Any],
+        contractor_profile: Dict[str, Any],
+        output_filename: Optional[str] = None,
+        task_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Generate client-ready Word (.docx) bid readiness dossier."""
+        return self.axis.generate_bid_dossier(
+            tender_metadata=tender_metadata,
+            evaluation_result=evaluation_result,
+            contractor_profile=contractor_profile,
+            output_filename=output_filename,
+            task_id=task_id
+        )
+
     def get_tool_definitions(self) -> List[Dict[str, Any]]:
         """Returns tool schema definitions for LLM function calling."""
         return [
@@ -407,6 +481,44 @@ class ToolRegistry:
                     "properties": {
                         "test_file": {"type": "string", "description": "Optional specific test file"}
                     }
+                }
+            },
+            {
+                "name": "extract_tender_criteria",
+                "description": "Extract structured eligibility criteria, estimated cost, EMD, and deadlines from a tender document (PDF or text).",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "pdf_path": {"type": "string", "description": "Relative or absolute path to tender PDF"},
+                        "raw_text": {"type": "string", "description": "Raw NIT or specification text"}
+                    }
+                }
+            },
+            {
+                "name": "evaluate_bidder_eligibility",
+                "description": "Cross-evaluate contractor credentials against extracted tender requirements and calculate readiness score.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "criteria": {"type": "array", "items": {"type": "object"}, "description": "List of tender criteria"},
+                        "contractor_profile": {"type": "object", "description": "Contractor company profile with turnover, past projects, statutory docs"},
+                        "tender_metadata": {"type": "object", "description": "Optional extracted tender metadata"}
+                    },
+                    "required": ["criteria", "contractor_profile"]
+                }
+            },
+            {
+                "name": "generate_bid_dossier",
+                "description": "Generate an official Microsoft Word (.docx) Bid Readiness Dossier deliverable with compliance tables and action checklist.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "tender_metadata": {"type": "object", "description": "Extracted tender metadata"},
+                        "evaluation_result": {"type": "object", "description": "Contractor eligibility evaluation output"},
+                        "contractor_profile": {"type": "object", "description": "Contractor profile details"},
+                        "output_filename": {"type": "string", "description": "Optional output .docx filename"}
+                    },
+                    "required": ["tender_metadata", "evaluation_result", "contractor_profile"]
                 }
             }
         ]
